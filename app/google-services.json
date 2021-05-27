@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "499936143552",
+    "project_id": "cinemaplusapp-2fda5",
+    "storage_bucket": "cinemaplusapp-2fda5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499936143552:android:83a06e8b34f9c545a8e525",
+        "android_client_info": {
+          "package_name": "com.example.appdatvexemphim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499936143552-0sbf99dholu58o42pt1evhq7bdnh3pov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjYusHKoFmxCm6RVMbkpOKOEpHgEVC6Xo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499936143552-0sbf99dholu58o42pt1evhq7bdnh3pov.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

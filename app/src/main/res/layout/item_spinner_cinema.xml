@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        app:cardElevation="6dp"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="90dp">
+
+        <LinearLayout
+            android:weightSum="10"
+            android:background="@drawable/background_detailsticker"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgcinema"
+                android:layout_weight="2.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+
+            <LinearLayout
+                android:paddingLeft="5dp"
+                android:orientation="vertical"
+                android:layout_weight="7.5"
+                android:layout_width="0dp"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/tvtenrap"
+                    android:textSize="20sp"
+                    android:text="Rạp Test"
+                    android:textStyle="bold"
+                    android:textColor="#E7E7E7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView
+        >
+
+</LinearLayout>

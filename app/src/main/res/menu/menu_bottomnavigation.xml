@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itemmovie"
+        android:checked="true"
+        android:iconTint="@color/color_botomnavigation"
+        android:icon="@drawable/movie"
+        android:title="MOVIE"></item>
+    <item
+        android:id="@+id/itemticker"
+        android:icon="@drawable/ticker"
+        android:iconTint="@color/colorUnSelect"
+        android:title="TICKER"></item>
+    <item
+        android:id="@+id/itemcinema"
+        android:icon="@drawable/cinema"
+        android:iconTint="@color/colorUnSelect"
+        android:title="CINEMA"></item>
+    <item
+        android:id="@+id/itemfavourite"
+        android:iconTint="@color/colorUnSelect"
+        android:icon="@drawable/favourite"
+        android:title="FAVOURITE"></item>
+    <item
+        android:id="@+id/itemprofile"
+        android:icon="@drawable/profile"
+        android:iconTint="@color/colorUnSelect"
+        android:title="PROFILE"></item>
+
+</menu>

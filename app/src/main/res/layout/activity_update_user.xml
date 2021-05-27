@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackround"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".Activity.UpdateUserActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_infogiave" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Thông tin khách hàng"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/edtname"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:background="@drawable/background_textviewaccountandpass"
+                android:hint="Nhập tên của bạn"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textColor="#E7E7E7"
+                android:textColorHint="#707070" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edlayoupass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/edtemail"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:background="@drawable/background_textviewaccountandpass"
+                android:hint="Nhập địa chỉ Email của bạn"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="10dp"
+                android:textColor="#E7E7E7"
+                android:textColorHint="#707070" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:weightSum="10"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_weight="8.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/edtdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:background="@drawable/background_textviewaccountandpass"
+                    android:hint="Ngày Sinh"
+                    android:inputType="date"
+                    android:paddingLeft="10dp"
+                    android:textColor="#E7E7E7"
+                    android:textColorHint="#707070" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:background="@drawable/ic_date"
+                android:id="@+id/btnngay"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/edtphone"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:background="@drawable/background_textviewaccountandpass"
+                android:hint="Nhập số điện thoại"
+                android:inputType="phone"
+                android:paddingLeft="10dp"
+                android:textColor="#E7E7E7"
+                android:textColorHint="#707070" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnhuy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="5"
+                android:background="@drawable/background_btnhuydatve"
+                android:text="Hủy"
+                android:textColor="#E7E7E7"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btncapnhat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="5"
+                android:background="@drawable/background_btnlogin"
+                android:text="Cập nhật"
+                android:textColor="#E7E7E7"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <LinearLayout
+            android:layout_marginBottom="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/lnName"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.25"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edlayoutname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:ems="10"
+                    android:maxHeight="75dp"
+                    android:id="@+id/txtname"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:background="@drawable/background_textviewaccountandpass"
+                    android:hint="Nhập tên của bạn"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:textColor="#E7E7E7"
+                    android:textColorHint="#707070" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/lnusername"
+            app:layout_constraintTop_toBottomOf="@+id/lnName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.4"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edlayouttk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:minHeight="55dp"
+                    android:maxHeight="75dp"
+                    android:id="@+id/txtaccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:background="@drawable/background_textviewaccountandpass"
+                    android:hint="Nhập tài khoản của bạn"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:textColor="#E7E7E7"
+                    android:textColorHint="#707070" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/lnpass"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lnusername"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.25"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edlayoutpass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:minHeight="55dp"
+                    android:maxHeight="75dp"
+                    android:id="@+id/txtpass"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:background="@drawable/background_textviewaccountandpass"
+                    android:hint="Nhập mật khẩu của bạn"
+                    android:inputType="textPassword"
+                    android:paddingLeft="10dp"
+                    android:textColor="#E7E7E7"
+                    android:textColorHint="#707070" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/lnconfirm"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lnpass"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.25"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edlayoutconfirmpass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:minHeight="55dp"
+                    android:maxHeight="75dp"
+                    android:id="@+id/txtconfimpass"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:background="@drawable/background_textviewaccountandpass"
+                    android:hint="Nhập lại mật khẩu"
+                    android:inputType="textPassword"
+                    android:paddingLeft="10dp"
+                    android:textColor="#E7E7E7"
+                    android:textColorHint="#707070" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/lnemail"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lnconfirm"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.25"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edlayoutemail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:minHeight="55dp"
+                    android:maxHeight="75dp"
+                    android:id="@+id/txtemail"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:background="@drawable/background_textviewaccountandpass"
+                    android:hint="Nhập địa chỉ Email"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="10dp"
+                    android:textColor="#E7E7E7"
+                    android:textColorHint="#707070" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lnemail"
+            android:id="@+id/lnbirthday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.25"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edlayoutbirthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:minHeight="55dp"
+                    android:maxHeight="75dp"
+                    android:focusable="false"
+                    android:id="@+id/txtdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:background="@drawable/background_textviewaccountandpass"
+                    android:hint="Nhập ngày sinh"
+                    android:paddingLeft="10dp"
+                    android:textColor="#E7E7E7"
+                    android:textColorHint="#707070" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/lnphone"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lnbirthday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.25"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edlayoutphone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:minHeight="55dp"
+                    android:maxHeight="75dp"
+                    android:id="@+id/txtsdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:background="@drawable/background_textviewaccountandpass"
+                    android:hint="Số điện thoại liên hệ"
+                    android:inputType="number"
+                    android:paddingLeft="10dp"
+                    android:textColor="#E7E7E7"
+                    android:textColorHint="#707070" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/lntwobtn"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lnphone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:weightSum="10"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <Button
+                android:layout_margin="5dp"
+                android:layout_weight="5"
+                android:id="@+id/btnhuy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_btnhuydatve"
+                android:text="Hủy Đăng Ký"
+                android:textColor="#E7E7E7"
+                android:textSize="20sp" />
+
+            <Button
+                android:layout_margin="5dp"
+                android:layout_weight="5"
+                android:id="@+id/btncreate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_btnlogin"
+                android:text="Tạo Tài Khoản"
+                android:textColor="#E7E7E7"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+
