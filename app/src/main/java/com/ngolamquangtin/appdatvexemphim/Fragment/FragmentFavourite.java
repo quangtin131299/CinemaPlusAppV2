@@ -1,9 +1,7 @@
 package com.ngolamquangtin.appdatvexemphim.Fragment;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,22 +14,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.ngolamquangtin.appdatvexemphim.Activity.ChooseSessionActivity;
 import com.ngolamquangtin.appdatvexemphim.Adapter.MovieFavouriteAdapter;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
+import com.ngolamquangtin.appdatvexemphim.DTO.Movie;
 import com.ngolamquangtin.appdatvexemphim.DTO.MovieFavourite;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
-import com.ngolamquangtin.appdatvexemphim.Util.Util;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +35,7 @@ public class FragmentFavourite extends Fragment {
     SwipeRefreshLayout refeshfavourite;
     ListView lvMovieFavourite;
     MovieFavouriteAdapter movieFavouriteAdapter;
-    ArrayList<MovieFavourite> movieFavourites;
+    ArrayList<Movie> movieFavourites;
 
 
     @Nullable
@@ -54,7 +43,7 @@ public class FragmentFavourite extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favourite, container, false);
         addControls(view);
-        //addEvents();
+        addEvents();
         return view;
     }
 
@@ -64,7 +53,7 @@ public class FragmentFavourite extends Fragment {
             public void onRefresh() {
                 movieFavourites.clear();
                 movieFavouriteAdapter.notifyDataSetChanged();
-//                loadMovieFavourite();
+                loadMovieFavourite();
             }
         });
         lvMovieFavourite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -79,10 +68,10 @@ public class FragmentFavourite extends Fragment {
     private void loadMovieFavourite() {
         refeshfavourite.setRefreshing(true);
         Service service = RetrofitUtil.getService(getActivity());
-        Call<List<MovieFavourite>> listCall = service.getListMovieFavourite();
-        listCall.enqueue(new Callback<List<MovieFavourite>>() {
+        Call<List<Movie>> listCall = service.getListMovieFavourite();
+        listCall.enqueue(new Callback<List<Movie>>() {
             @Override
-            public void onResponse(Call<List<MovieFavourite>> call, Response<List<MovieFavourite>> response) {
+            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
                 if (response.body() != null) {
                     refeshfavourite.setRefreshing(false);
                     if(txtthongbaokcoketnoi.getVisibility() == View.VISIBLE){
@@ -96,7 +85,7 @@ public class FragmentFavourite extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<MovieFavourite>> call, Throwable t) {
+            public void onFailure(Call<List<Movie>> call, Throwable t) {
                 if(txtthongbaokcoketnoi.getVisibility() != View.VISIBLE){
                     refeshfavourite.setRefreshing(false);
                     txtthongbaokcoketnoi.setVisibility(View.VISIBLE);
@@ -121,6 +110,6 @@ public class FragmentFavourite extends Fragment {
         super.onResume();
         movieFavourites.clear();
         movieFavouriteAdapter.notifyDataSetChanged();
-//        loadMovieFavourite();
+        loadMovieFavourite();
     }
 }

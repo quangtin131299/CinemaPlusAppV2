@@ -2,6 +2,7 @@ package com.ngolamquangtin.appdatvexemphim.Adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -58,22 +59,29 @@ public class MovieCommingSoonAdapter extends BaseAdapter {
         Movie movie = movies.get(position);
         viewHolder.txttenphim.setText(movie.getTenphim());
         viewHolder.txtthoigian.setText(movie.getThoigian() + " min");
-        Picasso.with(context).load(movie.getHinh()).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                viewHolder.imgphim.setBackground(new BitmapDrawable(context.getResources(), bitmap));
-            }
 
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
+        if(!movie.getHinh().isEmpty()){
+            Picasso.with(context).load(movie.getHinh()).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    viewHolder.imgphim.setImageBitmap(null);
+                    viewHolder.imgphim.setBackground(new BitmapDrawable(context.getResources(), bitmap));
+                }
 
-            }
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+                    String valueColor = Integer.toHexString(context.getResources().getColor(R.color.colorBackround, null));
+                    viewHolder.imgphim.setBackgroundColor(Color.parseColor("#"+valueColor));
+                    viewHolder.imgphim.setImageResource(R.drawable.ic_clapperboard);
+                    viewHolder.imgphim.setScaleType(ImageView.ScaleType.CENTER);
+                }
 
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-            }
-        });
+                }
+            });
+        }
 
         return convertView;
     }

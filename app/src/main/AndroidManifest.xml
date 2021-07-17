@@ -6,7 +6,6 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,16 +18,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.ScheduleActivity"></activity>
-        <activity android:name=".Activity.OTPActivity"></activity>
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
+        <activity android:name=".Activity.CinemaActivity"></activity>
+        <activity android:name=".Activity.SearchMovieActivity" />
+        <activity android:name=".Activity.PopCornActivity" />
+        <activity android:name=".Activity.MovieNowShowActivity" />
+        <activity android:name=".Activity.TickerPriceActivity" />
+        <activity android:name=".Activity.HistoryActivity" />
+        <activity android:name=".Activity.BillDetailActivity" />
+        <activity android:name=".Activity.ScheduleActivity" />
+        <activity android:name=".Activity.OTPActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -59,7 +58,8 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.DetalsMovieActivity"
-            android:screenOrientation="locked" />
+            android:screenOrientation="locked"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.CreateAccountActivity"
             android:screenOrientation="locked" />
@@ -68,7 +68,8 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.HomeActivity"
-            android:screenOrientation="locked" />
+            android:screenOrientation="locked"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".Activity.SplashActivity"
             android:screenOrientation="locked">
@@ -79,7 +80,11 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".GPSService" />
+        <service android:name=".Notifycation">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

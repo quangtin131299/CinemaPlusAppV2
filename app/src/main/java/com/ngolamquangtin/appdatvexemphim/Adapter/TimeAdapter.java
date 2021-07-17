@@ -8,27 +8,41 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ngolamquangtin.appdatvexemphim.DTO.XuatChieu;
+import com.astritveliu.boom.Boom;
+import com.ngolamquangtin.appdatvexemphim.DTO.TimeV2;
 import com.ngolamquangtin.appdatvexemphim.R;
+import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.ViewHolder> {
 
 
     Context context;
-    ArrayList<XuatChieu> xuatChieus;
+    ArrayList<TimeV2> showTimes;
     onClickListenerRecyclerView onClickListenerRecyclerView;
+    int isScreenSchdule, postionMovie;
 
-    public TimeAdapter(Context context, ArrayList<XuatChieu> xuatChieus, onClickListenerRecyclerView onClickListenerRecyclerView) {
+    public int getPostionMovie() {
+        return postionMovie;
+    }
+
+    public void setPostionMovie(int postionMovie) {
+        this.postionMovie = postionMovie;
+    }
+
+    public TimeAdapter(Context context, ArrayList<TimeV2> showTimes, onClickListenerRecyclerView onClickListenerRecyclerView, int isScreenSchdule) {
         this.context = context;
-        this.xuatChieus = xuatChieus;
+        this.showTimes = showTimes;
         this.onClickListenerRecyclerView = onClickListenerRecyclerView;
+        this.isScreenSchdule = isScreenSchdule;
+    }
+
+    public ArrayList<TimeV2> getShowTimes() {
+        return showTimes;
     }
 
     @NonNull
@@ -40,42 +54,54 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return xuatChieus.size();
+        return showTimes != null ? showTimes.size() : 0;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        XuatChieu xuatChieu = xuatChieus.get(position);
-        if(xuatChieu != null){
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-            try {
-                Date date = simpleDateFormat.parse(xuatChieu.getThoigian());
-                holder.txtthoigian.setText(simpleDateFormat.format(date));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        if (isScreenSchdule == 1){
+            holder.cardTime.setCardBackgroundColor(context.getColor(R.color.colorUnSelect));
+        }else{
+            holder.cardTime.setCardBackgroundColor(context.getColor(R.color.colorBackround));
+        }
 
+        TimeV2 showTime = showTimes.get(position);
+
+        if(showTime != null){
+            holder.txtShowTime.setText(Util.formatTime(showTime.getGio()));
         }
 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtthoigian;
+        TextView txtShowTime;
         LinearLayout linearbackground;
+        CardView cardTime;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtthoigian = itemView.findViewById(R.id.txtthoigian);
+            txtShowTime = itemView.findViewById(R.id.txtthoigian);
             linearbackground = itemView.findViewById(R.id.linearbackground);
+            cardTime = itemView.findViewById(R.id.cardtime);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickListenerRecyclerView.onClicked(getLayoutPosition(), linearbackground);
+                    if(onClickListenerRecyclerView != null){
+                        if(isScreenSchdule == 1){
+                            onClickListenerRecyclerView.onClicked(getPosition(), getPostionMovie(),linearbackground, cardTime);
+                        }else{
+                            onClickListenerRecyclerView.onClicked(getPosition(), 0,linearbackground, cardTime);
+                        }
+
+                    }
                 }
             });
+
+            new Boom(itemView);
         }
     }
 
     public interface onClickListenerRecyclerView{
-        void onClicked(int position, View view);
+        void onClicked(int position, int idMovie,View view, CardView cardTime);
     }
 }

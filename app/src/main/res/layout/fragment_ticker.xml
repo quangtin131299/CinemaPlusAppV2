@@ -2,37 +2,49 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorUnSelect"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/lineartitle"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+    <FrameLayout
+        android:id="@+id/frametoolbar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/colorBackround"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        android:weightSum="10">
+        android:background="@color/colorBackround"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:gravity="center"
-            android:text="Tickers"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8.5"
+                android:gravity="center"
+                android:text="Vé của bạn"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </FrameLayout>
 
     <LinearLayout
+        app:layout_constraintTop_toBottomOf="@+id/frametoolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lineartitle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9">
@@ -42,6 +54,7 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:visibility="invisible"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -50,10 +63,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Bạn không có vé đặt"
+                android:text="Bạn chưa đặt vé"
                 android:textColor="#E7E7E7"
-                android:textSize="25sp"
-                />
+                android:textSize="25sp" />
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/refeslayoutticker"
@@ -65,19 +77,15 @@
                 android:layout_height="0dp">
 
                 <ListView
-                    android:stackFromBottom="true"
-                    android:transcriptMode="normal"
+                    android:dividerHeight="0dp"
+                    android:divider="@null"
                     android:id="@+id/lvTicker"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
     </LinearLayout>
 

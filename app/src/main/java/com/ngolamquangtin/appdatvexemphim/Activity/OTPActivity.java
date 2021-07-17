@@ -1,7 +1,9 @@
 package com.ngolamquangtin.appdatvexemphim.Activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.astritveliu.boom.Boom;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -34,9 +37,11 @@ import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OTPActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPreferences;
     FirebaseAuth auth;
     Button btnCancel,btnAuthen;
     Dialog dialog;
@@ -50,6 +55,7 @@ public class OTPActivity extends AppCompatActivity {
         setContentView(R.layout.activity_otpactivity);
 
         addControls();
+
         addEvents();
 
         sendOTPToPhone();
@@ -57,15 +63,17 @@ public class OTPActivity extends AppCompatActivity {
 
     private void sendOTPToPhone() {
 
-        CustomerV2 customerV2 = getCustomer();
+        CustomerV2 customer = getCustomer();
 
-        String phoneNumber = fomatNumberPhone(customerV2.getSdt());
+        String phoneNumber = fomatNumberPhone(customer.getSdt());
+
+        auth.setLanguageCode("vi");
 
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(auth)
                         .setPhoneNumber(phoneNumber)       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(this)                 // Activity (for callback binding)
+                        .setActivity(OTPActivity.this)                 // Activity (for callback binding)
                         .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(@NonNull @NotNull PhoneAuthCredential phoneAuthCredential) {
@@ -102,14 +110,16 @@ public class OTPActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    showDialogSuccess();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+
+                    CustomerV2 customer = getCustomer();
+
+                    //Update equals 0
+                    if(getState() == 0){
+                        updateInforUser(customer);
+                    }else{
+                        xulyCreateAccount(customer);
                     }
-                    Intent i = new Intent(OTPActivity.this, LoginActivity.class);
-                    startActivity(i);
+
                 }else{
                     showDialogFails();
                 }
@@ -124,7 +134,7 @@ public class OTPActivity extends AppCompatActivity {
         edtauthen = findViewById(R.id.edtauth);
         btnAuthen = findViewById(R.id.btnauthen);
         btnCancel = findViewById(R.id.btncancel);
-
+        sharedPreferences = getSharedPreferences("datalogin", Context.MODE_PRIVATE);
         dialog = new Dialog(OTPActivity.this);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
@@ -145,6 +155,9 @@ public class OTPActivity extends AppCompatActivity {
                 CredentialUser(verificationId, code);
             }
         });
+
+        new Boom(btnCancel);
+        new Boom(btnAuthen);
     }
 
     private void xulyCreateAccount(CustomerV2 customer) {
@@ -162,6 +175,7 @@ public class OTPActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             Intent i = new Intent(OTPActivity.this, LoginActivity.class);
                             startActivity(i);
+                            finish();
                         }
                     });
                 } else {
@@ -196,6 +210,12 @@ public class OTPActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    public void dismissDialogProcessing(){
+        if(dialog != null && dialog.isShowing()){
+            dialog.dismiss();
+        }
+    }
+
     private void showDialogSuccess(){
         if(dialog != null && dialog.isShowing()){
             dialog.dismiss();
@@ -212,6 +232,50 @@ public class OTPActivity extends AppCompatActivity {
 
         dialog.setContentView(R.layout.dialog_failed);
         dialog.show();
+    }
+
+    public void updateInforUser(CustomerV2 customer){
+        Service service = RetrofitUtil.getService(OTPActivity.this);
+        Call<CustomerV2> customerCall = service.updateTTUser(customer);
+        customerCall.enqueue(new Callback<CustomerV2>() {
+            @Override
+            public void onResponse(Call<CustomerV2> call, Response<CustomerV2> response) {
+                dismissDialogProcessing();
+                CustomerV2 newCustomer = response.body();
+
+                if (newCustomer != null) {
+                    showDialogSuccess();
+                    updateSharePreference(newCustomer);
+                    finish();
+                } else {
+                    showDialogFails();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CustomerV2> call, Throwable t) {
+                showDialogFails();
+            }
+        });
+    }
+
+    public int getState(){
+        Intent intent = getIntent();
+
+        if(intent.hasExtra("STATE")){
+            return  intent.getIntExtra("STATE", 0);
+        }
+
+        return 1;
+    }
+
+    public void updateSharePreference(CustomerV2 newCustomer) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("hoten", newCustomer.getHoTen());
+        editor.putString("sdt", newCustomer.getSdt());
+        editor.putString("ngaysinh", newCustomer.getNgaySinh());
+        editor.apply();
+        finish();
     }
 
 //    public void showDialog(int layout){

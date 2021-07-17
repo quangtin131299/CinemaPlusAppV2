@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Movie implements Serializable {
@@ -25,7 +26,7 @@ public class Movie implements Serializable {
     private String status;
     @SerializedName("thoiGian")
     @Expose
-    private Integer thoigian;
+    private int thoigian;
     @SerializedName("trailer")
     @Expose
     private String trailer;
@@ -38,94 +39,140 @@ public class Movie implements Serializable {
     @SerializedName("loaiphims")
     @Expose
     private List<MovieType> loaiphims = null;
+    @SerializedName("suatchieus")
+    @Expose
+    private ArrayList<TimeV2> suatchieus = null;
+
+    @SerializedName("nameCinema")
+    @Expose
+    private String nameCinema;
+    @SerializedName("time")
+    @Expose
+    private String time;
+    @SerializedName("idShowTime")
+    @Expose
+    private String idShowTime;
+    @SerializedName("idCinema")
+    @Expose
+    private String idCinema;
+
+    public String getNameCinema() {
+        return nameCinema;
+    }
+
+    public void setNameCinema(String nameCinema) {
+        this.nameCinema = nameCinema;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getIdShowTime() {
+        return idShowTime;
+    }
+
+    public void setIdShowTime(String idShowTime) {
+        this.idShowTime = idShowTime;
+    }
+
+    public String getIdCinema() {
+        return idCinema;
+    }
+
+    public void setIdCinema(String idCinema) {
+        this.idCinema = idCinema;
+    }
 
     public Integer getId() {
         return id;
     }
 
-    public Movie setId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
-        return this;
     }
 
     public String getTenphim() {
         return tenphim;
     }
 
-    public Movie setTenphim(String tenphim) {
+    public void setTenphim(String tenphim) {
         this.tenphim = tenphim;
-        return this;
-    }
-
-    public Integer getThoigian() {
-        return thoigian;
-    }
-
-    public Movie setThoigian(Integer thoigian) {
-        this.thoigian = thoigian;
-        return this;
     }
 
     public String getHinh() {
         return hinh;
     }
 
-    public Movie setHinh(String hinh) {
+    public void setHinh(String hinh) {
         this.hinh = hinh;
-        return this;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public Movie setStatus(String status) {
-        this.status = status;
-        return this;
     }
 
     public String getAnhbia() {
         return anhbia;
     }
 
-    public Movie setAnhbia(String anhbia) {
+    public void setAnhbia(String anhbia) {
         this.anhbia = anhbia;
-        return this;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getThoigian() {
+        return thoigian;
+    }
+
+    public void setThoigian(int thoigian) {
+        this.thoigian = thoigian;
     }
 
     public String getTrailer() {
         return trailer;
     }
 
-    public Movie setTrailer(String trailer) {
+    public void setTrailer(String trailer) {
         this.trailer = trailer;
-        return this;
     }
 
     public String getMota() {
         return mota;
     }
 
-    public Movie setMota(String mota) {
+    public void setMota(String mota) {
         this.mota = mota;
-        return this;
     }
 
     public String getNgayKhoiChieu() {
         return ngayKhoiChieu;
     }
 
-    public Movie setNgayKhoiChieu(String ngayKhoiChieu) {
+    public void setNgayKhoiChieu(String ngayKhoiChieu) {
         this.ngayKhoiChieu = ngayKhoiChieu;
-        return this;
     }
 
     public List<MovieType> getLoaiphims() {
         return loaiphims;
     }
 
-    public Movie setLoaiphims(List<MovieType> loaiphims) {
+    public void setLoaiphims(List<MovieType> loaiphims) {
         this.loaiphims = loaiphims;
-        return this;
+    }
+
+    public ArrayList<TimeV2> getSuatchieus() {
+        return suatchieus;
+    }
+
+    public void setSuatchieus(ArrayList<TimeV2> suatchieus) {
+        this.suatchieus = suatchieus;
     }
 }

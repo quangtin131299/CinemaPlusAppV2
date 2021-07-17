@@ -3,28 +3,27 @@
     <item
         android:id="@+id/itemmovie"
         android:checked="true"
-        android:iconTint="@color/color_botomnavigation"
         android:icon="@drawable/movie"
-        android:title="MOVIE"></item>
+        android:title="Phim"></item>
     <item
         android:id="@+id/itemticker"
         android:icon="@drawable/ticker"
         android:iconTint="@color/colorUnSelect"
-        android:title="TICKER"></item>
+        android:title="Ve"></item>
     <item
         android:id="@+id/itemcinema"
         android:icon="@drawable/cinema"
         android:iconTint="@color/colorUnSelect"
-        android:title="CINEMA"></item>
+        android:title="Rap chieu"></item>
     <item
         android:id="@+id/itemfavourite"
         android:iconTint="@color/colorUnSelect"
         android:icon="@drawable/favourite"
-        android:title="FAVOURITE"></item>
+        android:title="Yeu thich"></item>
     <item
         android:id="@+id/itemprofile"
         android:icon="@drawable/profile"
         android:iconTint="@color/colorUnSelect"
-        android:title="PROFILE"></item>
+        android:title="Ca nhan"></item>
 
 </menu>

@@ -1,94 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="10dp"
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/colorBackround"
+        app:cardCornerRadius="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@drawable/background_cinemanearyou"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/background_cinemanearyou">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                app:layout_constraintBottom_toTopOf="@+id/contrainactionbtn"
                 android:id="@+id/contraintitle"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="200dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/iconanimation"
-                    app:lottie_rawRes="@raw/thongtin"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginTop="20dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"/>
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/thongtin" />
 
                 <TextView
                     android:id="@+id/txtmess"
-                    android:textColor="#ffffff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="13dp"
+                    android:text="Text"
+                    android:textColor="#ffffff"
                     android:textSize="20sp"
-                    app:layout_constraintTop_toBottomOf="@+id/iconanimation"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:text="Text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    app:layout_constraintTop_toBottomOf="@+id/iconanimation" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contraintitle"
+                android:id="@+id/contrainactionbtn"
                 android:layout_width="match_parent"
-                android:layout_height="140dp">
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/contraintitle">
 
-                <Button
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:id="@+id/btnhuy"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_btnhuydatve"
-                    android:text="Hủy bỏ"
-                    android:layout_marginLeft="3dp"
-                    android:layout_width="150dp"
-                    android:textColor="#FFFFFF"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/btnlogin"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-                <Button
-                    app:layout_constraintLeft_toRightOf="@+id/btnhuy"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginRight="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnlogin"
-                    android:layout_width="150dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="15dp"
                     android:background="@drawable/background_btnlogin"
                     android:text="Đăng nhập"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
 
-
+                    app:layout_constraintStart_toStartOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

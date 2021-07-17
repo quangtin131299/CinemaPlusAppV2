@@ -1,12 +1,15 @@
 package com.ngolamquangtin.appdatvexemphim.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.astritveliu.boom.Boom;
+import com.ngolamquangtin.appdatvexemphim.Activity.DetailTickerActivity;
 import com.ngolamquangtin.appdatvexemphim.DTO.Cinema;
 import com.ngolamquangtin.appdatvexemphim.DTO.Movie;
 import com.ngolamquangtin.appdatvexemphim.DTO.RoomV2;
@@ -15,6 +18,7 @@ import com.ngolamquangtin.appdatvexemphim.DTO.Ticker;
 import com.ngolamquangtin.appdatvexemphim.DTO.TicketV2;
 import com.ngolamquangtin.appdatvexemphim.DTO.TimeV2;
 import com.ngolamquangtin.appdatvexemphim.R;
+import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
 import java.util.ArrayList;
 
@@ -62,6 +66,7 @@ public class TickerAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_ticker, null);
             viewHolder = new ViewHolder();
@@ -104,14 +109,38 @@ public class TickerAdapter extends BaseAdapter {
             }
 
             if (time != null) {
-                viewHolder.txtNgayDatVaThoiGian.setText(ticket.getNgayDat() + " " + time.getGio());
+                viewHolder.txtNgayDatVaThoiGian.setText(Util.formatDateServerToClient(ticket.getNgayDat()) + " " + time.getGio());
             }
         }
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, DetailTickerActivity.class);
+                TicketV2 ticker = tickers.get(position);
+
+                if(ticker != null){
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    i.putExtra("TICKER", ticker);
+
+                    context.startActivity(i);
+                }
+
+            }
+        });
+
+        new Boom(convertView);
 
         return convertView;
     }
 
     public class ViewHolder {
-        TextView txtTenPhim, txtday, txtghe, txtTenrap, txtNgayDatVaThoiGian, txtTenPhong;
+        TextView txtTenPhim,
+                 txtday,
+                 txtghe,
+                 txtTenrap,
+                 txtNgayDatVaThoiGian,
+                 txtTenPhong;
     }
 }

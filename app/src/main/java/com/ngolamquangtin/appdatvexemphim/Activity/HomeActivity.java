@@ -1,40 +1,45 @@
 package com.ngolamquangtin.appdatvexemphim.Activity;
 
-import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ngolamquangtin.appdatvexemphim.Adapter.MainAdapter;
 import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentCinema;
 import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentFavourite;
 import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentMovie;
 import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentProfile;
 import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentTicker;
-import com.ngolamquangtin.appdatvexemphim.LocationChange;
 import com.ngolamquangtin.appdatvexemphim.NetWorkChange;
 import com.ngolamquangtin.appdatvexemphim.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
+    final int REQUEST_CODE_LOCALTION_PERMISSION = 1;
+
     NetWorkChange netWorkChange;
-
-
+    MainAdapter mainAdapter;
     ViewPager viewPager;
     ArrayList<String> arrayTilte = new ArrayList<>();
     BottomNavigationView bottomNavigationViewHome;
     SharedPreferences sharedPreferences;
+    String tokenMessage = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +49,11 @@ public class HomeActivity extends AppCompatActivity {
         registerBroadCast();
 
         ReadStatusLogin();
+
         addControl();
+
         addEvent();
+
         prepearViewPager(viewPager, arrayTilte);
     }
 
@@ -69,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.itemticker:
                         viewPager.setCurrentItem(1);
+//                        hiddenNotifyTicker();
                         break;
                     case R.id.itemcinema:
                         viewPager.setCurrentItem(2);
@@ -106,6 +115,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case 1:
                         bottomNavigationViewHome.setSelectedItemId(R.id.itemticker);
+//                        hiddenNotifyTicker();
                         break;
                     case 2:
                         bottomNavigationViewHome.setSelectedItemId(R.id.itemcinema);
@@ -126,11 +136,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void prepearViewPager(ViewPager viewPager, ArrayList<String> arrayTilte) {
-        MainAdapter mainAdapter = new MainAdapter(getSupportFragmentManager());
+        mainAdapter = new MainAdapter(getSupportFragmentManager());
         FragmentMovie fragmentMovie = new FragmentMovie();
         FragmentTicker fragmentTicker = new FragmentTicker();
         FragmentCinema fragmentCinema = new FragmentCinema();
@@ -138,13 +147,57 @@ public class HomeActivity extends AppCompatActivity {
         FragmentProfile fragmentProfile = new FragmentProfile();
 
 
-        mainAdapter.addFragment(fragmentMovie, "Movie");
-        mainAdapter.addFragment(fragmentTicker, "Ticker");
-        mainAdapter.addFragment(fragmentCinema, "Cinema");
-        mainAdapter.addFragment(fragmentFavourite, "Favourite");
-        mainAdapter.addFragment(fragmentProfile, "Profile");
+        mainAdapter.addFragment(fragmentMovie, "Phim");
+        mainAdapter.addFragment(fragmentTicker, "Vé");
+        mainAdapter.addFragment(fragmentCinema, "Rạp chiếu");
+        mainAdapter.addFragment(fragmentFavourite, "Phim yêu thích");
+        mainAdapter.addFragment(fragmentProfile, "Cá nhân");
         viewPager.setAdapter(mainAdapter);
-
     }
 
+    public void setNotifyTicker(){
+        Intent intentScreenPayment = getIntent();
+
+        if(intentScreenPayment.hasExtra("NUMBER_NEW_TICKER")){
+
+            int  numberNewTicker = intentScreenPayment.getIntExtra("NUMBER_NEW_TICKER", 0);
+
+            BadgeDrawable badge = bottomNavigationViewHome.getOrCreateBadge(R.id.itemticker);
+            badge.setVisible(true);
+            badge.setNumber(numberNewTicker);
+        }
+    }
+
+    private void hiddenNotifyTicker() {
+        BadgeDrawable badge = bottomNavigationViewHome.getOrCreateBadge(R.id.itemticker);
+        if(badge.isVisible()){
+            badge.setVisible(false);
+            badge.clearNumber();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable  Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+            FragmentProfile fragProfile = (FragmentProfile) mainAdapter.getItem(4);
+            Uri imgProfile = data.getData();
+
+            fragProfile.updateUIImageProfile(imgProfile);
+            fragProfile.uploadImageProfile(imgProfile);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull  String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_LOCALTION_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                FragmentMovie fragmentMovie = (FragmentMovie) mainAdapter.getItem(0);
+                fragmentMovie.updateBtnLocation();
+            } else {
+                Util.ShowToastErrorMessage(HomeActivity.this, "Quyền bị từ chối");
+            }
+        }
+    }
 }

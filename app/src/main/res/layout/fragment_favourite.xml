@@ -6,29 +6,38 @@
     android:background="@color/colorUnSelect"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/lineartitle"
+    <FrameLayout
+        android:id="@+id/frametoolbar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/colorBackround"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        android:weightSum="10"
+        android:background="@color/colorBackround"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:gravity="center"
-            android:text="Favourite"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8.5"
+                android:gravity="center"
+                android:text="Phim duoc yeu thich"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 
     <TextView
         app:layout_constraintRight_toRightOf="parent"
@@ -51,9 +60,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lineartitle">
+        app:layout_constraintTop_toBottomOf="@+id/frametoolbar">
 
         <ListView
+            android:dividerHeight="0dp"
+            android:divider="@null"
             android:id="@+id/lvmoviefavourite"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/colorUnSelect"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorUnSelect">
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/txtngatketnoi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,32 +19,98 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refeshmovienearyou"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardmovie"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardBackgroundColor="@color/colorBackround"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="510dp">
 
-
-        <GridView
-            android:horizontalSpacing="5dp"
-            android:verticalSpacing="5dp"
-            android:id="@+id/rvMovieNearYou"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:numColumns="2"
-            android:stretchMode="columnWidth">
+            android:layout_height="match_parent">
 
-        </GridView>
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/refeshmovienearyou"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewpagermovie"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="80dp"
+                    android:orientation="horizontal"
+                    android:paddingEnd="80dp" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                app:layout_constraintTop_toBottomOf="@+id/refeshmovienearyou"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="12dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:id="@+id/txtnamemovie"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Tên phim"
+                    android:textColor="#E7E7E7"
+                    android:layout_width="290dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/txtshowtimetodat"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtnamemovie"
+                    android:text="Suất chiếu trong ngày"
+                    android:textColor="#E7E7E7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/txtopendate"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtshowtimetodat"
+                    android:text="Ngày khởi chiếu"
+                    android:textColor="#E7E7E7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/btnfastbooking"
+                    android:textColor="#E7E7E7"
+                    android:text="Đặt vé"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/background_btnlogin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    android:background="@color/colorUnSelect"-->

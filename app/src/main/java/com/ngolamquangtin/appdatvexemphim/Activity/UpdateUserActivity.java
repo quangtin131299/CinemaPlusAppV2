@@ -1,37 +1,27 @@
 package com.ngolamquangtin.appdatvexemphim.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.astritveliu.boom.Boom;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
-import com.ngolamquangtin.appdatvexemphim.DTO.Customer;
+import com.ngolamquangtin.appdatvexemphim.DTO.CustomerV2;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,9 +29,13 @@ import retrofit2.Response;
 
 public class UpdateUserActivity extends AppCompatActivity {
 
+    final int STATE_UPDATE = 0;
+    final int ENABLE_AGE = 18;
+
     TextView edtphone, edtname, edtemail, edtdate;
-    Button btnngay, btncapnhat, btnhuy;
+    Button btncapnhat, btnhuy;
     SharedPreferences sharedPreferences;
+    Dialog dialogProcess, dialogError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +43,9 @@ public class UpdateUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_user);
 
         addControls();
+
         capnhatThongTinKhachHangUI();
+
         addEvents();
     }
 
@@ -57,7 +53,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         Intent i = getIntent();
         if (i.hasExtra("HOTEN") || i.hasExtra("EMAIL") || i.hasExtra("SDT") || i.hasExtra("NGAYSINH")) {
             edtname.setText(i.getStringExtra("HOTEN"));
-            edtemail.setText(i.getStringExtra("EMAIL"));
+//            edtemail.setText(i.getStringExtra("EMAIL"));
             edtphone.setText(i.getStringExtra("SDT"));
             edtdate.setText(i.getStringExtra("NGAYSINH"));
         }
@@ -68,138 +64,184 @@ public class UpdateUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String hoten = edtname.getText().toString().trim();
-                String email = edtemail.getText().toString().trim();
+                String email = "";
                 String phone = edtphone.getText().toString().trim();
                 String ngaysinh = edtdate.getText().toString().trim();
                 capnhatThongTinKhachHang(hoten, email, ngaysinh, phone);
             }
         });
+
         btnhuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        btnngay.setOnClickListener(new View.OnClickListener() {
+
+        edtdate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                int month = Calendar.getInstance().get(Calendar.MONTH);
-                int year = Calendar.getInstance().get(Calendar.YEAR);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(UpdateUserActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        calendar.set(Calendar.MONTH, month);
-                        calendar.set(Calendar.YEAR, year);
-                        edtdate.setText(simpleDateFormat.format(calendar.getTime()));
-                    }
-                }, year, month, day);
-                datePickerDialog.show();
+            public void onClick(View view) {
+                chooseDate();
             }
         });
+
+        new Boom(btncapnhat);
+        new Boom(btnhuy);
+    }
+
+    public void chooseDate(){
+        final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(UpdateUserActivity.this, R.style.DatePic, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                if (validateBirthDay(currentYear, year) >= ENABLE_AGE) {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.YEAR, year);
+                    edtdate.setText(simpleDateFormat.format(calendar.getTime()));
+                } else {
+                    showDialogError("Ngày sinh không hợp lệ");
+                }
+
+            }
+        }, currentYear, month, day);
+        datePickerDialog.show();
     }
 
     private void capnhatThongTinKhachHang(String name, String email, String date, String phone) {
-//        RequestQueue requestQueue = Volley.newRequestQueue(UpdateUserActivity.this);
-//        String url = Util.LINK_UPDATEUSER;
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                Toast.makeText(UpdateUserActivity.this, response, Toast.LENGTH_LONG).show();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                String hoten = edtname.getText().toString().trim();
-//                String email = edtemail.getText().toString().trim();
-//                String phone = edtphone.getText().toString().trim();
-//                String ngaysinh = edtdate.getText().toString().trim();
-//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//                SimpleDateFormat ouput = new SimpleDateFormat("yyyy-MM-dd");
-//                Calendar calendar = Calendar.getInstance();
-//                try {
-//                    calendar.setTime(simpleDateFormat.parse(ngaysinh));
-//                    ngaysinh = ouput.format(calendar.getTime());
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//
-//
-//                Map<String, String> maps = new HashMap<>();
-//                maps.put("hoten", hoten);
-//                maps.put("email", email);
-//                maps.put("ngaysinh", ngaysinh);
-//                maps.put("sodienthoai", phone);
-//                maps.put("idkhachhang", sharedPreferences.getString("id", ""));
-//                return maps;
-//            }
-//        };
-//        requestQueue.add(stringRequest);
         int id = Integer.parseInt(sharedPreferences.getString("id", ""));
+        String oldNumberPhone = sharedPreferences.getString("sdt", "");
         String hoten = name;
-        String emailreq = email;
         String phonereq = phone;
-        String ngaysinh = "";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat ouput = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date temp = simpleDateFormat.parse(date);
-            ngaysinh = ouput.format(temp);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String finalNgaysinh = ngaysinh;
-        Customer customer = new Customer();
-        customer.setID(id);
+        CustomerV2 customer = new CustomerV2();
+        customer.setId(id);
         customer.setHoTen(hoten);
-        customer.setEmail(emailreq);
-        customer.setSDT(phonereq);
-        customer.setNgaySinh(ngaysinh);
-        Service service = RetrofitUtil.getService(UpdateUserActivity.this);
-        Call<Customer> customerCall = service.updateTTUser(customer);
-        customerCall.enqueue(new Callback<Customer>() {
-            @Override
-            public void onResponse(Call<Customer> call, Response<Customer> response) {
-                Customer custemp = response.body();
-                if (custemp != null) {
-                    Toast.makeText(UpdateUserActivity.this, "Cập nhật thông tin thành công !", Toast.LENGTH_SHORT).show();
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("hoten", hoten);
-                    editor.putString("email", emailreq);
-                    editor.putString("sdt", phonereq);
-                    editor.putString("ngaysinh", finalNgaysinh);
-                    editor.apply();
-                    finish();
-                } else {
-                    Toast.makeText(UpdateUserActivity.this, "Cập nhật thông tin thất bại !", Toast.LENGTH_SHORT).show();
-                }
-            }
+        customer.setSdt(phonereq);
+        customer.setNgaySinh(Util.formatDateClientToServer(date));
 
-            @Override
-            public void onFailure(Call<Customer> call, Throwable t) {
+        if(!oldNumberPhone.equals(phone)){
+            Intent intentToScreenOTP = new Intent(UpdateUserActivity.this, OTPActivity.class);
 
-            }
-        });
+            intentToScreenOTP.putExtra("CUSTOMER", customer);
+            intentToScreenOTP.putExtra("STATE", STATE_UPDATE);
 
+            startActivity(intentToScreenOTP);
+        }else{
+            updateInforUser(customer);
+        }
     }
 
     private void addControls() {
+        dialogProcess = new Dialog(UpdateUserActivity.this);
+        dialogError = new Dialog(UpdateUserActivity.this);
         edtphone = findViewById(R.id.edtphone);
         edtname = findViewById(R.id.edtname);
-        edtemail = findViewById(R.id.edtemail);
         edtdate = findViewById(R.id.edtdate);
-        btnngay = findViewById(R.id.btnngay);
         btncapnhat = findViewById(R.id.btncapnhat);
         btnhuy = findViewById(R.id.btnhuy);
         sharedPreferences = getSharedPreferences("datalogin", Context.MODE_PRIVATE);
     }
 
+    public int validateBirthDay(int yearCurrent, int yearSelected) {
+        return yearCurrent - yearSelected;
+    }
+
+    public void showDialogProcess() {
+        if (dialogProcess != null) {
+            dialogProcess.setContentView(R.layout.dialog_processing);
+
+            dialogProcess.getWindow().setBackgroundDrawableResource(R.color.transparent);
+
+            dialogProcess.show();
+        }
+    }
+
+    public void showDialogError(String mess) {
+        if (dialogError != null) {
+            dialogError.setContentView(R.layout.dialog_failed);
+            dialogError.getWindow().setBackgroundDrawableResource(R.color.transparent);
+
+            TextView txtMess = dialogError.findViewById(R.id.txtmess);
+
+            Button btnOk = dialogError.findViewById(R.id.btnOK);
+
+            txtMess.setText(mess);
+            btnOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogError.dismiss();
+                }
+            });
+
+            dialogError.show();
+        }
+    }
+
+    public void dismissDialogProcess() {
+        if (dialogProcess != null && dialogProcess.isShowing()) {
+            dialogProcess.dismiss();
+        }
+    }
+
+    public void updateInforUser(CustomerV2 customer){
+        Service service = RetrofitUtil.getService(UpdateUserActivity.this);
+        Call<CustomerV2> customerCall = service.updateTTUser(customer);
+        customerCall.enqueue(new Callback<CustomerV2>() {
+            @Override
+            public void onResponse(Call<CustomerV2> call, Response<CustomerV2> response) {
+                dismissDialogProcess();
+                CustomerV2 newCustomer = response.body();
+
+                if (newCustomer != null) {
+                    showDialogProcess();
+                    updateSharePreference(newCustomer);
+                    finish();
+                } else {
+                    showDialogFails();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CustomerV2> call, Throwable t) {
+                showDialogFails();
+            }
+        });
+    }
+
+    public void showDialogFails(){
+        if(dialogProcess != null){
+            dialogError.getWindow().setBackgroundDrawableResource(R.color.transparent);
+
+            dialogError.setContentView(R.layout.dialog_failed);
+
+            Button btnOK = dialogError.findViewById(R.id.btnOK);
+
+            btnOK.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogError.dismiss();
+                }
+            });
+
+            dialogError.show();
+        }
+    }
+
+    public void dismissDialogError() {
+        if (dialogError != null && dialogError.isShowing()) {
+            dialogError.dismiss();
+        }
+    }
+
+    public void updateSharePreference(CustomerV2 newCustomer) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("hoten", newCustomer.getHoTen());
+        editor.putString("ngaysinh", newCustomer.getNgaySinh());
+        editor.apply();
+        finish();
+    }
 }

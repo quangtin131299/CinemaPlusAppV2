@@ -2,8 +2,40 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="dialogQR" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+        
+    <style name="DatePic" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorBackround</item>
+        <!--selected Item color-->
+        <item name="colorControlActivated">@color/colorSelect</item>
+        <!-- arrow bordercolor(<>)-->
+        <item name="android:selectableItemBackgroundBorderless">@color/colorUnSelect</item>
+        <!-- Highlight item color-->
+        <item name="colorControlHighlight">@null</item>
+        <!--Calender Background color -->
+        <item name="android:windowBackground">@color/colorUnSelect</item>
+        <!-- Ok Cancel Color-->
+        <item name="android:textColor">@color/colorText</item>
+        <!-- Week TextColor-->
+        <item name="android:textColorSecondary">@color/colorText</item>
+        <!-- Calender Number color arrow color (< >) -->
+        <item name="android:textColorPrimary">@color/colorText</item>
+        <!--day , month-->
+        <item name="android:textColorPrimaryInverse">@color/colorText</item>
+        <!-- year-->
+        <item name="android:textColorSecondaryInverse">@color/colorText</item>
+
+    </style>
+
 </resources>

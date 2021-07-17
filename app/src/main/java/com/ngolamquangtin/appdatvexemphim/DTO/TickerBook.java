@@ -1,33 +1,29 @@
 package com.ngolamquangtin.appdatvexemphim.DTO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class TickerBook implements Serializable {
 
     private int idtickerbook;
     private int idsuat;
-    private int idghe;
+    private ArrayList<SeatV2> idSeats;
+    private ArrayList<PopCorn> popcorns;
     private int idphim;
     private int idkhachhang;
     private int idrap;
     private int idhoadon;
     private String trangthai;
     private String ngaydat;
-
     private int idphong;
-
-    public int getIdphong() {
-        return idphong;
-    }
-
-    public void setIdphong(int idphong) {
-        this.idphong = idphong;
-    }
+    private int methodPay;
+    private int unitPrice;
 
     public TickerBook() {
         this.idtickerbook = 0;
         this.idsuat = 0;
-        this.idghe = 0;
+        this.idSeats = new ArrayList<>();
+        this.popcorns = new ArrayList<>();
         this.idphim = 0;
         this.idkhachhang = 0;
         this.idrap = 0;
@@ -44,16 +40,49 @@ public class TickerBook implements Serializable {
         this.idhoadon = idhoadon;
     }
 
-    public TickerBook(int idtickerbook, int idsuat, int idghe, int idphim, int idkhachhang, int idrap, int idhoadon, String trangthai, String ngaydat) {
+    public TickerBook(int idtickerbook, int idsuat, ArrayList<SeatV2> idghe, int idphim, int idkhachhang, int idrap, int idhoadon, String trangthai, String ngaydat) {
         this.idtickerbook = idtickerbook;
         this.idsuat = idsuat;
-        this.idghe = idghe;
+        this.idSeats = idghe;
         this.idphim = idphim;
         this.idkhachhang = idkhachhang;
         this.idrap = idrap;
         this.idhoadon = idhoadon;
         this.trangthai = trangthai;
         this.ngaydat = ngaydat;
+
+    }
+
+    public ArrayList<PopCorn> getPopcorns() {
+        return popcorns;
+    }
+
+    public void setPopcorns(ArrayList<PopCorn> popcorns) {
+        this.popcorns = popcorns;
+    }
+
+    public int getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(int unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public int getMethodPay() {
+        return methodPay;
+    }
+
+    public void setMethodPay(int methodPay) {
+        this.methodPay = methodPay;
+    }
+
+    public int getIdphong() {
+        return idphong;
+    }
+
+    public void setIdphong(int idphong) {
+        this.idphong = idphong;
     }
 
     public int getIdtickerbook() {
@@ -72,12 +101,12 @@ public class TickerBook implements Serializable {
         this.idsuat = idsuat;
     }
 
-    public int getIdghe() {
-        return idghe;
+    public ArrayList<SeatV2> getIdSeats() {
+        return idSeats;
     }
 
-    public void setIdghe(int idghe) {
-        this.idghe = idghe;
+    public void setIdSeats(ArrayList<SeatV2> idSeats) {
+        this.idSeats = idSeats;
     }
 
     public int getIdphim() {

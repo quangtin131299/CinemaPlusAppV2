@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="@color/colorBackround"
         app:cardElevation="6dp"
         app:cardCornerRadius="10dp"
         android:layout_margin="5dp"
@@ -14,7 +15,6 @@
 
         <LinearLayout
             android:weightSum="10"
-            android:background="@drawable/background_detailsticker"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

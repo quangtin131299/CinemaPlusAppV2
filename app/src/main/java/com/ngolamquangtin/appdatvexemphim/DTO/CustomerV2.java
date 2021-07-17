@@ -33,7 +33,7 @@ public class CustomerV2 implements Serializable {
     private String ngayDangKy;
     @SerializedName("anhDaiDien")
     @Expose
-    private Object anhDaiDien;
+    private String anhDaiDien;
 
     public Integer getId() {
         return id;
@@ -107,11 +107,11 @@ public class CustomerV2 implements Serializable {
         return this;
     }
 
-    public Object getAnhDaiDien() {
+    public String getAnhDaiDien() {
         return anhDaiDien;
     }
 
-    public CustomerV2 setAnhDaiDien(Object anhDaiDien) {
+    public CustomerV2 setAnhDaiDien(String anhDaiDien) {
         this.anhDaiDien = anhDaiDien;
         return this;
     }

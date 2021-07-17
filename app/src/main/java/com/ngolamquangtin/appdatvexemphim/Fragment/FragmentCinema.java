@@ -1,20 +1,21 @@
 package com.ngolamquangtin.appdatvexemphim.Fragment;
 
 import android.Manifest;
-import android.content.Context;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,23 +25,22 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.ngolamquangtin.appdatvexemphim.Activity.CinemaActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.DetailCinemaActivity;
-import com.ngolamquangtin.appdatvexemphim.Adapter.RapAdapter;
+import com.ngolamquangtin.appdatvexemphim.Adapter.CinemaFilterAdapter;
+import com.ngolamquangtin.appdatvexemphim.Adapter.CinemaAdapter;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
 import com.ngolamquangtin.appdatvexemphim.DTO.Cinema;
-import com.ngolamquangtin.appdatvexemphim.GPSService;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -52,29 +52,52 @@ import retrofit2.Response;
 
 public class FragmentCinema extends Fragment {
 
+    final double DISTANCE_NEAR_ME = 4.0;
     final int REQUEST_CODE_LOCALTION_PERMISSION = 1;
 
-    static ImageButton ibtnvitri;
-
-    Location currentLocation;
+    Location currentlocation;
+    ImageButton ibtnvitri, imgBtnSearch;
+    Spinner spinnerLocation;
     SwipeRefreshLayout refeshcinema;
     TextView txtthongbaokcoketnoi;
     ListView lvCinema;
-    RapAdapter rapAdapter;
+    CinemaAdapter cinemaAdapter;
+    CinemaFilterAdapter cinemaFilterAdapter;
+    LocationRequest locationRequest;
+    FusedLocationProviderClient fusedLocationClient;
+    EditText edtKeyWork;
+    Dialog dialogError;
 
-    ArrayList<Cinema> arrCinema;
+    static ArrayList<Cinema> cinemas;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cinema, container, false);
+
         addControls(view);
+
         addEvents();
+
         loadCinema();
+
         return view;
     }
 
     private void addEvents() {
+        imgBtnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String optionFilter = (String) spinnerLocation.getSelectedItem();
+                String keyWord = edtKeyWork.getText().toString();
+
+                if(optionFilter.equals("Gần tôi")){
+                    searchCinemaNearMe(currentlocation, keyWord);
+                }else{
+                    searchAllCinema(keyWord);
+                }
+            }
+        });
 
         ibtnvitri.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,9 +110,8 @@ public class FragmentCinema extends Fragment {
                                 , REQUEST_CODE_LOCALTION_PERMISSION);
                     } else {
                         Util.turnOnLocation(getActivity());
-//                        startGPSService();
-                        getCurrentLocation();
                         updateStatusBtnLocation(true);
+                        getCurrentLocation();
                     }
                 } else {
                     updateStatusBtnLocation(false);
@@ -97,46 +119,90 @@ public class FragmentCinema extends Fragment {
             }
         });
 
-        lvCinema.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cinema rap = arrCinema.get(position);
-                if(rap != null) {
-                    Intent i = new Intent(getActivity(), DetailCinemaActivity.class);
-                    i.putExtra("CINEMA", rap);
-                    startActivity(i);
-                }
-            }
-        });
-
         refeshcinema.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                arrCinema.clear();
-                rapAdapter.notifyDataSetChanged();
+                cinemas.clear();
+                cinemaAdapter.notifyDataSetChanged();
                 loadCinema();
             }
         });
     }
 
-    private void updateLocationALLCinema() {
-        if(arrCinema.size() != 0){
-            int slCinema = arrCinema.size();
-            for (int i = 0; i < slCinema ; i++) {
-                Cinema cinema = arrCinema.get(i);
+    public void searchCinemaNearMe(String keyWord, Integer[] idCinemas){
+        Service service = RetrofitUtil.getService(getActivity());
+        Call<ArrayList<Cinema>>  call = service.searchCinemaNearMe(keyWord,idCinemas);
+
+        call.enqueue(new Callback<ArrayList<Cinema>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Cinema>> call, Response<ArrayList<Cinema>> response) {
+                cinemas.clear();
+
+                if(response.body() != null  && response.body().size() != 0){
+                    txtthongbaokcoketnoi.setVisibility(View.INVISIBLE);
+                    lvCinema.setVisibility(View.VISIBLE);
+
+                    cinemas.addAll(response.body());
+
+                    updateLocationALLCinema(currentlocation);
+                }else{
+                    txtthongbaokcoketnoi.setText("Không tìm thấy rạp phim");
+                    txtthongbaokcoketnoi.setVisibility(View.VISIBLE);
+                    lvCinema.setVisibility(View.INVISIBLE);
+                }
+
+                cinemaAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Cinema>> call, Throwable t) {
+                txtthongbaokcoketnoi.setText("Không có kết nối");
+                txtthongbaokcoketnoi.setVisibility(View.VISIBLE);
+                lvCinema.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+
+    public void updateLocationALLCinema(Location currentLocation) {
+        if (cinemas.size() != 0 && currentLocation != null) {
+            int slCinema = cinemas.size();
+            for (int i = 0; i < slCinema; i++) {
+                Cinema cinema = cinemas.get(i);
                 updateDistance(i, cinema, currentLocation);
             }
         }
     }
 
     public void addControls(View view) {
+        dialogError = new Dialog(getActivity());
+        edtKeyWork = view.findViewById(R.id.edtkeywork);
+        imgBtnSearch = view.findViewById(R.id.imgbtnsearch);
+        cinemaFilterAdapter = new CinemaFilterAdapter(getActivity());
+        spinnerLocation = view.findViewById(R.id.spinnertype);
+        spinnerLocation.setAdapter(cinemaFilterAdapter);
         refeshcinema = view.findViewById(R.id.refeshcinema);
         ibtnvitri = view.findViewById(R.id.ibtnvitri);
         txtthongbaokcoketnoi = view.findViewById(R.id.txtthongbaokcoketnoi);
         lvCinema = view.findViewById(R.id.lvCinema);
-        arrCinema = new ArrayList<>();
-        rapAdapter = new RapAdapter(getActivity().getApplicationContext(), arrCinema);
-        lvCinema.setAdapter(rapAdapter);
+        cinemas = new ArrayList<>();
+        cinemaAdapter = new CinemaAdapter(getActivity().getApplicationContext(), cinemas, 1);
+
+        if(getActivity() instanceof CinemaActivity){
+            cinemaAdapter.setIsActivityCinema(true);
+            cinemaAdapter.setIntent(getActivity().getIntent());
+        }else{
+            cinemaAdapter.setIsActivityCinema(false);
+        }
+
+        lvCinema.setAdapter(cinemaAdapter);
+
+        locationRequest = LocationRequest.create();
+
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(20 * 1000);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
     }
 
     public void loadCinema() {
@@ -146,25 +212,33 @@ public class FragmentCinema extends Fragment {
         listCall.enqueue(new Callback<List<Cinema>>() {
             @Override
             public void onResponse(Call<List<Cinema>> call, Response<List<Cinema>> response) {
-               if(response.body() != null){
-                   refeshcinema.setRefreshing(false);
-                   if(txtthongbaokcoketnoi.getVisibility() == View.VISIBLE){
-                       txtthongbaokcoketnoi.setVisibility(View.INVISIBLE);
-                       lvCinema.setVisibility(View.VISIBLE);
-                   }
-                   arrCinema.addAll(response.body());
-                   rapAdapter.notifyDataSetChanged();
-               }
+                refeshcinema.setRefreshing(false);
 
+                cinemas.clear();
+
+                if (response.body() != null && response.body().size() != 0) {
+                    txtthongbaokcoketnoi.setVisibility(View.INVISIBLE);
+                    lvCinema.setVisibility(View.VISIBLE);
+                    cinemas.addAll(response.body());
+
+                    updateLocationALLCinema(currentlocation);
+
+                } else {
+                    txtthongbaokcoketnoi.setText("Không có rạp chiêu nào hoạt động");
+                    txtthongbaokcoketnoi.setVisibility(View.VISIBLE);
+                    lvCinema.setVisibility(View.INVISIBLE);
+                }
+
+                cinemaAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Call<List<Cinema>> call, Throwable t) {
                 refeshcinema.setRefreshing(false);
-                if(txtthongbaokcoketnoi.getVisibility() != View.VISIBLE){
-                    txtthongbaokcoketnoi.setVisibility(View.VISIBLE);
-                    lvCinema.setVisibility(View.INVISIBLE);
-                }
+                txtthongbaokcoketnoi.setText("Bạn bị ngắt kết nối !");
+                txtthongbaokcoketnoi.setVisibility(View.VISIBLE);
+                lvCinema.setVisibility(View.INVISIBLE);
+
                 call.clone().enqueue(this);
             }
         });
@@ -173,13 +247,13 @@ public class FragmentCinema extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        arrCinema.clear();
-        rapAdapter.notifyDataSetChanged();
+        cinemas.clear();
+        cinemaAdapter.notifyDataSetChanged();
         loadCinema();
     }
 
-    public void updateDistance(int index, Cinema cinema ,Location location){
-        if(lvCinema != null) {
+    public void updateDistance(int index, Cinema cinema, Location location) {
+        if (lvCinema != null) {
             View v = lvCinema.getChildAt(index - lvCinema.getFirstVisiblePosition());
 
             if (v == null) {
@@ -187,62 +261,146 @@ public class FragmentCinema extends Fragment {
             }
 
             TextView txtDistance = v.findViewById(R.id.tvdiachi);
-            double distance = Util.distance(Double.parseDouble(cinema.getVido()), Double.parseDouble(cinema.getKinhdo()), location.getLatitude(), location.getLongitude());
+            double distance = Util.distance(Double.parseDouble(cinema.getVido())
+                                            , Double.parseDouble(cinema.getKinhdo())
+                                            , location.getLatitude()
+                                            , location.getLongitude());
+
             DecimalFormat decimalformat = new DecimalFormat("#.##");
+
             txtDistance.setVisibility(View.VISIBLE);
+            
             txtDistance.setText(decimalformat.format(distance) + " km");
         }
     }
 
-    public void startGPSService(){
-        Intent i = new Intent(getActivity(), GPSService.class);
-        getActivity().startService(i);
-    }
+    public void getCurrentLocation() {
 
-    public void getCurrentLocation(){
-        LocationManager locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                if(location!= null){
-                    currentLocation = location;
-                }
-                updateLocationALLCinema();
-            }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
+       fusedLocationClient.requestLocationUpdates(locationRequest,new LocationCallback(){
+           @Override
+           public void onLocationResult(LocationResult locationResult) {
+               super.onLocationResult(locationResult);
 
-            }
+               currentlocation = locationResult.getLastLocation();
 
-            @Override
-            public void onProviderEnabled(String provider) {
+               updateLocationALLCinema(currentlocation);
 
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        });
+               fusedLocationClient.removeLocationUpdates(this);
+           }
+       }, Looper.getMainLooper());
 
     }
 
-    public static void updateStatusBtnLocation(boolean isTurnOn){
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public  void updateStatusBtnLocation(boolean isTurnOn){
         if(isTurnOn){
             ibtnvitri.setImageResource(R.drawable.ic_turnonlocation);
         }else{
             ibtnvitri.setImageResource(R.drawable.ic_turnofflocation);
         }
     }
+
+    public void searchAllCinema(String keyWord){
+        Service service = RetrofitUtil.getService(getActivity());
+        Call<ArrayList<Cinema>> call = service.searchAllMovie(keyWord);
+        call.enqueue(new Callback<ArrayList<Cinema>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Cinema>> call, Response<ArrayList<Cinema>> response) {
+                cinemas.clear();
+
+                if(response.body() != null && response.body().size() != 0){
+                    txtthongbaokcoketnoi.setVisibility(View.INVISIBLE);
+                    lvCinema.setVisibility(View.VISIBLE);
+                    cinemas.addAll(response.body());
+                }else{
+                    txtthongbaokcoketnoi.setText("Không tìm thây rạp chiếu nào");
+                    txtthongbaokcoketnoi.setVisibility(View.VISIBLE);
+                    lvCinema.setVisibility(View.INVISIBLE);
+                }
+
+                cinemaAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Cinema>> call, Throwable t) {
+                txtthongbaokcoketnoi.setText("Bạn bị ngắt kết nối");
+                txtthongbaokcoketnoi.setVisibility(View.VISIBLE);
+                lvCinema.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void searchCinemaNearMe(Location location, String keyWord){
+        if( location != null){
+            ArrayList<Integer> cinemaSearchRequest = getCinemaNearMe( location);
+            Integer[] idCinemasRequest = new Integer[cinemaSearchRequest.size()];
+
+            cinemaSearchRequest.toArray(idCinemasRequest);
+
+            searchCinemaNearMe(keyWord, idCinemasRequest);
+
+        }else{
+            showDialogError("Bạn chưa bật định vị");
+        }
+    }
+
+    public ArrayList<Integer> getCinemaNearMe(Location currentLocation){
+        ArrayList<Integer> cinemaSearchRequest = new ArrayList<>();
+
+        if(cinemas != null && cinemas.size() != 0){
+            int countCinema = cinemas.size();
+            double currenLocationLat = currentLocation.getLatitude();
+            double currentLocationLng = currentLocation.getLongitude();
+            double distance = 0;
+
+            for (int i = 0; i < countCinema; i++) {
+                Cinema cinema = cinemas.get(i);
+                distance = Util.distance(currenLocationLat, currentLocationLng, Double.parseDouble(cinema.getVido()), Double.parseDouble(cinema.getKinhdo()));
+
+                if (distance < DISTANCE_NEAR_ME) {
+                    cinemaSearchRequest.add(cinema.getId());
+                }
+            }
+        }
+
+        return  cinemaSearchRequest;
+    }
+
+    private void showDialogError(String mess){
+        if(dialogError != null){
+            dialogError.setContentView(R.layout.dialog_failed);
+            dialogError.getWindow().setBackgroundDrawableResource(R.color.transparent);
+            TextView txtMess = dialogError.findViewById(R.id.txtmess);
+            Button btnOk = dialogError.findViewById(R.id.btnOK);
+
+            btnOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismissDialogError();
+                }
+            });
+
+            txtMess.setText(mess);
+            dialogError.show();
+        }
+
+    }
+
+    private void dismissDialogError(){
+        if(dialogError != null && dialogError.isShowing()){
+            dialogError.dismiss();
+        }
+    }
+
 }

@@ -28,4 +28,9 @@ public class MovieType implements Serializable {
     public void setTenLoai(String tenloai) {
         this.tenloai = tenloai;
     }
+
+    @Override
+    public String toString() {
+        return this.tenloai;
+    }
 }

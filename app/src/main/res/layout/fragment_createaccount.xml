@@ -290,18 +290,20 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+                android:textAllCaps="false"
                 android:layout_margin="5dp"
                 android:layout_weight="5"
                 android:id="@+id/btnhuy"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_btnhuydatve"
+                android:background="@drawable/background_btnbackto"
                 android:text="Hủy Đăng Ký"
                 android:textColor="#E7E7E7"
                 android:textSize="20sp" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+                android:textAllCaps="false"
                 android:layout_margin="5dp"
                 android:layout_weight="5"
                 android:id="@+id/btncreate"

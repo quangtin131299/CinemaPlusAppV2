@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/background_detailsticker"
+            android:background="@color/colorBackround"
             android:orientation="horizontal"
             android:weightSum="10">
 
@@ -39,7 +39,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/tvtenphim"
+                    android:id="@+id/txtnamemovie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -51,13 +51,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recytime"
                     android:layout_marginTop="10dp"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvtenphim"
+                    app:layout_constraintTop_toBottomOf="@+id/txtnamemovie"
                     android:layout_width="match_parent"
                     android:layout_height="30dp">
-
 
                 </androidx.recyclerview.widget.RecyclerView>
 

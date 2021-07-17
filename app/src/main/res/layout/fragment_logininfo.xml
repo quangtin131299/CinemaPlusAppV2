@@ -16,27 +16,28 @@
         android:paddingRight="8dp">
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@null"
             android:id="@+id/edlayouttk"
             android:layout_width="match_parent"
+            android:textColorHint="#707070"
             app:hintEnabled="false"
             android:layout_height="wrap_content">
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/txttendangnhap"
                 android:inputType="text"
+                android:background="@drawable/background_textviewaccountandpass"
                 android:layout_width="match_parent"
                 android:layout_height="43dp"
-                android:background="@drawable/background_textviewaccountandpass"
-                android:hint="Nhập Email của bạn"
-                android:paddingLeft="10dp"
                 android:textColor="#E7E7E7"
-                android:textColorHint="#707070" />
+                android:textColorHint="#707070"
+                android:hint="Nhập tài khoản của bạn"
+                android:paddingLeft="10dp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,10 +48,10 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edlayoupass"
             android:layout_width="match_parent"
+            android:textColorHint="#707070"
             app:hintEnabled="false"
             android:layout_height="wrap_content">
 
@@ -67,8 +68,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -80,18 +79,20 @@
         android:weightSum="10">
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:textAllCaps="false"
             android:layout_margin="5dp"
             android:layout_weight="5"
             android:id="@+id/btnhuy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_btnhuydatve"
+            android:background="@drawable/background_btnbackto"
             android:text="Hủy đăng nhập"
             android:textColor="#E7E7E7"
             android:textSize="20sp" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:textAllCaps="false"
             android:layout_margin="5dp"
             android:layout_weight="5"
             android:id="@+id/btnlogin"

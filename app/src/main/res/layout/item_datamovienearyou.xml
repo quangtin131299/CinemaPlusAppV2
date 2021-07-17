@@ -46,6 +46,9 @@
                 android:paddingTop="10dp">
 
                 <TextView
+                    android:paddingLeft="6dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:id="@+id/txttenphim"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,6 +58,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:paddingLeft="6dp"
                     android:id="@+id/txtthoigian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

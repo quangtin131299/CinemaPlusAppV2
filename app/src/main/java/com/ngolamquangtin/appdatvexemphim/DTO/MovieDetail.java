@@ -26,50 +26,39 @@ public class MovieDetail extends Movie {
     private String ngaykhoichieu;
 
 
-
+    @Override
     public String getTrailer() {
         return trailer;
     }
 
-    public MovieDetail setTrailer(String trailer) {
+    @Override
+    public void setTrailer(String trailer) {
         this.trailer = trailer;
-        return this;
     }
 
     public String getTenloai() {
         return tenloai;
     }
 
-    public MovieDetail setTenloai(String tenloai) {
+    public void setTenloai(String tenloai) {
         this.tenloai = tenloai;
-        return this;
     }
 
+    @Override
     public String getMota() {
         return mota;
     }
 
-    public MovieDetail setMota(String mota) {
+    @Override
+    public void setMota(String mota) {
         this.mota = mota;
-        return this;
     }
 
     public String getNgaykhoichieu() {
         return ngaykhoichieu;
     }
 
-    public MovieDetail setNgaykhoichieu(String ngaykhoichieu) {
-        this.ngaykhoichieu = ngaykhoichieu;
-        return this;
-    }
-
-    public MovieDetail() {
-    }
-
-    public MovieDetail(String trailer, String tenloai, String mota, String ngaykhoichieu) {
-        this.trailer = trailer;
-        this.tenloai = tenloai;
-        this.mota = mota;
+    public void setNgaykhoichieu(String ngaykhoichieu) {
         this.ngaykhoichieu = ngaykhoichieu;
     }
 }

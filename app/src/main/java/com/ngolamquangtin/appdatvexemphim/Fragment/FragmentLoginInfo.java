@@ -20,9 +20,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.astritveliu.boom.Boom;
 import com.google.android.material.textfield.TextInputLayout;
 import com.ngolamquangtin.appdatvexemphim.Activity.CreateAccountActivity;
+import com.ngolamquangtin.appdatvexemphim.Activity.DetalsMovieActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.HomeActivity;
+import com.ngolamquangtin.appdatvexemphim.Activity.ScheduleActivity;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
 import com.ngolamquangtin.appdatvexemphim.DTO.Customer;
 import com.ngolamquangtin.appdatvexemphim.DTO.CustomerV2;
@@ -39,17 +42,19 @@ public class FragmentLoginInfo extends Fragment {
     TextInputLayout editlayouttk, editlayoutmk;
     TextView txttendangnhap, txtmakhau, txttaotk;
     Button btnlogin, btnhuy;
-
     SharedPreferences sharedPreferences;
-    Dialog dialog;
+    Dialog dialogProcess, dialogErrorMessage;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_logininfo, container, false);
+
         addControls(view);
+
         addEvents();
+
         return view;
     }
 
@@ -94,13 +99,11 @@ public class FragmentLoginInfo extends Fragment {
 
             }
         });
+
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.dialog_processing);
-                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                dialog.show();
+                showDialogProcess();
                 xulyLogin();
             }
         });
@@ -111,6 +114,17 @@ public class FragmentLoginInfo extends Fragment {
             }
         });
 
+        txttaotk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), CreateAccountActivity.class);
+                startActivity(i);
+            }
+        });
+
+        new Boom(txttaotk);
+        new Boom(btnhuy);
+        new Boom(btnlogin);
     }
 
     private void xulyLogin() {
@@ -124,26 +138,45 @@ public class FragmentLoginInfo extends Fragment {
             @Override
             public void onResponse(Call<CustomerV2> call, Response<CustomerV2> response) {
                 CustomerV2 customer = response.body();
-                if (customer != null) {
-                    dialog.dismiss();
+                if (customer != null && customer.getId() != 0) {
+                    dismissDialogProcess();
                     saveDataSharePreferences(customer);
-                    Intent i = new Intent(getActivity(), HomeActivity.class);
-                    startActivity(i);
+                    redirectToScreen();
                 } else {
-                    dialog.dismiss();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Tên đăng nhập hoặc tài khoản không chính xác !");
-                    builder.setTitle("Thông báo !");
-                    builder.show();
+                    dismissDialogProcess();
+                    showDialogMessageError("Sai tên tài khoản hoặc mật khẩu !");
                 }
             }
 
             @Override
             public void onFailure(Call<CustomerV2> call, Throwable t) {
+                dismissDialogProcess();
                 call.clone().enqueue(this);
             }
         });
+    }
 
+    public void redirectToScreen(){
+        Intent intentRedirect = getActivity().getIntent();
+
+        if(intentRedirect.hasExtra("SCREEN_SCHEDULE")){
+            Intent intentToScreenSchedule = new Intent(getActivity(), ScheduleActivity.class);
+
+            if(intentRedirect.hasExtra("CINEMA")){
+                intentToScreenSchedule.putExtra("CINEMA", intentRedirect.getSerializableExtra("CINEMA"));
+                startActivity(intentToScreenSchedule);
+            }
+        }else if(intentRedirect.hasExtra("SCREEN_MOVIE_DETAIL")){
+            Intent intentToScreenDetailMovie = new Intent(getActivity(), DetalsMovieActivity.class);
+
+            if(intentRedirect.hasExtra("MOVIE")){
+                intentToScreenDetailMovie.putExtra("MOVIE", intentRedirect.getSerializableExtra("MOVIE"));
+                startActivity(intentToScreenDetailMovie);
+            }
+
+        }else{
+            getActivity().finish();
+        }
     }
 
     private void addControls(View view) {
@@ -154,31 +187,62 @@ public class FragmentLoginInfo extends Fragment {
         txttaotk = view.findViewById(R.id.txttaotk);
         btnlogin = view.findViewById(R.id.btnlogin);
         txttaotk = view.findViewById(R.id.txttaotk);
-        txttaotk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), CreateAccountActivity.class);
-                startActivity(i);
-            }
-        });
+        dialogProcess = new Dialog(getActivity());
+        dialogErrorMessage = new Dialog(getActivity());
+
         btnhuy = view.findViewById(R.id.btnhuy);
 
         sharedPreferences = getActivity().getSharedPreferences("datalogin", Context.MODE_PRIVATE);
 
     }
-    
+
     private void saveDataSharePreferences(CustomerV2 customer){
         Editor editor = sharedPreferences.edit();
         editor.putString("id", String.valueOf(customer.getId()));
         editor.putString("hoten", customer.getHoTen());
         editor.putString("email", customer.getEmail());
         editor.putString("sdt", customer.getSdt());
-        editor.putString("ngaysinh", customer.getNgaySinh());
+        editor.putString("imagProfile", customer.getAnhDaiDien());
+
+        if(customer.getNgaySinh() != null && !customer.getNgaySinh().isEmpty()){
+            editor.putString("ngaysinh",  Util.formatDateServerToClient(customer.getNgaySinh()));
+        }
+
         editor.putString("taikhoan", customer.getTaiKhoan());
         editor.putString("pass", customer.getMatKhau());
         editor.putString("trangthai", "1");
         editor.apply();
     }
 
+    private void showDialogProcess(){
+        if(dialogProcess != null){
+            dialogProcess.setContentView(R.layout.dialog_processing);
+            dialogProcess.setCanceledOnTouchOutside(false);
+            dialogProcess.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialogProcess.show();
+        }
+    }
+
+    private void dismissDialogProcess(){
+        if(dialogProcess != null && dialogProcess.isShowing()){
+            dialogProcess.dismiss();
+        }
+    }
+
+    private void showDialogMessageError(String messError){
+        if(dialogErrorMessage != null){
+            dialogErrorMessage.setContentView(R.layout.dialog_failed);
+            dialogErrorMessage.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            TextView txtMessError =  dialogErrorMessage.findViewById(R.id.txtmess);
+            txtMessError.setText(messError);
+            dialogErrorMessage.show();
+        }
+    }
+
+    private void dismissDialogMessageError(){
+        if(dialogErrorMessage != null && dialogErrorMessage.isShowing()){
+            dialogErrorMessage.dismiss();
+        }
+    }
 
 }

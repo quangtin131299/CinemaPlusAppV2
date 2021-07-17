@@ -6,24 +6,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.astritveliu.boom.Boom;
 import com.google.android.material.textfield.TextInputLayout;
 import com.ngolamquangtin.appdatvexemphim.Activity.LoginActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.OTPActivity;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
-import com.ngolamquangtin.appdatvexemphim.DTO.Customer;
 import com.ngolamquangtin.appdatvexemphim.DTO.CustomerV2;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
@@ -41,6 +41,11 @@ import retrofit2.Response;
 
 public class FragmentCreatAccount extends Fragment {
 
+    //Tam thoi
+    final int REGISTER_SUCCESS = 5;
+    final int REGISTER_FAILD = 6;
+    final int ENABLE_AGE= 18;
+    final int EDIT_TEXT_IS_ERROR = 3;
     final int VALIDATE_SUCCESS = 1;
     final int VALIDATE_EMAIL_AND_PHONE = -2;
     final int VALIDATE_EMAIL_FAIL = -1;
@@ -50,17 +55,27 @@ public class FragmentCreatAccount extends Fragment {
 
     CustomerV2 customer;
     Pattern patternEmail, patternPhone;
-    TextInputLayout edlayoutname, edlayouttk, edlayoutpass, edlayoutconfirmpass, edlayoutemail, edlayoutbirthday, edlayoutphone;
+    TextInputLayout edlayoutname
+                    , edlayouttk
+                    , edlayoutpass
+                    , edlayoutconfirmpass
+                    , edlayoutemail
+                    , edlayoutbirthday
+                    , edlayoutphone;
+
     EditText txtname, txtaccount, txtpass, txtconfimpass, txtemail, txtdate, txtphone;
     Button btnCreate, btnHuy;
-    Dialog dialog;
+    Dialog dialog, dialogError;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_createaccount, container, false);
+
         addControls(view);
+
         addEvents();
+
         return view;
     }
 
@@ -181,27 +196,6 @@ public class FragmentCreatAccount extends Fragment {
             }
         });
 
-        txtdate.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().equals("")) {
-                    edlayoutbirthday.setError("Không được để trông !");
-                } else {
-                    edlayoutbirthday.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
         txtphone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -230,19 +224,7 @@ public class FragmentCreatAccount extends Fragment {
         txtdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                final Calendar calendar = Calendar.getInstance();
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Calendar temp = calendar;
-                        temp.set(year, month, dayOfMonth);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        txtdate.setText(simpleDateFormat.format(temp.getTime()));
-
-                    }
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-
-                datePickerDialog.show();
+               chooseBirthDate();
             }
         });
 
@@ -269,31 +251,53 @@ public class FragmentCreatAccount extends Fragment {
                     e.printStackTrace();
                 }
 
-                if (name.equals("") && account.equals("") && pass.equals("") && confimpass.equals("") && email.equals("") && date.equals("") && phone.equals("")) {
+                if (name.equals("")
+                        && account.equals("")
+                        && pass.equals("")
+                        && confimpass.equals("")
+                        && phone.equals("")) {
                     dialog.dismiss();
+
+                    edlayoutname.setError("Thông tin này bị trống");
+                    edlayouttk.setError("Thông tin này bị trống");
+                    edlayoutpass.setError("Thông tin này bị trống");
+                    edlayoutemail.setError("Thông tin này bị trống");
+                    edlayoutconfirmpass.setError("Thông tin này bị trống");
+                    edlayoutphone.setError("Thông tin này bị trống");
+
                     dialog.setContentView(R.layout.dialog_failed);
+
                     dialog.show();
+
                     Button btn = dialog.findViewById(R.id.btnOK);
+
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             dialog.dismiss();
-                            Toast.makeText(getActivity(), "Không được để trống thông tin", Toast.LENGTH_LONG).show();
                         }
                     });
+
                     return;
                 }
+
+
                 if (confimpass.equals(pass) == false) {
                     dialog.dismiss();
+
                     dialog.setContentView(R.layout.dialog_failed);
-                    dialog.show();
+
                     Button btn = dialog.findViewById(R.id.btnOK);
+
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Toast.makeText(getActivity(), "Xác nhận pass ko với pass không giống nhau", Toast.LENGTH_LONG).show();
                         }
                     });
+
+                    dialog.show();
+
                     return;
                 }
 
@@ -306,13 +310,30 @@ public class FragmentCreatAccount extends Fragment {
                 customer.setTaiKhoan(account);
                 customer.setMatKhau(Util.getMd5(pass));
 
-                validateEmailAndPhone(customer.getEmail(),customer.getSdt());
+                if(edlayoutname.getError() == null
+                        && edlayouttk.getError() == null
+                        && edlayoutpass.getError() == null
+                        && edlayoutconfirmpass.getError() == null
+                        && edlayoutemail.getError() == null
+                        && edlayoutphone.getError() == null){
+
+                    validateEmailAndPhone(customer.getEmail(),customer.getSdt());
+//                    xulyCreateAccount(customer);
+
+                }else{
+                    showErroOnEditText(EDIT_TEXT_IS_ERROR);
+                }
+
 
             }
         });
+
+        new Boom(btnCreate);
+        new Boom(btnHuy);
     }
 
     private void addControls(View view) {
+        dialogError = new Dialog(getActivity());
         btnHuy = view.findViewById(R.id.btnhuy);
         edlayoutphone = view.findViewById(R.id.edlayoutphone);
         edlayoutbirthday = view.findViewById(R.id.edlayoutbirthday);
@@ -393,6 +414,12 @@ public class FragmentCreatAccount extends Fragment {
                 edlayoutphone.setError("So dien thoai da duoc su dung");
                 showDialog(R.layout.dialog_failed);
                 break;
+            case EDIT_TEXT_IS_ERROR:
+                showDialog(R.layout.dialog_failed);
+                break;
+            case REGISTER_FAILD:
+                showDialog(R.layout.dialog_failed);
+                break;
             default:
                 return;
         }
@@ -404,5 +431,103 @@ public class FragmentCreatAccount extends Fragment {
         dissmissDialog();
     }
 
+    private void showDialogSuccess(){
+        Dialog dialogSuccess = new Dialog(getActivity());
+        dialogSuccess.setContentView(R.layout.dialog_sucess);
+        TextView txtmess = dialogSuccess.findViewById(R.id.txtmess);
+        txtmess.setText("Đăng ký thành công!");
+        Button button = dialogSuccess.findViewById(R.id.btnOK);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), LoginActivity.class);
+                startActivity(i);
+            }
+        });
+        dialogSuccess.show();
+    }
+
+    private void xulyCreateAccount(CustomerV2 customer) {
+        Service service = RetrofitUtil.getService(getActivity());
+        Call<CustomerV2> customerCall = service.Register(customer);
+        customerCall.enqueue(new Callback<CustomerV2>() {
+            @Override
+            public void onResponse(Call<CustomerV2> call, retrofit2.Response<CustomerV2> response) {
+                CustomerV2 temp = response.body();
+                if (temp != null) {
+                    showDialogSuccess();
+                } else {
+                    showErroOnEditText(REGISTER_FAILD);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CustomerV2> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void chooseBirthDate(){
+        final Calendar calendar = Calendar.getInstance();
+        final int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        final int month = calendar.get(Calendar.MONTH);
+        final int currentYear = calendar.get(Calendar.YEAR);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DatePic,new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                if(validateBirthDay(currentYear, year) >= ENABLE_AGE){
+                    Calendar temp = calendar;
+
+                    temp.set(year, month, dayOfMonth);
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+                    txtdate.setText(simpleDateFormat.format(temp.getTime()));
+                }else{
+                    String mess = "Ngày sinh không hợp lệ ";
+                    showDialogErrorMessage(mess);
+
+                    edlayoutbirthday.setError(mess);
+                }
+
+            }
+        }, currentYear,month , dayOfMonth);
+
+        datePickerDialog.show();
+    }
+
+    public int validateBirthDay(int yearCurrent, int yearSelected){
+        return yearCurrent - yearSelected;
+    }
+
+    public void showDialogErrorMessage(String mess){
+        if(dialogError != null){
+            dialogError.getWindow().setBackgroundDrawableResource(R.color.transparent);
+            dialogError.setContentView(R.layout.dialog_failed);
+
+            TextView txtMess = dialogError.findViewById(R.id.txtmess);
+            Button btnOK = dialogError.findViewById(R.id.btnOK);
+
+            btnOK.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogError.dismiss();
+                }
+            });
+
+
+            txtMess.setText(mess);
+
+            dialogError.show();
+        }
+    }
+
+    public void dismissDialogErrorMessage(){
+        if(dialogError != null && dialogError.isShowing()){
+            dialogError.dismiss();
+        }
+    }
 
 }

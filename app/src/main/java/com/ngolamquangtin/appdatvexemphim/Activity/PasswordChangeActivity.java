@@ -11,14 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.astritveliu.boom.Boom;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
@@ -38,7 +31,9 @@ public class PasswordChangeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_change);
+
         addControls();
+
         addEvents();
     }
 
@@ -49,6 +44,7 @@ public class PasswordChangeActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         btnupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,44 +64,12 @@ public class PasswordChangeActivity extends AppCompatActivity {
             }
         });
 
+
+        new Boom(btnhuy);
+        new Boom(btnupdate);
     }
 
-    private void processPassChange(final String newpass, final String idkhachhang) {
-        RequestQueue requestQueue = Volley.newRequestQueue(PasswordChangeActivity.this);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Util.LINK_UPDATEPASSWORDUSER, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if(response != null){
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        if(jsonObject.getString("status").equals("Thanh Cong!")){
-                            Toast.makeText(PasswordChangeActivity.this, "Đổi pass thành công !", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }else{
-                            Toast.makeText(PasswordChangeActivity.this, "Đổi pass thất bại !", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("makhachhang",idkhachhang);
-                map.put("newpass",newpass);
-                return map;
-            }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        requestQueue.add(stringRequest);
+    private void processPassChange( String newpass, String idkhachhang) {
 
     }
 
