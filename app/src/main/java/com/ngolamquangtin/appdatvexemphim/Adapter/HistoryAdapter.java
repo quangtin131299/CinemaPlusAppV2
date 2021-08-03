@@ -1,12 +1,15 @@
 package com.ngolamquangtin.appdatvexemphim.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.astritveliu.boom.Boom;
+import com.ngolamquangtin.appdatvexemphim.Activity.BillDetailActivity;
 import com.ngolamquangtin.appdatvexemphim.DTO.BillV2;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
@@ -46,7 +49,9 @@ public class HistoryAdapter extends BaseAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.item_history, null);
             viewHolder = new ViewHolder();
 
+            viewHolder.txtNameCinema = view.findViewById(R.id.txtcinema);
             viewHolder.txtDate = view.findViewById(R.id.txtdate);
+            viewHolder.txtShowTime = view.findViewById(R.id.txtshowtime);
 
             view.setTag(viewHolder);
         }else{
@@ -55,14 +60,30 @@ public class HistoryAdapter extends BaseAdapter {
 
         BillV2 bill = bills.get(i);
 
-        viewHolder.txtDate.setText(Util.formatDateServerToClient(bill.getNgaylaphoadon()));
+        viewHolder.txtNameCinema.setText(bill.getTicketV2s().get(0).getRap().getTenrap());
+        viewHolder.txtDate.setText("Ngày lập: " + Util.formatDateServerToClient(bill.getNgaylaphoadon()));
+        viewHolder.txtShowTime.setText("Suất chiếu: " + Util.formatTime(bill.getTicketV2s().get(0).getSuatchieu().getGio()));
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentToScreenDetailBill = new Intent(context, BillDetailActivity.class);
+
+                intentToScreenDetailBill.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentToScreenDetailBill.putExtra("BILL", bill);
+
+                context.startActivity(intentToScreenDetailBill);
+            }
+        });
+
+        new Boom(view);
 
         return view;
     }
 
 
     public class ViewHolder{
-        TextView txtDate;
+        TextView txtNameCinema, txtDate, txtShowTime;
     }
 
 

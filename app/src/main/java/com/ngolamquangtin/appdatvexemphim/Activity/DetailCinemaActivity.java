@@ -61,7 +61,7 @@ public class DetailCinemaActivity extends AppCompatActivity implements OnMapRead
     Cinema detailCinema;
     TextView txtTenRap;
     TextView txtDiaChi;
-    TextView txtchiduong;
+    Button btnDirect;
     TextView txtkhoancach;
     ImageView imgrap;
     GoogleMap mMap;
@@ -84,6 +84,14 @@ public class DetailCinemaActivity extends AppCompatActivity implements OnMapRead
 
         addEvents();
 
+        updateUI();
+
+    }
+
+    public void updateUI() {
+        if(Util.checkLocationTurnOn(DetailCinemaActivity.this)){
+            updateStatusBtnLocation(true);
+        }
     }
 
 
@@ -115,13 +123,12 @@ public class DetailCinemaActivity extends AppCompatActivity implements OnMapRead
             }
         });
 
-        txtchiduong.setOnClickListener(new View.OnClickListener() {
+        btnDirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (detailCinema != null) {
                     Util.turnOnLocation(DetailCinemaActivity.this);
-                    startGPSService();
-                    updateUIDistance(currentLocation, detailCinema);
+
                     openAppGoogleMap(currentLocation, detailCinema);
                 } else {
                     Toast.makeText(DetailCinemaActivity.this, "Bạn chưa bật định vị", Toast.LENGTH_SHORT).show();
@@ -150,7 +157,7 @@ public class DetailCinemaActivity extends AppCompatActivity implements OnMapRead
         });
 
         new Boom(ibtnvitri);
-        new Boom(txtchiduong);
+        new Boom(btnDirect);
         new Boom(btnHuy);
         new Boom(btnMovieNowShow);
         new Boom(linearShowTime);
@@ -170,7 +177,7 @@ public class DetailCinemaActivity extends AppCompatActivity implements OnMapRead
         btnMovieNowShow = findViewById(R.id.btnmovienowshow);
         linearShowTime = findViewById(R.id.linearshowtime);
         txtkhoancach = findViewById(R.id.txtkhoancach);
-        txtchiduong = findViewById(R.id.txtchiduong);
+        btnDirect = findViewById(R.id.txtchiduong);
         ibtnvitri = findViewById(R.id.ibtnvitri);
         txtTenRap = findViewById(R.id.txtenrap);
         txtDiaChi = findViewById(R.id.txtdiachi);
@@ -320,11 +327,8 @@ public class DetailCinemaActivity extends AppCompatActivity implements OnMapRead
         return null;
     }
 
-    public  void setCurrentLocation(Location newLocation) {
-        currentLocation = newLocation;
-    }
 
-    public  Location getCurrentLocation() {
+    public Location getCurrentLocation() {
         if (currentLocation != null) {
             return currentLocation;
         }

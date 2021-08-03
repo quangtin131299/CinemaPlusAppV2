@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="8.5"
                 android:gravity="center"
-                android:text="Xac thuc tai khoan"
+                android:text="@string/verifyAccount"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="Ma xac thuc"
+            android:text="@string/verifyCodeOTP"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="43dp"
                 android:background="@drawable/background_textviewaccountandpass"
-                android:hint="Nhap ma xac thuc"
+                android:hint="@string/enterOTP"
                 android:inputType="text"
                 android:paddingLeft="10dp"
                 android:textColor="#E7E7E7"
@@ -105,7 +105,7 @@
                 android:layout_margin="5dp"
                 android:layout_weight="5"
                 android:background="@drawable/background_btnhuydatve"
-                android:text="Hủy bỏ"
+                android:text="@string/cancel"
                 android:textColor="#FFFFFF" />
 
             <Button
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/background_btnlogin"
-                android:text="Xac nhan"
+                android:text="@string/confirm"
                 android:textColor="#FFFFFF" />
 
 

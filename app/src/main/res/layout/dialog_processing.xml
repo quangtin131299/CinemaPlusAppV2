@@ -37,7 +37,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/iconanimation"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:text="Đang xử lý..."
+                android:text="@string/processing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

@@ -46,7 +46,7 @@ public class FragmentNearYou extends Fragment {
 
     String currentTime, currentDate;
     Button btnFastBooking;
-    TextView txtNameMovie, txtMessage, txtShowTimeToday,txtOpenDate;
+    TextView txtNameMovie, txtMessage, txtDuration,txtOpenDate;
     MoviePageAdapter moviePageAdapter;
     ViewPager2 viewpageMovie;
     SwipeRefreshLayout refeshMovieNowShow;
@@ -81,7 +81,7 @@ public class FragmentNearYou extends Fragment {
 
         CompositePageTransformer transformer = new CompositePageTransformer();
 
-        transformer.addTransformer(new MarginPageTransformer(10));
+        transformer.addTransformer(new MarginPageTransformer(5));
 
         transformer.addTransformer(new ViewPager2.PageTransformer() {
             @Override
@@ -172,11 +172,7 @@ public class FragmentNearYou extends Fragment {
                     txtNameMovie.setText(movie.getTenphim());
                     txtOpenDate.setText("Khởi chiếu ngày: " + Util.formatDateServerToClient(movie.getNgayKhoiChieu()));
 
-                    if(movie.getTime() != null && !movie.getTime().isEmpty()){
-                        txtShowTimeToday.setText("Suất chiếu của hôm nay: " + Util.formatTime(movie.getTime()));
-                    }else{
-                        txtShowTimeToday.setText("Hiện tại chưa có suất chiếu");
-                    }
+                    txtDuration.setText("Thời gian: " + movie.getThoigian() +" phút");
                 }
             }
         });
@@ -187,7 +183,7 @@ public class FragmentNearYou extends Fragment {
     private void addControls(View view) {
         currentTime = Util.getCurrentTime();
         currentDate = Util.formatDateClientToServer(Util.formatDateByCalendar(Calendar.getInstance()));
-        txtShowTimeToday = view.findViewById(R.id.txtshowtimetodat);
+        txtDuration = view.findViewById(R.id.txtduration);
         txtOpenDate = view.findViewById(R.id.txtopendate);
         btnFastBooking = view.findViewById(R.id.btnfastbooking);
         txtNameMovie = view.findViewById(R.id.txtnamemovie);

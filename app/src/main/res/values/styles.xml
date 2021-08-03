@@ -14,6 +14,11 @@
     <style name="dialogQR" parent="Theme.Design.BottomSheetDialog">
         <item name="android:colorBackground">@android:color/transparent</item>
     </style>
+
+    <style name="errorMessageInput" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorSelect</item>
+        <item name="android:textSize">14sp</item>
+    </style>
         
     <style name="DatePic" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/colorBackround</item>

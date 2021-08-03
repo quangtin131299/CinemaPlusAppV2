@@ -98,7 +98,7 @@ public class DetalsMovieActivity extends AppCompatActivity {
         if(movie != null){
             if (movie.getStatus().equals("Đang chiếu") == false){
                 btndatve.setBackgroundResource(R.drawable.background_btndatve_disable);
-                btndatve.setText("Phim chưa thể đặt vé");
+                btndatve.setText(getResources().getString(R.string.movieNotBooking));
             }
         }
     }
@@ -163,10 +163,10 @@ public class DetalsMovieActivity extends AppCompatActivity {
                         finish();
                         startActivity(intentToScreenChooseSession);
                     }else{
-                        Util.ShowToastInforMessage(DetalsMovieActivity.this, "Phim chưa chiếu, hay quay lại sau.");
+                        Util.ShowToastInforMessage(DetalsMovieActivity.this, getResources().getString(R.string.notBookingMovie));
                     }
                 } else {
-                    createDialog("Bạn chưa đăng nhập !");
+                    createDialog(getResources().getString(R.string.noLogin));
                 }
             }
         });
@@ -198,27 +198,32 @@ public class DetalsMovieActivity extends AppCompatActivity {
                 btnSubmitComent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String comment = edtComment.getText().toString().trim();
+                        if(checklogin() == 1){
+                            String comment = edtComment.getText().toString().trim();
 
-                        Comment newComment = new Comment();
+                            Comment newComment = new Comment();
 
-                        if(customer != null){
-                            newComment.setIdCustomer(customer.getId());
-                            newComment.setNameCustomer(customer.getHoTen());
+                            if(customer != null){
+                                newComment.setIdCustomer(customer.getId());
+                                newComment.setNameCustomer(customer.getHoTen());
+                            }
+
+                            Calendar calendar = Calendar.getInstance();
+                            int daydefault = calendar.get(Calendar.DAY_OF_MONTH);
+                            int monthdefault = calendar.get(Calendar.MONTH)+1;
+                            int yeardefault = calendar.get(Calendar.YEAR);
+
+                            newComment.setDatePost( Util.formatDateToServerFoCalendar(yeardefault, monthdefault, daydefault));
+                            newComment.setIdMovie(movie.getId());
+
+                            newComment.setContent(comment);
+
+
+                            addNewComment(newComment);
+                        }else{
+                            createDialog(getResources().getString(R.string.noLogin));
                         }
 
-                        Calendar calendar = Calendar.getInstance();
-                        int daydefault = calendar.get(Calendar.DAY_OF_MONTH);
-                        int monthdefault = calendar.get(Calendar.MONTH)+1;
-                        int yeardefault = calendar.get(Calendar.YEAR);
-
-                        newComment.setDatePost( Util.formatDateToServerFoCalendar(yeardefault, monthdefault, daydefault));
-                        newComment.setIdMovie(movie.getId());
-
-                        newComment.setContent(comment);
-
-
-                        addNewComment(newComment);
                     }
                 });
 

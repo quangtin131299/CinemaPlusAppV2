@@ -3,10 +3,14 @@ package com.ngolamquangtin.appdatvexemphim.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.astritveliu.boom.Boom;
 import com.ngolamquangtin.appdatvexemphim.Adapter.HistoryAdapter;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
 import com.ngolamquangtin.appdatvexemphim.DTO.BillV2;
@@ -21,6 +25,7 @@ import retrofit2.Response;
 
 public class HistoryActivity extends AppCompatActivity {
 
+    ImageView imgBackTo;
     ArrayList<BillV2> bills;
     ListView lvTransaction;
     HistoryAdapter historyAdapter;
@@ -31,8 +36,20 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         addControls();
+        addEvents();
 
         loadBillByCustomerId(getIdCustomer());
+    }
+
+    public void addEvents() {
+        imgBackTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        new Boom(imgBackTo);
     }
 
     private void loadBillByCustomerId(int idCustomer) {
@@ -62,7 +79,7 @@ public class HistoryActivity extends AppCompatActivity {
         bills = new ArrayList<>();
         lvTransaction = findViewById(R.id.lvtransaction);
         historyAdapter = new HistoryAdapter(HistoryActivity.this, bills);
-
+        imgBackTo = findViewById(R.id.imgback);
         lvTransaction.setAdapter(historyAdapter);
     }
 

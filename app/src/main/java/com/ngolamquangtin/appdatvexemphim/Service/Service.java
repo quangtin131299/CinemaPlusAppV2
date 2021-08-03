@@ -161,6 +161,10 @@ public interface Service {
 
     @PUT("tickets/updatestatuscancel")
     Call<Integer> updateStatusCancelTicker(@Body TicketV2 ticker);
+
+    @PUT("authencation/updatepassword")
+    @FormUrlEncoded()
+    Call<MessageResponse> updatePassWord(@Field("idCustomer") Integer idCustomer, @Field("newPass") String newPassWord);
 }
 
 

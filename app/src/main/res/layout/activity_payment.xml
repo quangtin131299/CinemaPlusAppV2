@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="10"
     android:background="@color/colorUnSelect"
     android:orientation="vertical"
+    android:weightSum="10"
     tools:context=".Activity.PaymentActivity">
 
     <FrameLayout
         android:id="@+id/frametoolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
         android:background="@color/colorBackround"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -28,7 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Thanh toan"
+                android:text="@string/payment"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -37,31 +37,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </FrameLayout>
 
     <ScrollView
-        app:layout_constraintTop_toBottomOf="@+id/frametoolbar"
-        app:layout_constraintBottom_toTopOf="@+id/linearactionpayment"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearactionpayment"
+        app:layout_constraintTop_toBottomOf="@+id/frametoolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:id="@+id/linearimgpayment"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
-                android:layout_height="320dp">
+                android:layout_height="320dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -69,21 +67,23 @@
 
                     <LinearLayout
                         android:id="@+id/linearinfo"
-                        android:orientation="horizontal"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/frametoolbar">
 
-                        <ImageView
+                        <com.makeramen.roundedimageview.RoundedImageView
                             android:id="@+id/imgmoive"
+                            android:layout_width="140dp"
+                            android:layout_height="160dp"
                             android:layout_margin="5dp"
+                            android:background="@color/colorBackround"
                             android:scaleType="center"
                             android:src="@drawable/ic_clapperboard"
-                            android:background="@color/colorBackround"
-                            android:layout_width="140dp"
-                            android:layout_height="160dp"/>
+                            app:riv_corner_radius="10dp"
+                            app:riv_mutate_background="true" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -91,98 +91,98 @@
 
                             <TextView
                                 android:id="@+id/txtnamemovie"
-                                android:textColor="#E7E7E7"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:textSize="15sp"
-                                android:text="Tên phim"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="Tên phim"
+                                android:textColor="#E7E7E7"
+                                android:textSize="15sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
                                 android:id="@+id/txtdatebooking"
-                                android:textColor="#E7E7E7"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/txtnamemovie"
-                                android:textSize="15sp"
-                                android:text="Ngày đặt"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="Ngày đặt"
+                                android:textColor="#E7E7E7"
+                                android:textSize="15sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtnamemovie" />
 
                             <TextView
                                 android:id="@+id/txttimemovie"
-                                android:textColor="#E7E7E7"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/txtdatebooking"
-                                android:textSize="15sp"
-                                android:text="Thời gian"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="Thời gian"
+                                android:textColor="#E7E7E7"
+                                android:textSize="15sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtdatebooking" />
 
                             <TextView
                                 android:id="@+id/txtcinema"
-                                android:textColor="#E7E7E7"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/txttimemovie"
-                                android:textSize="15sp"
-                                android:text="Tên rạp"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="Tên rạp"
+                                android:textColor="#E7E7E7"
+                                android:textSize="15sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txttimemovie" />
 
                             <TextView
                                 android:id="@+id/txtseat"
-                                android:textColor="#E7E7E7"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/txtcinema"
-                                android:textSize="15sp"
-                                android:text="Ghế"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="Ghế"
+                                android:textColor="#E7E7E7"
+                                android:textSize="15sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtcinema" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </LinearLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        app:layout_constraintTop_toBottomOf="@+id/linearinfo"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp">
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearinfo">
 
                         <TextView
                             android:id="@+id/txtmesspopcorn"
-                            android:textSize="15sp"
-                            android:textColor="#E7E7E7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/noUsingPopcorn"
                             android:textAlignment="center"
-                            android:text="Bạn không sử dụng bắp nước"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:textColor="#E7E7E7"
+                            android:textSize="15sp"
                             android:visibility="invisible"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
                             android:id="@+id/rypopcorn"
                             android:layout_width="match_parent"
+                            android:layout_height="0dp"
                             app:layout_constraintBottom_toTopOf="@+id/txttotalamoutpopcorn"
-                            android:layout_height="0dp"/>
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:layout_marginRight="15dp"
-                            android:textStyle="bold"
-                            android:textColor="#E7E7E7"
-                            android:textSize="15sp"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            android:text="Tổng tiền bắp nước: "
                             android:id="@+id/txttotalamoutpopcorn"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:text="@string/totalAmountPopcorn"
+                            android:textColor="#E7E7E7"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toRightOf="parent" />
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -192,73 +192,73 @@
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
                 android:id="@+id/linearcontentpayment"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearimgpayment"
-                android:padding="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="15dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearimgpayment">
 
                 <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="20dp"
-                    app:cardBackgroundColor="@color/colorBackround"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/colorBackround"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="20dp">
 
                     <LinearLayout
-                        android:gravity="center"
-                        android:padding="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="4"
-                        android:orientation="vertical">
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="15dp">
 
                         <TextView
-                            android:textStyle="bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
-                            android:textSize="20sp"
+                            android:text="@string/contentPayment"
                             android:textAlignment="center"
                             android:textColor="#E7E7E7"
-                            android:text="Noi dung thanh toan"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
                         <EditText
-                            android:enabled="false"
                             android:id="@+id/edttenkhachhang"
-                            android:layout_marginBottom="10dp"
-                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="43dp"
+                            android:layout_marginBottom="10dp"
                             android:background="@drawable/background_textviewaccountandpass"
+                            android:enabled="false"
                             android:hint="Ten Khách hàng"
+                            android:inputType="text"
                             android:paddingLeft="10dp"
                             android:textColor="#E7E7E7"
                             android:textColorHint="#707070" />
 
                         <LinearLayout
-                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
                             <TextView
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:textColor="#FFFFFF"
-                                android:text="Phuong thuc thanh toan:"
-                                android:layout_weight="5"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:layout_weight="5"
+                                android:text="@string/methodPayment"
+                                android:textColor="#FFFFFF"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
 
                             <LinearLayout
-                                android:orientation="horizontal"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
 
                                 <RadioGroup
                                     android:id="@+id/rdogroupmethopayment"
@@ -266,25 +266,15 @@
                                     android:layout_height="match_parent">
 
                                     <RadioButton
-                                        android:id="@+id/rdopaypal"
-                                        android:drawablePadding="15dp"
-                                        android:drawableEnd="@drawable/ic_salary"
-                                        android:buttonTint="@color/colorSelect"
-                                        android:textColor="#FFFFFF"
-                                        android:text="Thanh toán bằng PayPal"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"/>
-
-                                    <RadioButton
-                                        android:checked="true"
                                         android:id="@+id/rdopaymomo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:buttonTint="@color/colorSelect"
+                                        android:checked="true"
+                                        android:drawableEnd="@drawable/momo"
                                         android:drawablePadding="15dp"
                                         android:text="Thanh toán bằng MoMo"
-                                        android:drawableEnd="@drawable/momo"
-                                        android:buttonTint="@color/colorSelect"
-                                        android:textColor="#FFFFFF"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"/>
+                                        android:textColor="#FFFFFF" />
 
                                 </RadioGroup>
 
@@ -293,95 +283,95 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:weightSum="10"
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp">
+                            android:layout_height="30dp"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
 
                             <TextView
-                                android:gravity="center"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:textColor="#FFFFFF"
-                                android:text="Số ghế đã đặt: "
-                                android:layout_weight="5"
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:layout_weight="5"
+                                android:gravity="center"
+                                android:text="@string/numberSeatBooking"
+                                android:textColor="#FFFFFF"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/txtcountseatbooking"
-                                android:gravity="center"
-                                android:textSize="21sp"
-                                android:textColor="#FFFFFF"
-                                android:textStyle="bold"
-                                android:layout_weight="5"
-                                android:text="3"
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:layout_weight="5"
+                                android:gravity="center"
+                                android:text="3"
+                                android:textColor="#FFFFFF"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:weightSum="10"
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp">
+                            android:layout_height="30dp"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
 
                             <TextView
-                                android:gravity="center"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:textColor="#FFFFFF"
-                                android:text="Số tiền thanh toán:"
-                                android:layout_weight="5"
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:layout_weight="5"
+                                android:gravity="center"
+                                android:text="@string/totalAmountGerneral"
+                                android:textColor="#FFFFFF"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/txttotalamount"
-                                android:gravity="center"
-                                android:textSize="21sp"
-                                android:textColor="#FFFFFF"
-                                android:textStyle="bold"
-                                android:layout_weight="5"
-                                android:text="45.000đ"
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:layout_weight="5"
+                                android:gravity="center"
+                                android:text="45.000đ"
+                                android:textColor="#FFFFFF"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:weightSum="10"
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
 
                             <TextView
-                                android:gravity="center"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:textColor="#FFFFFF"
-                                android:text="Thanh toán trong:"
-                                android:layout_weight="5"
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:layout_weight="5"
+                                android:gravity="center"
+                                android:text="@string/paymentDuration"
+                                android:textColor="#FFFFFF"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
 
                             <LinearLayout
-                                android:gravity="center"
-                                android:layout_weight="5"
-                                android:orientation="horizontal"
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:layout_weight="5"
+                                android:gravity="center"
+                                android:orientation="horizontal">
 
                                 <TextView
-                                    android:textStyle="bold"
                                     android:id="@+id/txttime"
-                                    android:gravity="center"
-                                    android:textSize="20sp"
-                                    android:textColor="@color/colorSelect"
-                                    android:text="08"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"/>
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="08"
+                                    android:textColor="@color/colorSelect"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
 
@@ -399,25 +389,25 @@
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/colorBackround"
         android:id="@+id/linearactionpayment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:padding="12dp"
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorBackround"
+        android:padding="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:textAllCaps="false"
-            android:layout_marginRight="8dp"
             android:id="@+id/btnbackto"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:layout_marginRight="8dp"
             android:background="@drawable/background_btnbackto"
-            android:text="Quay lai"
+            android:text="@string/backTo"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnactionpayment"
@@ -425,19 +415,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textAllCaps="false"
             android:id="@+id/btnactionpayment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/background_btnlogin"
-            android:text="Thanh toán"
-            app:layout_constraintStart_toEndOf="@+id/btnbackto"
+            android:text="@string/payment"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="17sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnbackto"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

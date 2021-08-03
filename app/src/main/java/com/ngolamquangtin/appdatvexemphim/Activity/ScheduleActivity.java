@@ -123,7 +123,11 @@ public class ScheduleActivity extends AppCompatActivity  {
     }
 
     public void loadScheduleByDate(String date){
+        lvSchedule.setVisibility(View.INVISIBLE);
+        txtMess.setVisibility(View.INVISIBLE);
+
         processing.playAnimation();
+
         processing.setVisibility(View.VISIBLE);
 
         Service service = RetrofitUtil.getService(ScheduleActivity.this);
@@ -133,7 +137,9 @@ public class ScheduleActivity extends AppCompatActivity  {
             public void onResponse(Call<ScheduleOfDate> call, Response<ScheduleOfDate> response) {
                 movies.clear();
 
-                if(response.body() != null){
+                if(response.body() != null && response.body().getMovies().size() != 0){
+                    lvSchedule.setVisibility(View.VISIBLE);
+
                     processing.pauseAnimation();
 
                     processing.setVisibility(View.INVISIBLE);
@@ -146,6 +152,8 @@ public class ScheduleActivity extends AppCompatActivity  {
 
                     scheduleAdapter.notifyDataSetChanged();
                 }else{
+                    lvSchedule.setVisibility(View.INVISIBLE);
+
                     processing.pauseAnimation();
 
                     processing.setVisibility(View.INVISIBLE);

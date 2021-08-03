@@ -1,6 +1,5 @@
 package com.ngolamquangtin.appdatvexemphim.Fragment;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +25,6 @@ import com.ngolamquangtin.appdatvexemphim.Activity.DetalsMovieActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.HomeActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.ScheduleActivity;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
-import com.ngolamquangtin.appdatvexemphim.DTO.Customer;
 import com.ngolamquangtin.appdatvexemphim.DTO.CustomerV2;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
@@ -68,7 +65,7 @@ public class FragmentLoginInfo extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")) {
-                    editlayouttk.setError("Bắt buộc phải nhập");
+                    editlayouttk.setError(getResources().getString(R.string.errorEmptyAccount));
                 } else {
                     editlayouttk.setError(null);
                 }
@@ -88,7 +85,7 @@ public class FragmentLoginInfo extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")) {
-                    editlayoutmk.setError("Bắt buộc phải nhập pass");
+                    editlayoutmk.setError(getResources().getString(R.string.errorPassEmpty));
                 } else {
                     editlayoutmk.setError(null);
                 }
@@ -175,7 +172,8 @@ public class FragmentLoginInfo extends Fragment {
             }
 
         }else{
-            getActivity().finish();
+            Intent intentToHome = new Intent(getActivity(), HomeActivity.class);
+            startActivity(intentToHome);
         }
     }
 
@@ -234,7 +232,17 @@ public class FragmentLoginInfo extends Fragment {
             dialogErrorMessage.setContentView(R.layout.dialog_failed);
             dialogErrorMessage.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             TextView txtMessError =  dialogErrorMessage.findViewById(R.id.txtmess);
+            Button btnOK = dialogErrorMessage.findViewById(R.id.btnOK);
+
+            btnOK.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogErrorMessage.dismiss();
+                }
+            });
             txtMessError.setText(messError);
+
+            new Boom(btnOK);
             dialogErrorMessage.show();
         }
     }

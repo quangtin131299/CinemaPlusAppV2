@@ -1,22 +1,18 @@
 package com.ngolamquangtin.appdatvexemphim.Activity;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -31,6 +27,7 @@ import com.astritveliu.boom.Boom;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.ngolamquangtin.appdatvexemphim.Adapter.PopCornPayMentAdapter;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
 import com.ngolamquangtin.appdatvexemphim.DTO.PopCorn;
@@ -39,10 +36,7 @@ import com.ngolamquangtin.appdatvexemphim.DTO.TickerBook;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,7 +80,7 @@ public class PaymentActivity extends AppCompatActivity {
     String fee = "0";
     Dialog dialogError, dialogProcess, dialogSucess;
     RadioGroup rdoGroupMethodPay;
-    RadioButton rdoMethodPaytMoMo, rdoMethodPayPayPal;
+    RadioButton rdoMethodPaytMoMo;
     TextView txtCountSeatBooking
             , txtMessPopcorn
             , txtTotalAmount
@@ -100,7 +94,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     PopCornPayMentAdapter popCornPayAdapter;
     RecyclerView ryPopCorn;
-    ImageView imgmoive;
+    RoundedImageView imgmoive;
     CountDownTimer timerPayment;
 
     SharedPreferences sharedPreferences;
@@ -228,7 +222,6 @@ public class PaymentActivity extends AppCompatActivity {
         ryPopCorn = findViewById(R.id.rypopcorn);
         rdoGroupMethodPay = findViewById(R.id.rdogroupmethopayment);
         rdoMethodPaytMoMo = findViewById(R.id.rdopaymomo);
-        rdoMethodPayPayPal = findViewById(R.id.rdopaypal);
         btnthanhtoan = findViewById(R.id.btnactionpayment);
         edttenkhachhang = findViewById(R.id.edttenkhachhang);
         btnBackTo = findViewById(R.id.btnbackto);
@@ -250,7 +243,9 @@ public class PaymentActivity extends AppCompatActivity {
 
                         showDialogProcess();
 
-                        requestPayment();
+//                        requestPayment();
+
+                        processTickerBooking(PAYMENT_ONLINE_MOMO);
                     }else{
 
                     }
@@ -276,7 +271,7 @@ public class PaymentActivity extends AppCompatActivity {
         edttenkhachhang.setText(sharedPreferences.getString("hoten", ""));
 
         if(txtCountSeatBooking != null){
-            txtCountSeatBooking.setText(tickerBook.getIdSeats().size() + "Ghế");
+            txtCountSeatBooking.setText(tickerBook.getIdSeats().size() + getResources().getString(R.string.seat));
         }
 
         txtNameMovie.setText(getNameMovie());
@@ -299,14 +294,14 @@ public class PaymentActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable Drawable errorDrawable) {
+                public void onLoadFailed(@Nullable  Drawable errorDrawable) {
                     return;
                 }
             });
         }
 
-        txtTotalAmoutPopCorn.setText("Tổng tiền bắp nước: " + Util.formatAmount(calulatorAmountPopCorn()) + "đ" );
-        txtSeat.setText("Ghế: "+ getAllSeats());
+        txtTotalAmoutPopCorn.setText(getResources().getString(R.string.totalAmountPopcorn)+ " " + Util.formatAmount(calulatorAmountPopCorn()) + "đ" );
+        txtSeat.setText(getResources().getString(R.string.seat) +": "  + getAllSeats());
         txtTimeMovie.setText(getShowTime() + " -> " + calulatorEndTimeMovie(getShowTime(), getTimeMovie()));
         txtTotalAmount.setText(Util.formatAmount(calulatorTotalAmount()) +"đ");
     }

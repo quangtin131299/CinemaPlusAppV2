@@ -80,6 +80,7 @@ public class TickerAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
         TicketV2 ticket = tickers.get(position);
 
         if (ticket != null) {
@@ -95,6 +96,7 @@ public class TickerAdapter extends BaseAdapter {
 
             if (seat != null) {
                 viewHolder.txtghe.setText(seat.getTenGhe());
+
                 if (seat.getTenGhe() != null && seat.getTenGhe() != "") {
                     viewHolder.txtday.setText(seat.getTenGhe().charAt(0) + "");
                 }
@@ -109,7 +111,7 @@ public class TickerAdapter extends BaseAdapter {
             }
 
             if (time != null) {
-                viewHolder.txtNgayDatVaThoiGian.setText(Util.formatDateServerToClient(ticket.getNgayDat()) + " " + time.getGio());
+                viewHolder.txtNgayDatVaThoiGian.setText(Util.formatDateServerToClient(ticket.getNgayDat()) + " " + Util.formatTime(time.getGio()));
             }
         }
 

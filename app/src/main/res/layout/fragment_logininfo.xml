@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="10">
 
@@ -16,23 +16,23 @@
         android:paddingRight="8dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@null"
             android:id="@+id/edlayouttk"
             android:layout_width="match_parent"
+            android:layout_height="70dp"
             android:textColorHint="#707070"
-            app:hintEnabled="false"
-            android:layout_height="wrap_content">
+            app:errorTextAppearance="@style/errorMessageInput"
+            app:hintEnabled="false">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/txttendangnhap"
-                android:inputType="text"
-                android:background="@drawable/background_textviewaccountandpass"
                 android:layout_width="match_parent"
                 android:layout_height="43dp"
+                android:background="@drawable/background_textviewaccountandpass"
+                android:hint="@string/enterYourAccount"
+                android:inputType="text"
+                android:paddingLeft="10dp"
                 android:textColor="#E7E7E7"
-                android:textColorHint="#707070"
-                android:hint="Nhập tài khoản của bạn"
-                android:paddingLeft="10dp"/>
+                android:textColorHint="#707070" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,16 +51,17 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edlayoupass"
             android:layout_width="match_parent"
+            android:layout_height="70dp"
             android:textColorHint="#707070"
-            app:hintEnabled="false"
-            android:layout_height="wrap_content">
+            app:errorTextAppearance="@style/errorMessageInput"
+            app:hintEnabled="false">
 
             <EditText
                 android:id="@+id/txtmatkhau"
                 android:layout_width="match_parent"
                 android:layout_height="43dp"
                 android:background="@drawable/background_textviewaccountandpass"
-                android:hint="Nhập mật khẩu"
+                android:hint="@string/enterYourPassWord"
                 android:inputType="textPassword"
                 android:paddingLeft="10dp"
                 android:textColor="#E7E7E7"
@@ -80,26 +81,26 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:textAllCaps="false"
-            android:layout_margin="5dp"
-            android:layout_weight="5"
             android:id="@+id/btnhuy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
             android:background="@drawable/background_btnbackto"
-            android:text="Hủy đăng nhập"
+            android:text="@string/cancelLogin"
+            android:textAllCaps="false"
             android:textColor="#E7E7E7"
             android:textSize="20sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:textAllCaps="false"
-            android:layout_margin="5dp"
-            android:layout_weight="5"
             android:id="@+id/btnlogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
             android:background="@drawable/background_btnlogin"
-            android:text="Đăng nhập"
+            android:text="@string/login"
+            android:textAllCaps="false"
             android:textColor="#E7E7E7"
             android:textSize="20sp" />
 

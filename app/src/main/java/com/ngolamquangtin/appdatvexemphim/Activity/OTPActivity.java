@@ -112,7 +112,6 @@ public class OTPActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
 
                     CustomerV2 customer = getCustomer();
-
                     //Update equals 0
                     if(getState() == 0){
                         updateInforUser(customer);

@@ -214,6 +214,7 @@ public class ScheduleAdapter extends BaseAdapter implements TimeAdapter.onClickL
             intentToScreenSelectSeat.putExtra("ID_CINEMA", cinema.getId());
             intentToScreenSelectSeat.putExtra("TEN_RAP", cinema.getTenrap());
             intentToScreenSelectSeat.putExtra("IMAGE_MOVIE", movie.getHinh());
+            intentToScreenSelectSeat.putExtra("TIME_MOVIE", movie.getThoigian());
 
             TimeV2 time = timeAdapters.get(idMovie).getShowTimes().get(position);
 
@@ -232,6 +233,7 @@ public class ScheduleAdapter extends BaseAdapter implements TimeAdapter.onClickL
 
                 intentToScreenSelectSeat.putExtra("Id_SHOWTIME", time.getId());
                 intentToScreenSelectSeat.putExtra("SHOW_TIME", Util.formatTime(time.getGio()));
+
             }
 
             intentToScreenSelectSeat.putExtra("TEN_PHIM", movie.getTenphim());

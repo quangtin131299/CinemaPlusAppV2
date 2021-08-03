@@ -42,7 +42,6 @@ import retrofit2.Response;
 public class FragmentCreatAccount extends Fragment {
 
     //Tam thoi
-    final int REGISTER_SUCCESS = 5;
     final int REGISTER_FAILD = 6;
     final int ENABLE_AGE= 18;
     final int EDIT_TEXT_IS_ERROR = 3;
@@ -96,7 +95,7 @@ public class FragmentCreatAccount extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")) {
-                    edlayoutname.setError("Không được bỏ trống");
+                    edlayoutname.setError(getResources().getString(R.string.errorNameEmpty));
                 } else {
                     edlayoutname.setError(null);
                 }
@@ -117,7 +116,7 @@ public class FragmentCreatAccount extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")) {
-                    edlayouttk.setError("Khong được để trống");
+                    edlayouttk.setError(getResources().getString(R.string.errorEmptyAccount));
                 } else {
                     edlayouttk.setError("");
                 }
@@ -138,7 +137,7 @@ public class FragmentCreatAccount extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")) {
-                    edlayoutpass.setError("Khong được bỏ trống !");
+                    edlayoutpass.setError(getResources().getString(R.string.errorPassEmpty));
                 } else {
                     edlayoutpass.setError(null);
                 }
@@ -159,7 +158,7 @@ public class FragmentCreatAccount extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")) {
-                    edlayoutconfirmpass.setError("Không được để trống");
+                    edlayoutconfirmpass.setError(getResources().getString(R.string.errorPassCofirmEmpty));
                 } else {
                     edlayoutconfirmpass.setError(null);
                 }
@@ -180,7 +179,7 @@ public class FragmentCreatAccount extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")) {
-                    edlayoutemail.setError("Không được để trống !");
+                    edlayoutemail.setError(getResources().getString(R.string.errorEmailEmpty));
                 } else {
                     edlayoutemail.setError(null);
                 }
@@ -191,7 +190,7 @@ public class FragmentCreatAccount extends Fragment {
                 if (patternEmail.matcher(s.toString()).matches()) {
                     edlayoutemail.setError(null);
                 } else {
-                    edlayoutemail.setError("Email không hợp lệ");
+                    edlayoutemail.setError(getResources().getString(R.string.errorInvalidEmail));
                 }
             }
         });
@@ -205,7 +204,7 @@ public class FragmentCreatAccount extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")) {
-                    edlayoutphone.setError("Không được để trống !");
+                    edlayoutphone.setError(getString(R.string.errorNumberPhoneEmpty));
                 } else {
                     edlayoutphone.setError(null);
                 }
@@ -216,7 +215,7 @@ public class FragmentCreatAccount extends Fragment {
                 if(patternPhone.matcher(s.toString()).matches()){
                     edlayoutphone.setError(null);
                 }else{
-                    edlayoutphone.setError("Số điện thoại không hợp lệ");
+                    edlayoutphone.setError(getResources().getString(R.string.errorInvalidNumberPhone));
                 }
             }
         });

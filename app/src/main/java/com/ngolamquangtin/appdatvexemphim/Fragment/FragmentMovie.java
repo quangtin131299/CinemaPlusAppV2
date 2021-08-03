@@ -197,8 +197,8 @@ public class FragmentMovie extends Fragment {
         FragmentNearYou fragmentNearYou = new FragmentNearYou();
         FragmentCommingSoon fragmentCommingSoon = new FragmentCommingSoon();
 
-        movieViewPagerAdapter.addFragment(fragmentNearYou, "Phim dang chieu");
-        movieViewPagerAdapter.addFragment(fragmentCommingSoon, "Phim sap chieu");
+        movieViewPagerAdapter.addFragment(fragmentNearYou, getResources().getString(R.string.movieNowShow));
+        movieViewPagerAdapter.addFragment(fragmentCommingSoon, getResources().getString(R.string.movieComingSoon));
 
         viewPager.setAdapter(movieViewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

@@ -334,5 +334,37 @@ public class Util {
         }
     }
 
+    public static Calendar distanceTime(Calendar timeBooking, Calendar currentTime){
+        SimpleDateFormat simpleDateFormat
+                = new SimpleDateFormat("HH:mm:ss");
+
+        Date dateBooking = timeBooking.getTime();
+        Date dateCurrent = currentTime.getTime();
+
+
+        long differenceInMilliSeconds
+                = Math.abs(dateCurrent.getTime() - dateBooking.getTime());
+
+
+        long differenceInHours
+                = (differenceInMilliSeconds / (60 * 60 * 1000))
+                % 24;
+
+
+        long differenceInMinutes
+                = (differenceInMilliSeconds / (60 * 1000)) % 60;
+
+
+        long differenceInSeconds
+                = (differenceInMilliSeconds / 1000) % 60;
+
+        Calendar calResult = Calendar.getInstance();
+        calResult.set(Calendar.HOUR_OF_DAY, (int) differenceInHours);
+        calResult.set(Calendar.MINUTE, (int) differenceInMinutes);
+        calResult.set(Calendar.SECOND, (int) differenceInSeconds);
+
+        return calResult;
+    }
+
 
 }

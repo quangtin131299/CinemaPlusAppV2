@@ -22,6 +22,8 @@ public class PopCorn  implements Serializable {
     @SerializedName("moTa")
     @Expose
     private String description;
+    @SerializedName("soLuong")
+    @Expose
     private int count;
 
 

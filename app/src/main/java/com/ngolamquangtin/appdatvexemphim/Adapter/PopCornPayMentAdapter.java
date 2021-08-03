@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -40,6 +41,12 @@ public class PopCornPayMentAdapter extends RecyclerView.Adapter<PopCornPayMentAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_popcorn_payment, null));
+
+        if(parent.getId() == R.id.rypopcorndetailbill){
+            String color = Integer.toHexString(context.getResources().getColor(R.color.colorUnSelect, null));
+            viewHolder.cardView.setCardBackgroundColor(Color.parseColor("#"+color)); //cardView
+        }
+
         return viewHolder;
     }
 
@@ -73,7 +80,6 @@ public class PopCornPayMentAdapter extends RecyclerView.Adapter<PopCornPayMentAd
                 }
             });
         }
-
     }
 
     @Override
@@ -81,15 +87,15 @@ public class PopCornPayMentAdapter extends RecyclerView.Adapter<PopCornPayMentAd
         return popcorns.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder{
-
+        CardView cardView;
         TextView txtNamePopCorn, txtCount, txtUnitPrice;
         ImageView imagePopCorn;
 
         public ViewHolder(@NonNull  View itemView) {
             super(itemView);
 
+            cardView = itemView.findViewById(R.id.carditem);
             imagePopCorn = itemView.findViewById(R.id.imgcinema);
             txtNamePopCorn = itemView.findViewById(R.id.txtnamepopcorn);
             txtCount = itemView.findViewById(R.id.txtcount);

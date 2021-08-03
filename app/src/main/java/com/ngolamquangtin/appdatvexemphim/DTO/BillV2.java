@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class BillV2 implements Serializable {
     @SerializedName("id")
@@ -12,7 +13,7 @@ public class BillV2 implements Serializable {
     @SerializedName("ngY")
     @Expose
     private String ngaylaphoadon;
-    @SerializedName("thanhTien")
+    @SerializedName("thanhtien")
     @Expose
     private Integer thanhtien;
     @SerializedName("idKhachHang")
@@ -21,6 +22,17 @@ public class BillV2 implements Serializable {
     @SerializedName("trangThai")
     @Expose
     private String trangthai;
+
+    @SerializedName("ptThanhToan")
+    @Expose
+    private String ptThanhToan;
+    @SerializedName("vedats")
+    @Expose
+    private ArrayList<TicketV2> ticketV2s;
+    @SerializedName("bapnuocs")
+    @Expose
+    private ArrayList<PopCorn> popCorns;
+
 
     public Integer getId() {
         return id;
@@ -60,5 +72,29 @@ public class BillV2 implements Serializable {
 
     public void setTrangthai(String trangthai) {
         this.trangthai = trangthai;
+    }
+
+    public String getPtThanhToan() {
+        return ptThanhToan;
+    }
+
+    public void setPtThanhToan(String ptThanhToan) {
+        this.ptThanhToan = ptThanhToan;
+    }
+
+    public ArrayList<TicketV2> getTicketV2s() {
+        return ticketV2s;
+    }
+
+    public void setTicketV2s(ArrayList<TicketV2> ticketV2s) {
+        this.ticketV2s = ticketV2s;
+    }
+
+    public ArrayList<PopCorn> getPopCorns() {
+        return popCorns;
+    }
+
+    public void setPopCorns(ArrayList<PopCorn> popCorns) {
+        this.popCorns = popCorns;
     }
 }

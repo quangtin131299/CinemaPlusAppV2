@@ -4,26 +4,26 @@
         android:id="@+id/itemmovie"
         android:checked="true"
         android:icon="@drawable/movie"
-        android:title="Phim"></item>
+        android:title="@string/movie"></item>
     <item
         android:id="@+id/itemticker"
         android:icon="@drawable/ticker"
         android:iconTint="@color/colorUnSelect"
-        android:title="Ve"></item>
+        android:title="@string/ticker"></item>
     <item
         android:id="@+id/itemcinema"
         android:icon="@drawable/cinema"
         android:iconTint="@color/colorUnSelect"
-        android:title="Rap chieu"></item>
+        android:title="@string/cinema"></item>
     <item
         android:id="@+id/itemfavourite"
         android:iconTint="@color/colorUnSelect"
         android:icon="@drawable/favourite"
-        android:title="Yeu thich"></item>
+        android:title="@string/favourite"></item>
     <item
         android:id="@+id/itemprofile"
         android:icon="@drawable/profile"
         android:iconTint="@color/colorUnSelect"
-        android:title="Ca nhan"></item>
+        android:title="@string/profile"></item>
 
 </menu>

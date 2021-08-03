@@ -62,7 +62,7 @@ public class FragmentCommingSoon extends Fragment {
 
         CompositePageTransformer transformer = new CompositePageTransformer();
 
-        transformer.addTransformer(new MarginPageTransformer(8));
+        transformer.addTransformer(new MarginPageTransformer(15));
 
         transformer.addTransformer(new ViewPager2.PageTransformer() {
             @Override

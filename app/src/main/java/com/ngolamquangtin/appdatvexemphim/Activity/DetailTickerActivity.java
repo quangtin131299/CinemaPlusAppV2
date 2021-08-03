@@ -1,12 +1,19 @@
 package com.ngolamquangtin.appdatvexemphim.Activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -16,25 +23,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.astritveliu.boom.Boom;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
-import com.ngolamquangtin.appdatvexemphim.DTO.Ticker;
+import com.ngolamquangtin.appdatvexemphim.DTO.Cinema;
 import com.ngolamquangtin.appdatvexemphim.DTO.TicketV2;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -45,8 +57,11 @@ import retrofit2.Response;
 
 public class DetailTickerActivity extends AppCompatActivity {
 
-
-    Button btnBackto, btnCancelTicker;
+    Handler handler;
+    Location currentLocation;
+    LocationRequest locationRequest;
+    FusedLocationProviderClient fusedLocationClient;
+    Button btnBackto, btnCancelTicker, btnDirect;
     TextView txttenphim,txtmave,txtngaygio, txtcinema, txtghe, txtdiachi, txtthoigian;
     ImageView imgqr, imgphim;
     TicketV2 ticker;
@@ -59,9 +74,62 @@ public class DetailTickerActivity extends AppCompatActivity {
 
         addControls();
 
+        registerHandler();
+
         addDataOnView();
 
         addEvents();
+    }
+
+    public void registerHandler(){
+        handler = new Handler(){
+            @Override
+            public void handleMessage(@NonNull  Message msg) {
+                super.handleMessage(msg);
+
+                switch (msg.what){
+                    case 1:
+                        setCurrentLocation();
+                        break;
+                    case 2:
+                        openAppGoogleMap(currentLocation, ticker.getRap());
+                        break;
+                }
+
+            }
+        };
+    }
+
+    public void setCurrentLocation(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+
+                currentLocation = locationResult.getLastLocation();
+
+                Message msg = new Message();
+                msg.what = 2;
+                handler.sendMessage(msg);
+
+                fusedLocationClient.removeLocationUpdates(this);
+
+            }
+        }, Looper.getMainLooper());
     }
 
     public void initQRBitmapDialog(ImageView imgQRDialog) {
@@ -83,6 +151,18 @@ public class DetailTickerActivity extends AppCompatActivity {
     }
 
     public void addEvents() {
+        btnDirect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Util.turnOnLocation(DetailTickerActivity.this);
+
+                Message msg = new Message();
+                msg.what = 1;
+                handler.sendMessage(msg);
+
+            }
+        });
+
         btnBackto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,12 +206,14 @@ public class DetailTickerActivity extends AppCompatActivity {
             }
         });
 
+        new Boom(btnDirect);
         new Boom(imgqr);
         new Boom(btnBackto);
         new Boom(btnCancelTicker);
     }
 
     private void addControls() {
+        btnDirect = findViewById(R.id.btndirect);
         btnBackto = findViewById(R.id.btnbackto);
         btnCancelTicker = findViewById(R.id.btncancel);
         txttenphim = findViewById(R.id.txttenphim);
@@ -146,6 +228,13 @@ public class DetailTickerActivity extends AppCompatActivity {
         dialogSucess = new Dialog(DetailTickerActivity.this);
         dialogError = new Dialog(DetailTickerActivity.this);
         dialogProcess = new Dialog(DetailTickerActivity.this);
+
+        locationRequest = LocationRequest.create();
+
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(20 * 1000);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(DetailTickerActivity.this);
     }
 
     private void addDataOnView() {
@@ -156,7 +245,7 @@ public class DetailTickerActivity extends AppCompatActivity {
             ticker  = (TicketV2) i.getSerializableExtra("TICKER");
 
             txttenphim.setText(ticker.getPhim().getTenphim());
-            txtmave.setText("Mã vé đã đặt: " + ticker.getId());
+            txtmave.setText(getResources().getString(R.string.codeTicker) + ticker.getId());
 
             String data = ticker.getId() + "";
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
@@ -173,7 +262,7 @@ public class DetailTickerActivity extends AppCompatActivity {
             }
 
             txtngaygio.setText(Util.formatDateServerToClient(ticker.getNgayDat()) + "\t" + Util.formatTime(ticker.getSuatchieu().getGio()));
-            txtthoigian.setText(ticker.getPhim().getThoigian() + " phút");
+            txtthoigian.setText(ticker.getPhim().getThoigian() + " " + getResources().getString(R.string.min));
             txtghe.setText(ticker.getGhe().getTenGhe());
             txtcinema.setText(ticker.getRap().getTenrap());
             txtdiachi.setText(ticker.getRap().getDiachi());
@@ -301,6 +390,21 @@ public class DetailTickerActivity extends AppCompatActivity {
         Calendar calendarResult = Calendar.getInstance();
         calendarResult.getTime().setTime(time);
 
+    }
+
+    public void openAppGoogleMap(Location location, Cinema cinema) {
+        Uri uridir = Uri.parse("https://www.google.co.in/maps/dir/" + location.getLatitude()
+                + "," + location.getLongitude()
+                + "/" + cinema.getDiachi()
+                + "/@" + cinema.getVido()
+                + "," + cinema.getKinhdo());
+
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uridir);
+
+        intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        startActivity(intent);
     }
 
 

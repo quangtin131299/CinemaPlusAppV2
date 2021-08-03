@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/iconanimation"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:text="Đã xử lý thành công"
+                android:text="@string/processSuccess"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

@@ -1,6 +1,5 @@
 package com.ngolamquangtin.appdatvexemphim.Fragment;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +27,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.ngolamquangtin.appdatvexemphim.Activity.DetalsMovieActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.HistoryActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.LoginActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.PasswordChangeActivity;
@@ -38,7 +35,6 @@ import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
-
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,9 +46,9 @@ import retrofit2.Response;
 public class FragmentProfile extends Fragment {
 
     CircleImageView imgProfile;
-    ImageView imgChangeImagProfile;
-    ConstraintLayout contrainUpdateuser, contrainUpdatePass, contrainHistory;
-    TextView txtTennguoidung, txtdangxuatdangnhap;
+    ImageView imgChangeImagProfile, imglocation;
+    ConstraintLayout contrainUpdateuser, contrainUpdatePass, contrainHistory, contrainchangelanguae;
+    TextView txtTennguoidung, txtdangxuatdangnhap, txtCurrentLanguae;
     SharedPreferences sharedPreferences;
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -74,16 +70,28 @@ public class FragmentProfile extends Fragment {
         contrainHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentScreenHistory = new Intent(getActivity(), HistoryActivity.class);
-                startActivity(intentScreenHistory);
+                if(sharedPreferences.getString("hoten", "").equals("") == false){
+                    Intent intentScreenHistory = new Intent(getActivity(), HistoryActivity.class);
+
+                    startActivity(intentScreenHistory);
+                }else{
+                    showDialogLogin("Bạn chưa đăng nhập !");
+                }
+
             }
         });
 
         contrainUpdatePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), PasswordChangeActivity.class);
-                startActivity(i);
+                if(sharedPreferences.getString("hoten", "").equals("") == false){
+                    Intent i = new Intent(getActivity(), PasswordChangeActivity.class);
+
+                    startActivity(i);
+                }else{
+                    showDialogLogin("Bạn chưa đăng nhập !");
+                }
+
             }
         });
 
@@ -108,20 +116,34 @@ public class FragmentProfile extends Fragment {
             }
         });
 
+        contrainchangelanguae.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(txtCurrentLanguae.getText().toString().equals(getResources().getString(R.string.languageVN))){
+                    imglocation.setImageResource(R.drawable.ic_america);
+                    txtCurrentLanguae.setText(getResources().getString(R.string.languageAmerica));
+                }else{
+                    imglocation.setImageResource(R.drawable.ic_vietnam);
+                    txtCurrentLanguae.setText(getResources().getString(R.string.languageVN));
+                }
+            }
+        });
+
         txtdangxuatdangnhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView textView = (TextView) v;
-                if (textView.getText().toString().equals("Đăng nhập")) {
+                if (textView.getText().toString().equals(getResources().getString(R.string.login))) {
                     Intent i = new Intent(getActivity(), LoginActivity.class);
                     startActivity(i);
                 } else {
                     sharedPreferences.edit().clear().commit();
                     txtTennguoidung.setText("Chưa đăng nhập");
-                    txtdangxuatdangnhap.setText("Đăng nhập");
-                    Toast.makeText(getActivity(), "Đã đăng xuất", Toast.LENGTH_SHORT).show();
-                }
+                    txtdangxuatdangnhap.setText(getResources().getString(R.string.login));
+                    imgProfile.setImageResource(R.drawable.ic_hinhdaidien);
 
+                    Util.ShowToastInforMessage(getActivity(), getResources().getString(R.string.youLogout));
+                }
             }
         });
 
@@ -162,6 +184,7 @@ public class FragmentProfile extends Fragment {
             }
         });
 
+        new Boom(contrainchangelanguae);
         new Boom(imgChangeImagProfile);
         new Boom(txtdangxuatdangnhap);
         new Boom(contrainUpdateuser);
@@ -173,10 +196,10 @@ public class FragmentProfile extends Fragment {
         String hoten = sharedPreferences.getString("hoten", "Chưa đăng nhập");
         String imagProfilUri = sharedPreferences.getString("imagProfile", "");
 
-        if (hoten.equals("Chưa đăng nhập")) {
-            txtdangxuatdangnhap.setText("Đăng nhập");
+        if (hoten.equals(getResources().getString(R.string.nologged))) {
+            txtdangxuatdangnhap.setText(getResources().getString(R.string.login));
         } else {
-            txtdangxuatdangnhap.setText("Đăng xuất");
+            txtdangxuatdangnhap.setText(getResources().getString(R.string.logout));
             txtTennguoidung.setText(hoten);
         }
 
@@ -188,6 +211,7 @@ public class FragmentProfile extends Fragment {
     private void addControls(View view) {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        contrainchangelanguae = view.findViewById(R.id.contrainchangelanguae);
         txtTennguoidung = view.findViewById(R.id.txtTennguoidung);
         txtdangxuatdangnhap = view.findViewById(R.id.txtdangxuatdangnhap);
         sharedPreferences = getActivity().getSharedPreferences("datalogin", Context.MODE_PRIVATE);
@@ -195,6 +219,8 @@ public class FragmentProfile extends Fragment {
         contrainUpdatePass = view.findViewById(R.id.contrainupdatepass);
         contrainHistory = view.findViewById(R.id.contrainhistory);
         imgChangeImagProfile = view.findViewById(R.id.imgchangeimg);
+        imglocation = view.findViewById(R.id.imglocation);
+        txtCurrentLanguae = view.findViewById(R.id.txtlanguae);
         imgProfile = view.findViewById(R.id.idimgapersonal);
         dialogSuccess = new Dialog(getActivity());
         dialogProcess = new Dialog(getActivity());

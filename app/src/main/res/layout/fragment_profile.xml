@@ -26,7 +26,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="8.5"
                 android:gravity="center"
-                android:text="Thong tin ca nhan"
+                android:text="@string/profile"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -147,7 +147,7 @@
                         android:layout_marginRight="15dp"
                         android:gravity="center"
                         android:paddingLeft="5dp"
-                        android:text="Thông tin cá nhân"
+                        android:text="@string/myProfile"
                         android:textColor="#FFFFFF"
                         android:textSize="25sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -183,13 +183,13 @@
 
                     <ImageView
                         android:id="@+id/imgpass"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="2"
-                        android:scaleType="center"
+
                         android:src="@drawable/ic_password_changes"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -206,7 +206,7 @@
                         android:layout_weight="6"
                         android:gravity="center"
                         android:paddingLeft="5dp"
-                        android:text="Thay đổi mật khẩu"
+                        android:text="@string/changePassWord"
                         android:textColor="#FFFFFF"
                         android:textSize="25sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -264,7 +264,7 @@
                         android:layout_weight="6"
                         android:gravity="center"
                         android:paddingLeft="5dp"
-                        android:text="Lich su giao dich"
+                        android:text="@string/transactionHistory"
                         android:textColor="#FFFFFF"
                         android:textSize="25sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -323,7 +323,7 @@
                         android:layout_weight="6"
                         android:gravity="center"
                         android:paddingLeft="5dp"
-                        android:text="Chuyen doi ngon ngu"
+                        android:text="@string/languageVN"
                         android:textColor="#FFFFFF"
                         android:textSize="25sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -375,7 +375,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Đăng xuất"
+            android:text="@string/logout"
             android:textColor="#FFFFFF"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -385,8 +385,5 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

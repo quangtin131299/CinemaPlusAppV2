@@ -1,5 +1,10 @@
 package com.ngolamquangtin.appdatvexemphim.Activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +25,10 @@ import com.ngolamquangtin.appdatvexemphim.DTO.TokenClient;
 import com.ngolamquangtin.appdatvexemphim.Notifycation;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
+import com.ngolamquangtin.appdatvexemphim.ServiceNotifyTicker;
+import com.ngolamquangtin.appdatvexemphim.Util.Util;
+
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,19 +36,37 @@ import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
+    AlarmManager alarmManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
-        Sprite doubleBounce = new RotatingCircle();
-        progressBar.setIndeterminateDrawable(doubleBounce);
+
+        init();
 
         startServiceNotify();
+
+        startServieNotifyTicker();
 
         getToken();
 
         new PrefetchData().execute();
+    }
+
+    public void init(){
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
+        Sprite doubleBounce = new RotatingCircle();
+        progressBar.setIndeterminateDrawable(doubleBounce);
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+    }
+
+    public void startServieNotifyTicker() {
+        Intent intent = new Intent(SplashActivity.this, ServiceNotifyTicker.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(SplashActivity.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), 60000, pendingIntent);
     }
 
     public void getToken(){
@@ -47,7 +74,6 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                String tokenMessage = task.getResult();
-                Log.d("Token", tokenMessage);
                addNewTokenClient(tokenMessage);
             }
         });

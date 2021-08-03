@@ -24,7 +24,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="8.5"
                 android:gravity="center"
-                android:text="Chi tiet ve"
+                android:text="@string/detailTicker"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -39,10 +39,12 @@
     </FrameLayout>
 
     <ScrollView
-        app:layout_constraintBottom_toTopOf="@+id/contrainactionbtn"
         android:id="@+id/scrolldetailticker"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/contrainactionbtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frametoolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -100,7 +102,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Quét mã QR ở lối vào sảnh rạp chiếu phim"
+                                android:text="@string/scanQR"
                                 android:textColor="#E7E7E7"
                                 android:textSize="18sp" />
 
@@ -132,7 +134,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/colorBackround"
                     app:cardCornerRadius="10dp"
 
@@ -140,39 +142,52 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="500dp">
+                        android:layout_height="wrap_content">
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/linearmovie"
                             android:layout_width="match_parent"
-                            android:layout_height="128dp"
+                            android:layout_height="200dp"
                             android:orientation="horizontal"
-                            android:weightSum="10"
                             app:layout_constraintBottom_toTopOf="@+id/linearline1"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <ImageView
+                            <com.makeramen.roundedimageview.RoundedImageView
                                 android:id="@+id/imgphim"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
+                                android:layout_width="120dp"
+                                android:layout_height="170dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_marginBottom="20dp"
                                 android:layout_weight="3"
                                 android:scaleType="center"
-                                android:src="@drawable/ic_clapperboard" />
+                                android:src="@drawable/ic_clapperboard"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toLeftOf="@+id/linearinfomovie"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:riv_corner_radius="8dp"
+                                app:riv_mutate_background="true" />
 
                             <LinearLayout
+                                android:id="@+id/linearinfomovie"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="7"
                                 android:gravity="center_vertical"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/imgphim">
 
                                 <TextView
                                     android:id="@+id/txttenphim"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="10dp"
                                     android:text="Ten phim"
                                     android:textColor="#E7E7E7"
                                     android:textSize="20sp" />
@@ -189,7 +204,7 @@
 
                             </LinearLayout>
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <LinearLayout
                             android:id="@+id/linearline1"
@@ -246,7 +261,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginBottom="2dp"
-                                    android:text="Ngày &amp; giờ"
+                                    android:text="@string/dateTime"
                                     android:textColor="#707070"
                                     android:textSize="11sp" />
 
@@ -318,7 +333,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginBottom="2dp"
-                                    android:text="Rạp phim"
+                                    android:text="@string/cinema"
                                     android:textColor="#707070"
                                     android:textSize="11sp" />
 
@@ -392,7 +407,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginBottom="2dp"
-                                    android:text="Ghê và dãy"
+                                    android:text="@string/seatAndRow"
                                     android:textColor="#707070"
                                     android:textSize="11sp" />
 
@@ -435,7 +450,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="70dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:orientation="horizontal"
                             android:weightSum="10"
@@ -450,31 +465,67 @@
                                 android:scaleType="center"
                                 android:src="@drawable/location" />
 
-                            <LinearLayout
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="8"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:id="@+id/linearaddress"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginBottom="2dp"
-                                    android:text="Địa chỉ rạp chiếu"
-                                    android:textColor="#707070"
-                                    android:textSize="10sp" />
 
-                                <TextView
-                                    android:id="@+id/txtdiachi"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toLeftOf="@+id/txtchiduong"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/txttileaddress"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginTop="15dp"
+                                        android:layout_marginBottom="2dp"
+                                        android:text="@string/cinemAddress"
+                                        android:textColor="#707070"
+                                        android:textSize="10sp" />
+
+                                    <TextView
+                                        android:id="@+id/txtdiachi"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Dia chi rap"
+                                        android:textColor="#E7E7E7"
+                                        android:textSize="15sp" />
+
+                                </LinearLayout>
+
+                                <Button
+                                    android:id="@+id/btndirect"
+                                    android:layout_width="120dp"
+                                    android:layout_height="30dp"
                                     android:layout_marginLeft="5dp"
-                                    android:text="Dia chi rap"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginRight="8dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@drawable/background_btnbackto"
+                                    android:drawableLeft="@drawable/ic_direct"
+                                    android:paddingLeft="15dp"
+                                    android:src="@drawable/ic_launcher_background"
+                                    android:text="Chỉ đường"
+                                    android:textAllCaps="false"
                                     android:textColor="#E7E7E7"
-                                    android:textSize="15sp" />
-                            </LinearLayout>
+                                    android:textSize="12sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearaddress" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -490,38 +541,36 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/colorBackround"
         android:id="@+id/contrainactionbtn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="3dp"
+        android:background="@color/colorBackround"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:textAllCaps="false"
             android:id="@+id/btnbackto"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/background_btnbackto"
-            android:text="Quay lại"
+            android:text="@string/backTo"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/btncancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-             />
+            app:layout_constraintRight_toLeftOf="@+id/btncancel"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:textAllCaps="false"
             android:id="@+id/btncancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/background_btndatve_disable"
-            android:text="Hủy Vé"
+            android:text="@string/cancelTicker"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

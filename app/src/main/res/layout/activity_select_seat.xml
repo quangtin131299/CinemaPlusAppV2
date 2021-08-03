@@ -28,14 +28,16 @@
                 android:layout_height="match_parent"
                 android:layout_weight="8.5"
                 android:gravity="center"
-                android:text="Chon ghe"
+                android:text="@string/selectSeat"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <ImageButton
                 android:elevation="16dp"
@@ -187,7 +189,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical|end"
-                                android:text="Đã đặt"
+                                android:text="@string/bookingSeat"
                                 android:textColor="#6D6D80"
                                 android:textSize="15sp" />
 
@@ -210,7 +212,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical|end"
-                                android:text="Còn trống"
+                                android:text="@string/emptySeat"
                                 android:textColor="#6D6D80"
                                 android:textSize="15sp" />
 
@@ -233,7 +235,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical|end"
-                                android:text="Đã chọn"
+                                android:text="@string/selectSeatBooking"
                                 android:textColor="#6D6D80"
                                 android:textSize="15sp" />
                         </LinearLayout>
@@ -1262,7 +1264,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Màn hình"
+                                android:text="@string/screen"
                                 android:textColor="#FFFFFF"
                                 android:textSize="30sp" />
 
@@ -1513,14 +1515,16 @@
         android:paddingRight="15dp">
 
         <androidx.appcompat.widget.AppCompatButton
+            android:textAllCaps="false"
             android:layout_marginRight="8dp"
             android:id="@+id/btnhuy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="5"
+            android:textSize="18sp"
             android:background="@drawable/background_btnbackto"
-            android:text="Quay lai"
+            android:text="@string/backTo"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnthanhtoan"
@@ -1533,7 +1537,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/background_btnlogin"
-            android:text="Tiếp tục"
+            android:text="@string/continues"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
