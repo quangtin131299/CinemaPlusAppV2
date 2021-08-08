@@ -46,7 +46,7 @@
     <string name="changePassWord">Thay đổi mật khẩu</string>
     <string name="myProfile">Thông tin cá nhân</string>
     <string name="transactionHistory">Lịch sử giao dịch</string>
-    <string name="languageVN">Tiếng viết</string>
+    <string name="languageVN">Tiếng việt</string>
     <string name="languageAmerica">Tiếng anh</string>
     <string name="logout">Đăng xuất</string>
     <string name="detailTicker">Chi tiết vé</string>
@@ -94,5 +94,16 @@
     <string name="processFail">Xử lý thất bại</string>
     <string name="enterComment">Nhập bình luận của bạn...</string>
     <string name="comment">Bình luận</string>
+    <string name="noEnableGeo">Bạn chưa bật định vị</string>
+    <string name="notCinemaNearYou">Không có rạp nào gần bạn</string>
+    <string name="cinemaNearYou">Rạp gần bạn</string>
+    <string name="noTicker">Bạn chưa đặt vé</string>
+    <string name="yourTicker">Vé của bạn</string>
+    <string name="movieFavourite">Phim được yêu thích</string>
+    <string name="bookingNow">Đặt vé ngay</string>
+    <string name="searchMovie">Tim kiếm phim</string>
+    <string name="today">Hôm nay</string>
+    <string name="room">Phòng</string>
+
 
 </resources>

@@ -170,7 +170,8 @@ public class SelectSeatActivity extends AppCompatActivity {
             @Override
             public void handleMessage(@NonNull @NotNull Message msg) {
                 if (msg.what == 1) {
-
+                    dismissDialogProcessing();
+                    
                     getSeatsBooking(currentRoom.getId());
                 } else if (msg.what == 0) {
                     int idRoom = msg.arg1;
@@ -200,8 +201,6 @@ public class SelectSeatActivity extends AppCompatActivity {
                 public void onResponse(Call<RoomV2> call, retrofit2.Response<RoomV2> response) {
                     if (response.body() != null) {
                         currentRoom = response.body();
-
-                        dismissDialogProcessing();
 
                         updateRoom(response.body());
 
@@ -376,6 +375,7 @@ public class SelectSeatActivity extends AppCompatActivity {
         listCall.enqueue(new Callback<List<SeatV2>>() {
             @Override
             public void onResponse(Call<List<SeatV2>> call, Response<List<SeatV2>> response) {
+
                 seatBookings = (ArrayList<SeatV2>) response.body();
 
                 setSeatBookings();

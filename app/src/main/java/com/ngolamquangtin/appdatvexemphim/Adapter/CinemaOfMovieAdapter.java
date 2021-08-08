@@ -19,6 +19,7 @@ import com.astritveliu.boom.Boom;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.ngolamquangtin.appdatvexemphim.Activity.DetailCinemaActivity;
 import com.ngolamquangtin.appdatvexemphim.DTO.Cinema;
 import com.ngolamquangtin.appdatvexemphim.R;
@@ -58,7 +59,7 @@ public class CinemaOfMovieAdapter extends RecyclerView.Adapter<CinemaOfMovieAdap
 
         holder.txtNameCinema.setText(cinema.getTenrap());
 
-        if(cinema.getHinh() != null && cinema.getHinh().isEmpty()){
+        if(cinema.getHinh() != null && !cinema.getHinh().isEmpty()){
             Glide.with(context).asBitmap().load(cinema.getHinh()).into(new CustomTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(@NonNull  Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -76,7 +77,7 @@ public class CinemaOfMovieAdapter extends RecyclerView.Adapter<CinemaOfMovieAdap
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView txtNameCinema;
-        ImageView imgCinema;
+        RoundedImageView imgCinema;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

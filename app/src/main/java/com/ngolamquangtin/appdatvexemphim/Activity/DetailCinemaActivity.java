@@ -52,7 +52,7 @@ public class DetailCinemaActivity extends AppCompatActivity implements OnMapRead
 
     final int REQUEST_CODE_LOCALTION_PERMISSION = 1;
 
-    LinearLayout linearShowTime;
+    LinearLayout linearShowTime, linearPrice;
 
     Location currentLocation;
     LocationRequest locationRequest;
@@ -148,6 +148,7 @@ public class DetailCinemaActivity extends AppCompatActivity implements OnMapRead
                     } else {
                         Util.turnOnLocation(DetailCinemaActivity.this);
                         setCurrentLocation(DetailCinemaActivity.this);
+                        updateStatusBtnLocation(true);
                         updateUIDistance(currentLocation, detailCinema);
                     }
                 } else {
@@ -156,6 +157,16 @@ public class DetailCinemaActivity extends AppCompatActivity implements OnMapRead
             }
         });
 
+        linearPrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentToPrice = new Intent(DetailCinemaActivity.this, TickerPriceActivity.class);
+
+                startActivity(intentToPrice);
+            }
+        });
+
+        new Boom(linearPrice);
         new Boom(ibtnvitri);
         new Boom(btnDirect);
         new Boom(btnHuy);
@@ -183,6 +194,7 @@ public class DetailCinemaActivity extends AppCompatActivity implements OnMapRead
         txtDiaChi = findViewById(R.id.txtdiachi);
         imgrap = findViewById(R.id.imgrap);
         btnHuy = findViewById(R.id.btnhuy);
+        linearPrice = findViewById(R.id.linearprice);
 
         locationRequest = LocationRequest.create();
 

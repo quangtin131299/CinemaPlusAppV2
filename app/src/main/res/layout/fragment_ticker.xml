@@ -25,7 +25,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="8.5"
                 android:gravity="center"
-                android:text="Vé của bạn"
+                android:text="@string/yourTicker"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Bạn chưa đặt vé"
+                android:text="@string/noTicker"
                 android:textColor="#E7E7E7"
                 android:textSize="25sp" />
 

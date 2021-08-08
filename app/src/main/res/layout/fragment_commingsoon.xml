@@ -36,7 +36,7 @@
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/refeshmoviecomingsoon"
-                android:layout_width="400dp"
+                android:layout_width="match_parent"
                 android:layout_height="400dp"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -47,9 +47,10 @@
                     android:id="@+id/viewpagermovie"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="80dp"
+                    android:paddingStart="45dp"
+                    android:paddingRight="45dp"
                     android:orientation="horizontal"
-                    android:paddingEnd="80dp" />
+                   />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

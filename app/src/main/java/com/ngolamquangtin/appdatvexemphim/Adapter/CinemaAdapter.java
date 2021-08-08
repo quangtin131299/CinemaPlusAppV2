@@ -20,6 +20,7 @@ import com.astritveliu.boom.Boom;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.ngolamquangtin.appdatvexemphim.Activity.ChooseSessionActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.DetailCinemaActivity;
 import com.ngolamquangtin.appdatvexemphim.DTO.Cinema;
@@ -111,7 +112,7 @@ public class CinemaAdapter extends BaseAdapter {
             }
 
             viewHolder.setTvtenrap((TextView) convertView.findViewById(R.id.tvtenrap));
-            viewHolder.setImageView((ImageView) convertView.findViewById(R.id.imgcinema));
+            viewHolder.setImageView((RoundedImageView) convertView.findViewById(R.id.imgcinema));
             convertView.setTag(viewHolder);
 
         } else {
@@ -142,13 +143,13 @@ public class CinemaAdapter extends BaseAdapter {
     public class ViewHolder {
         private TextView tvtenrap;
         private TextView tvdiachi;
-        private ImageView imageView;
+        private RoundedImageView imageView;
 
-        public ImageView getImageView() {
+        public RoundedImageView getImageView() {
             return imageView;
         }
 
-        public void setImageView(ImageView imageView) {
+        public void setImageView(RoundedImageView imageView) {
             this.imageView = imageView;
         }
 

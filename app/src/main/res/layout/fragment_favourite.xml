@@ -25,7 +25,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="8.5"
                 android:gravity="center"
-                android:text="Phim duoc yeu thich"
+                android:text="@string/movieFavourite"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"

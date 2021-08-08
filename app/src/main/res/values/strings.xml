@@ -96,5 +96,15 @@
     <string name="processFail">Process fail</string>
     <string name="enterComment">Enter your comment...</string>
     <string name="comment">Comment</string>
+    <string name="noEnableGeo">You have not enabled geolocation</string>
+    <string name="notCinemaNearYou">No cinema near you</string>
+    <string name="cinemaNearYou">Cinema near me</string>
+    <string name="noTicker">You have not booked your ticket yet</string>
+    <string name="yourTicker">Your ticker</string>
+    <string name="movieFavourite">Movie favourite</string>
+    <string name="bookingNow">Booking now</string>
+    <string name="searchMovie">Search movie</string>
+    <string name="today">Today</string>
+    <string name="room">Room</string>
 
 </resources>

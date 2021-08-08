@@ -91,8 +91,8 @@ public class FragmentCommingSoon extends Fragment {
 
                 if(movie != null){
                     txtNameMovie.setText(movie.getTenphim());
-                    txtOpenDate.setText("Khởi chiếu ngày: " + Util.formatDateServerToClient(movie.getNgayKhoiChieu()));
-                    txtTime.setText("Thời gian: " + movie.getThoigian() + " phút");
+                    txtOpenDate.setText(getResources().getString(R.string.openDay) + " " + Util.formatDateServerToClient(movie.getNgayKhoiChieu()));
+                    txtTime.setText(getResources().getString(R.string.duration) + " " + movie.getThoigian() + " " + getResources().getString(R.string.min));
                 }
             }
         });

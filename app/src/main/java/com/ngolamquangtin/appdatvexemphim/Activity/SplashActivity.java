@@ -2,10 +2,9 @@ package com.ngolamquangtin.appdatvexemphim.Activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +25,7 @@ import com.ngolamquangtin.appdatvexemphim.Notifycation;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
 import com.ngolamquangtin.appdatvexemphim.ServiceNotifyTicker;
+import com.ngolamquangtin.appdatvexemphim.ServiceUpdateStatusTicker;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
 import java.util.Calendar;
@@ -36,7 +36,8 @@ import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
-    AlarmManager alarmManager;
+    SharedPreferences sharedPreferences;
+    AlarmManager alarmManager, alarmManagerUpdateTicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +50,30 @@ public class SplashActivity extends AppCompatActivity {
 
         startServieNotifyTicker();
 
+        startServiceUpdateStatusTicker();
+
         getToken();
+
+        changeLocale();
 
         new PrefetchData().execute();
     }
 
+    public void startServiceUpdateStatusTicker(){
+        Intent intent = new Intent(SplashActivity.this, ServiceUpdateStatusTicker.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(SplashActivity.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManagerUpdateTicker.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), 60000, pendingIntent);
+    }
+
     public void init(){
+        sharedPreferences = getSharedPreferences("datalogin", Context.MODE_PRIVATE);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
         Sprite doubleBounce = new RotatingCircle();
         progressBar.setIndeterminateDrawable(doubleBounce);
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManagerUpdateTicker = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
 
     public void startServieNotifyTicker() {
@@ -74,7 +88,17 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                String tokenMessage = task.getResult();
+
                addNewTokenClient(tokenMessage);
+            }
+        });
+
+        FirebaseMessaging.getInstance().subscribeToTopic("NewMovie").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.getException() != null){
+                    Log.d("errorTopicFirebase: ", task.getException().getMessage());
+                }
             }
         });
     }
@@ -105,6 +129,15 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    public void changeLocale(){
+        String currentCodeLanguae = sharedPreferences.getString("currentLanguae", "");
+
+        if(!currentCodeLanguae.isEmpty()){
+            Util.changeLocale(SplashActivity.this, currentCodeLanguae);
+        }
 
     }
 

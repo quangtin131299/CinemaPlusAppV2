@@ -65,7 +65,7 @@ public class FragmentTicker extends Fragment {
         String iduser = getIdCustomer();
         Service service = RetrofitUtil.getService(getActivity());
 
-        Call<List<TicketV2>> listCall = service.getListTicker(tempngay,  Integer.parseInt(iduser));
+        Call<List<TicketV2>> listCall = service.getListTicker(tempngay, Integer.parseInt(iduser));
         listCall.enqueue(new Callback<List<TicketV2>>() {
             @Override
             public void onResponse(Call<List<TicketV2>> call, Response<List<TicketV2>> response) {

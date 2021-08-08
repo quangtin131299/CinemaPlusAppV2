@@ -165,6 +165,10 @@ public interface Service {
     @PUT("authencation/updatepassword")
     @FormUrlEncoded()
     Call<MessageResponse> updatePassWord(@Field("idCustomer") Integer idCustomer, @Field("newPass") String newPassWord);
+
+    @PUT("tickets/gettickerexpired")
+    @FormUrlEncoded
+    Call<MessageResponse> updateStausExpiredTicker(@Field("idCustomer") int idCustomer, @Field("currentTime") String currentTime, @Field("currentDate") String currentDate);
 }
 
 

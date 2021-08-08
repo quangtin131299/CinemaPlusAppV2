@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.media.RingtoneManager;
 import android.os.Build;
@@ -45,6 +46,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Util {
 
@@ -340,10 +342,15 @@ public class Util {
 
         Date dateBooking = timeBooking.getTime();
         Date dateCurrent = currentTime.getTime();
+//
+        long differenceInMilliSeconds;
+//
 
-
-        long differenceInMilliSeconds
-                = Math.abs(dateCurrent.getTime() - dateBooking.getTime());
+        if(dateBooking.getTime() >= dateCurrent.getTime()){
+            differenceInMilliSeconds = Math.abs(dateBooking.getTime() - dateCurrent.getTime());
+        }else{
+            differenceInMilliSeconds = Math.abs( dateCurrent.getTime() - dateBooking.getTime());
+        }
 
 
         long differenceInHours
@@ -364,6 +371,37 @@ public class Util {
         calResult.set(Calendar.SECOND, (int) differenceInSeconds);
 
         return calResult;
+    }
+
+    public static void changeLocale(Context context, String lang){
+        Locale locale = new Locale(lang);
+
+        Locale.setDefault(locale);
+
+        Configuration configuration = context.getResources().getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
+            configuration.setLocale(locale);
+        } else{
+            configuration.locale=locale;
+        }
+
+        context.getResources().updateConfiguration(configuration,context.getResources().getDisplayMetrics());
+
+    }
+
+    public static int compareDate(Calendar cal1, Calendar cal2){
+        int date1 = cal1.get(Calendar.DAY_OF_YEAR);
+        int year1 = cal1.get(Calendar.YEAR);
+
+        int date2 = cal2.get(Calendar.DAY_OF_YEAR);
+        int year2 = cal2.get(Calendar.YEAR);
+
+        if(date1 == date2 && year1 == year2){
+            return 0;
+        }
+
+        return 1;
     }
 
 

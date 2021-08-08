@@ -23,6 +23,7 @@ import com.astritveliu.boom.Boom;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.ngolamquangtin.appdatvexemphim.Activity.DetailCinemaActivity;
 import com.ngolamquangtin.appdatvexemphim.DTO.Cinema;
 import com.ngolamquangtin.appdatvexemphim.R;
@@ -101,7 +102,7 @@ public class CinemaNearMeAdapter extends RecyclerView.Adapter<CinemaNearMeAdapte
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         CardView cardcinema;
-        ImageView imgCnema;
+        RoundedImageView imgCnema;
         TextView txtNameCinema, txtDistance;
 
         public ViewHolder(@NonNull  View itemView) {

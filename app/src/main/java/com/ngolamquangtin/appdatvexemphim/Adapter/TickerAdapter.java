@@ -21,6 +21,8 @@ import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class TickerAdapter extends BaseAdapter {
 
@@ -76,6 +78,8 @@ public class TickerAdapter extends BaseAdapter {
             viewHolder.txtTenrap = convertView.findViewById(R.id.txtTenrap);
             viewHolder.txtTenPhim = convertView.findViewById(R.id.txtTenPhim);
             viewHolder.txtTenPhong = convertView.findViewById(R.id.txtTenPhong);
+            viewHolder.txtToday = convertView.findViewById(R.id.txttoday);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -112,7 +116,25 @@ public class TickerAdapter extends BaseAdapter {
 
             if (time != null) {
                 viewHolder.txtNgayDatVaThoiGian.setText(Util.formatDateServerToClient(ticket.getNgayDat()) + " " + Util.formatTime(time.getGio()));
+
+                String [] partialDate = ticket.getNgayDat().split("-");
+
+                Calendar dateBooking = Calendar.getInstance();
+
+                dateBooking.set(Calendar.DAY_OF_MONTH, Integer.parseInt(partialDate[2]));
+                dateBooking.set(Calendar.MONTH, Integer.parseInt(partialDate[1]));
+                dateBooking.set(Calendar.YEAR, Integer.parseInt(partialDate[0]));
+
+                Calendar currentDate = Calendar.getInstance();
+                currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
+                
+                if(Util.compareDate(dateBooking, currentDate) == 0){
+                    viewHolder.txtToday.setVisibility(View.VISIBLE);
+                }else{
+                    viewHolder.txtToday.setVisibility(View.INVISIBLE);
+                }
             }
+
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +165,7 @@ public class TickerAdapter extends BaseAdapter {
                  txtghe,
                  txtTenrap,
                  txtNgayDatVaThoiGian,
+                    txtToday ,
                  txtTenPhong;
     }
 }

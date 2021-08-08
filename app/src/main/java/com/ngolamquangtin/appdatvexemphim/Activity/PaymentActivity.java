@@ -310,10 +310,11 @@ public class PaymentActivity extends AppCompatActivity {
         int totalAmount = 0;
 
         if(tickerBook != null && tickerBook.getIdSeats().size() != 0){
+            int tickerPrice = getCurrentPriceTicker();
             int countSeat = tickerBook.getIdSeats().size();
 
             for (int i = 0; i < countSeat ; i++){
-                totalAmount += 45000;
+                totalAmount += tickerPrice;
             }
         }
 
@@ -646,6 +647,23 @@ public class PaymentActivity extends AppCompatActivity {
         super.onPause();
 
         timerPayment.cancel();
+    }
+
+    public int getCurrentPriceTicker(){
+        String [] partialDateBooking = tickerBook.getNgaydat().split("-");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, Integer.parseInt(partialDateBooking[2]));
+        calendar.set(Calendar.MONTH, Integer.parseInt(partialDateBooking[1]));
+        calendar.set(Calendar.YEAR, Integer.parseInt(partialDateBooking[0]));
+
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        if(dayOfWeek >= 2 && dayOfWeek <=6){
+            return 60000;
+        }
+
+        return 110000;
     }
 
     

@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.ngolamquangtin.appdatvexemphim.Activity.HistoryActivity;
+import com.ngolamquangtin.appdatvexemphim.Activity.HomeActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.LoginActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.PasswordChangeActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.UpdateUserActivity;
@@ -37,6 +40,8 @@ import com.ngolamquangtin.appdatvexemphim.Service.Service;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -61,9 +66,42 @@ public class FragmentProfile extends Fragment {
 
         addControls(view);
 
+        updateUILanguae();
+
         addEvents();
 
         return view;
+    }
+
+    public void setCurrentCodeLanguae(String lang){
+//        String currentCodeLanguae = sharedPreferences.getString("currentLanguae", "");
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+//        if(currentCodeLanguae.equals("")){
+//            editor.putString("currentLanguae", Locale.getDefault().toString());
+//        }else{
+            editor.putString("currentLanguae", lang);
+//        }
+
+        editor.apply();
+    }
+
+    public String getCurrentCodeLanguae(){
+        return sharedPreferences.getString("currentLanguae", "");
+    }
+
+    public void updateUILanguae() {
+        String currentCodeLanguae = getCurrentCodeLanguae();
+
+        if(!currentCodeLanguae.isEmpty()){
+            if(getCurrentCodeLanguae().equals("en")){
+                imglocation.setImageResource(R.drawable.ic_america);
+                txtCurrentLanguae.setText(getResources().getString(R.string.languageAmerica));
+            }else{
+                imglocation.setImageResource(R.drawable.ic_vietnam);
+                txtCurrentLanguae.setText(getResources().getString(R.string.languageVN));
+            }
+        }
     }
 
     private void addEvents() {
@@ -75,7 +113,7 @@ public class FragmentProfile extends Fragment {
 
                     startActivity(intentScreenHistory);
                 }else{
-                    showDialogLogin("Bạn chưa đăng nhập !");
+                    showDialogLogin(getResources().getString(R.string.nologged));
                 }
 
             }
@@ -89,7 +127,7 @@ public class FragmentProfile extends Fragment {
 
                     startActivity(i);
                 }else{
-                    showDialogLogin("Bạn chưa đăng nhập !");
+                    showDialogLogin(getResources().getString(R.string.noLogin));
                 }
 
             }
@@ -110,7 +148,7 @@ public class FragmentProfile extends Fragment {
 
                     startActivity(intentToScreenUpdate);
                 } else {
-                    showDialogLogin("Bạn chưa đăng nhập !");
+                    showDialogLogin(getResources().getString(R.string.noLogin));
                 }
 
             }
@@ -119,13 +157,28 @@ public class FragmentProfile extends Fragment {
         contrainchangelanguae.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(txtCurrentLanguae.getText().toString().equals(getResources().getString(R.string.languageVN))){
+
+                if(getCurrentCodeLanguae().equals("vi")){
                     imglocation.setImageResource(R.drawable.ic_america);
                     txtCurrentLanguae.setText(getResources().getString(R.string.languageAmerica));
+                    setCurrentCodeLanguae("en");
+
+                    Util.changeLocale(getActivity(),"en");
                 }else{
                     imglocation.setImageResource(R.drawable.ic_vietnam);
                     txtCurrentLanguae.setText(getResources().getString(R.string.languageVN));
+                    setCurrentCodeLanguae("vi");
+
+                    Util.changeLocale(getActivity(),"vi");
                 }
+
+//                Intent intentReset = new Intent(getActivity(), HomeActivity.class);
+//
+//                startActivity(intentReset);
+//
+//                getActivity().finish();
+                getActivity().finish();
+                startActivity(getActivity().getIntent());
             }
         });
 
@@ -192,8 +245,10 @@ public class FragmentProfile extends Fragment {
         new Boom(contrainUpdatePass);
     }
 
+
+
     private void loadUser() {
-        String hoten = sharedPreferences.getString("hoten", "Chưa đăng nhập");
+        String hoten = sharedPreferences.getString("hoten", getResources().getString(R.string.nologged));
         String imagProfilUri = sharedPreferences.getString("imagProfile", "");
 
         if (hoten.equals(getResources().getString(R.string.nologged))) {
@@ -405,5 +460,6 @@ public class FragmentProfile extends Fragment {
 
         loadUser();
     }
+
 
 }

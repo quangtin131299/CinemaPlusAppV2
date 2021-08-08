@@ -20,16 +20,22 @@
             android:orientation="horizontal"
             android:weightSum="10">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/imgcinema"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
+                android:layout_margin="10dp"
                 android:layout_weight="2.5"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.8"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/contraincontentcinema"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contraincontentcinema"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="7.5"

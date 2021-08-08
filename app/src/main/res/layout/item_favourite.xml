@@ -63,6 +63,7 @@
                         android:ellipsize="end"
                         android:maxLines="6"
                         android:id="@+id/txtmotamovivefavourite"
+                        android:layout_marginRight="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="Mô tả"
@@ -80,7 +81,7 @@
                     <Button
                         android:id="@+id/btndatve"
                         android:textColor="#D8D8D8"
-                        android:text="Dat ve ngay"
+                        android:text="@string/bookingNow"
                         android:background="@drawable/background_btnlogin"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>

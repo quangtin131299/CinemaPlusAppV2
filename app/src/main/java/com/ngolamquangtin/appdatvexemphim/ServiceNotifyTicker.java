@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
 import com.ngolamquangtin.appdatvexemphim.DTO.TicketV2;
@@ -31,6 +32,7 @@ public class ServiceNotifyTicker extends BroadcastReceiver {
         Calendar calendar = Calendar.getInstance();
         Date curentDate = calendar.getTime();
         String tempngay = Util.formatDateClient(Util.getCurrentDate());
+
         SharedPreferences sp = context.getSharedPreferences("datalogin", Context.MODE_PRIVATE);
         String iduser = sp.getString("id", "0");
 
@@ -54,16 +56,18 @@ public class ServiceNotifyTicker extends BroadcastReceiver {
                         calBooking.set(Calendar.MONTH, Integer.parseInt(date[1]));
                         calBooking.set(Calendar.YEAR, Integer.parseInt(date[0]));
 
+
                         calBooking.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
                         calBooking.set(Calendar.MINUTE, Integer.parseInt(time[1]));
                         calBooking.set(Calendar.SECOND, Integer.parseInt(time[2]));
 
                         Calendar calCurrent = Calendar.getInstance();
+                        calCurrent.set(Calendar.MONTH, calCurrent.get(Calendar.MONTH) + 1);
 
                         Calendar calResult = Util.distanceTime(calBooking,calCurrent);
                         int hour = calResult.get(Calendar.HOUR_OF_DAY);
 
-                        if(hour == 0){
+                        if(Util.compareDate(calBooking, calCurrent) == 0 && hour == 0){
                             countTickeTimeComing++;
                         }
                     }
@@ -83,4 +87,6 @@ public class ServiceNotifyTicker extends BroadcastReceiver {
             }
         });
     }
+
+
 }

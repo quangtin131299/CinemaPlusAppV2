@@ -33,7 +33,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="9"
                     android:background="@drawable/background_textviewaccountandpass"
-                    android:hint="Tìm kiếm phim"
+                    android:hint="@string/searchMovie"
                     android:paddingLeft="9dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#707070"
@@ -81,7 +81,7 @@
                         android:textSize="18sp"
                         android:textColor="#E7E7E7"
                         android:textAlignment="center"
-                        android:text="Bạn chưa bật định vị"
+                        android:text="@string/noEnableGeo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="5dp"
-                        android:text="Rạp gần bạn"
+                        android:text="@string/cinemaNearYou"
                         android:textColor="#E7E7E7"
                         android:textSize="20sp"
                         android:textStyle="bold"

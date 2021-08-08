@@ -78,6 +78,7 @@ public class FragmentMovie extends Fragment {
     MovieViewPagerAdapter movieViewPagerAdapter;
     TextView txtKeyWork;
     ImageButton btnLocation;
+    TextView txtMessLocation;
 
     @Nullable
     @Override
@@ -104,8 +105,11 @@ public class FragmentMovie extends Fragment {
     public void updateBtnLocation() {
         if(Util.checkEnablePermisson(getActivity())){
             if(Util.checkLocationTurnOn(getActivity())){
+                txtMessLocation.setVisibility(View.INVISIBLE);
                 setCurrentLocation();
                 btnLocation.setImageResource(R.drawable.ic_turnonlocation);
+            }else{
+                txtMessLocation.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -150,11 +154,14 @@ public class FragmentMovie extends Fragment {
             @Override
             public void onClick(View view) {
                 if(Util.checkEnablePermisson(getActivity())){
+                    txtMessLocation.setVisibility(View.INVISIBLE);
+
                     if(Util.checkLocationTurnOn(getActivity())){
                         setCurrentLocation();
 
                         btnLocation.setImageResource(R.drawable.ic_turnonlocation);
                     }else{
+
                         Util.turnOnLocation(getActivity());
 
                         setCurrentLocation();
@@ -176,6 +183,8 @@ public class FragmentMovie extends Fragment {
                 startActivity(intentToScreenSearch);
             }
         });
+
+        new Boom(btnLocation);
     }
 
     private void addControls(View view) {
@@ -189,8 +198,9 @@ public class FragmentMovie extends Fragment {
         btnLocation = view.findViewById(R.id.btnlocation);
         progressing = view.findViewById(R.id.progressing);
         movieViewPagerAdapter = new MovieViewPagerAdapter(getFragmentManager());
+        txtMessLocation = view.findViewById(R.id.txtmesslocation);
 
-        new Boom(btnLocation);
+
     }
 
     public void prepearViewPager() {
@@ -205,6 +215,8 @@ public class FragmentMovie extends Fragment {
     }
 
     public void setCurrentLocation() {
+        txtMessLocation.setVisibility(View.INVISIBLE);
+
         progressing.playAnimation();
         progressing.setVisibility(View.VISIBLE);
 
@@ -256,6 +268,9 @@ public class FragmentMovie extends Fragment {
 
                 if(response.body() != null && response.body().size() != 0){
                     cinemaNearMe.addAll(response.body());
+                }else {
+                    txtMessLocation.setVisibility(View.VISIBLE);
+                    txtMessLocation.setText(getResources().getString(R.string.notCinemaNearYou));
                 }
 
                 cinemaNearMeAdapter.notifyDataSetChanged();

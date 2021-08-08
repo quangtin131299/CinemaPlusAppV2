@@ -359,7 +359,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="360dp"
+                        android:layout_width="320dp"
                         android:layout_margin="15dp"
                         android:layout_height="200dp"
                         app:cardCornerRadius="20dp"
@@ -374,8 +374,6 @@
                             android:scaleType="fitXY" />
 
                     </androidx.cardview.widget.CardView>
-
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

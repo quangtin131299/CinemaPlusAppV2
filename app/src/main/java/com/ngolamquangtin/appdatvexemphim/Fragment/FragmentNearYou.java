@@ -170,9 +170,9 @@ public class FragmentNearYou extends Fragment {
                     movieSelect = movie;
 
                     txtNameMovie.setText(movie.getTenphim());
-                    txtOpenDate.setText("Khởi chiếu ngày: " + Util.formatDateServerToClient(movie.getNgayKhoiChieu()));
+                    txtOpenDate.setText(getResources().getString(R.string.openDay) + " " + Util.formatDateServerToClient(movie.getNgayKhoiChieu()));
 
-                    txtDuration.setText("Thời gian: " + movie.getThoigian() +" phút");
+                    txtDuration.setText(getResources().getString(R.string.duration) + " " + movie.getThoigian() +" phút");
                 }
             }
         });
