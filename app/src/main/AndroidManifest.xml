@@ -88,10 +88,16 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".ServiceNotifyTicker"/>
-        <receiver android:name=".ServiceUpdateStatusTicker"/>
-
-
+        <receiver android:name=".ServiceNotifyTicker">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".ServiceUpdateStatusTicker">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

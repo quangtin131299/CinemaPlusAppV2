@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.ProgressBar;
 
@@ -18,6 +19,8 @@ import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.RotatingCircle;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
 import com.ngolamquangtin.appdatvexemphim.DTO.TokenClient;
@@ -27,8 +30,6 @@ import com.ngolamquangtin.appdatvexemphim.Service.Service;
 import com.ngolamquangtin.appdatvexemphim.ServiceNotifyTicker;
 import com.ngolamquangtin.appdatvexemphim.ServiceUpdateStatusTicker;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
-
-import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,7 +64,7 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = new Intent(SplashActivity.this, ServiceUpdateStatusTicker.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(SplashActivity.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmManagerUpdateTicker.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), 60000, pendingIntent);
+        alarmManagerUpdateTicker.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 60000, pendingIntent);
     }
 
     public void init(){
@@ -80,7 +81,7 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = new Intent(SplashActivity.this, ServiceNotifyTicker.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(SplashActivity.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), 60000, pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 60000, pendingIntent);
     }
 
     public void getToken(){
@@ -140,7 +141,6 @@ public class SplashActivity extends AppCompatActivity {
         }
 
     }
-
 
     class PrefetchData extends AsyncTask<Void, Void, Void> {
 

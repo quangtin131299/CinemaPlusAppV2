@@ -241,11 +241,10 @@ public class PaymentActivity extends AppCompatActivity {
                     if(rdoMethodPaytMoMo.isChecked()){
                         amount = String.valueOf(calulatorTotalAmount());
 
-                        showDialogProcess();
-
 //                        requestPayment();
 
                         processTickerBooking(PAYMENT_ONLINE_MOMO);
+
                     }else{
 
                     }
@@ -322,6 +321,8 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void processTickerBooking(int methoddPay) {
+        showDialogProcess();
+
         if (tickerBook != null) {
             if (tickerBook.getIdSeats() != null
                         && tickerBook.getIdSeats().size() != 0
@@ -343,23 +344,26 @@ public class PaymentActivity extends AppCompatActivity {
                         if(statusCode == 1){
                             dismissDialogProcess();
 
-                            showDiaLogSuccess("Đặt vé thành công !");
+                            showDiaLogSuccess(getResources().getString(R.string.bookingSuccess));
 
                         }else{
                             dismissDialogProcess();
-                            showDialogMessageError("Đặt vé thất bại !");
+                            
+                            showDialogMessageError(getResources().getString(R.string.bookingFail));
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Integer> call, Throwable t) {
                         dismissDialogProcess();
-                        showDialogMessageError("Đặt vé thất bại !");
+
+                        showDialogMessageError(getResources().getString(R.string.bookingFail));
                     }
                 });
             } else {
                 dismissDialogProcess();
-                showDialogMessageError("Thong tin dat ve khong hop le !");
+
+                showDialogMessageError(getResources().getString(R.string.inforBookingInvaild));
             }
 
         }

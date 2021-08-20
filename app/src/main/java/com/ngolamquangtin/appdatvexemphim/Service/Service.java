@@ -169,6 +169,9 @@ public interface Service {
     @PUT("tickets/gettickerexpired")
     @FormUrlEncoded
     Call<MessageResponse> updateStausExpiredTicker(@Field("idCustomer") int idCustomer, @Field("currentTime") String currentTime, @Field("currentDate") String currentDate);
+
+    @GET("movies/getnewmovie")
+    Call<Movie> getNewMovie(@Query("idMovie") int idMovie);
 }
 
 

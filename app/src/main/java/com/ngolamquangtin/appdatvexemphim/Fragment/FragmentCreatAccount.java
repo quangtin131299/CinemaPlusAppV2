@@ -23,6 +23,7 @@ import com.astritveliu.boom.Boom;
 import com.google.android.material.textfield.TextInputLayout;
 import com.ngolamquangtin.appdatvexemphim.Activity.LoginActivity;
 import com.ngolamquangtin.appdatvexemphim.Activity.OTPActivity;
+import com.ngolamquangtin.appdatvexemphim.Activity.UpdateUserActivity;
 import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
 import com.ngolamquangtin.appdatvexemphim.DTO.CustomerV2;
 import com.ngolamquangtin.appdatvexemphim.R;
@@ -484,9 +485,12 @@ public class FragmentCreatAccount extends Fragment {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
                     txtdate.setText(simpleDateFormat.format(temp.getTime()));
+
+                    edlayoutbirthday.setError(null);
                 }else{
-                    String mess = "Ngày sinh không hợp lệ ";
-                    showDialogErrorMessage(mess);
+                    String mess = getResources().getString(R.string.invailBirthday);
+
+                    Util.ShowToastErrorMessage(getActivity(), mess);
 
                     edlayoutbirthday.setError(mess);
                 }

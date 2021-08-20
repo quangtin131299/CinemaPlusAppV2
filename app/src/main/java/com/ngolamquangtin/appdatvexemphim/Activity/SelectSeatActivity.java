@@ -2,6 +2,7 @@ package com.ngolamquangtin.appdatvexemphim.Activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +25,7 @@ import com.ngolamquangtin.appdatvexemphim.DTO.SeatV2;
 import com.ngolamquangtin.appdatvexemphim.DTO.TickerBook;
 import com.ngolamquangtin.appdatvexemphim.R;
 import com.ngolamquangtin.appdatvexemphim.Service.Service;
+import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,7 +42,7 @@ public class SelectSeatActivity extends AppCompatActivity {
     ArrayList<SeatV2> seatBookings = new ArrayList<>();
     ArrayList<LinearLayout> arrlinear = new ArrayList<>();
     ArrayList<SeatV2> seatSelects = new ArrayList<>();
-    TextView txttime, txtsophong, txttenphim, txtCountSeat;
+    TextView txttime, txtsophong, txttenphim;
     TickerBook tickerBook;
     Button btnthanhtoan, btnBackTo;
     ImageView imgtryvet;
@@ -49,6 +50,7 @@ public class SelectSeatActivity extends AppCompatActivity {
     Handler handler;
     RoomV2 currentRoom;
     Dialog dialogProcessing, dialogError;
+    ArrayList<ImageView> seatTraces = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,19 +100,88 @@ public class SelectSeatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ImageView imageView1 = (ImageView) v;
-                if (imageView1.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.seattrong).getConstantState()) {
-                    if (imageView1.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.seatchon).getConstantState()) {
-                        imageView1.setImageResource(R.drawable.seattrong);
-                    } else {
-                        seatSelects.add((SeatV2) imageView1.getTag());
 
-                        imageView1.setImageResource(R.drawable.seatchon);
+                LinearLayout linearParent = (LinearLayout) v.getParent();
 
-                    }
-                } else if (imageView1.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.seatdadat).getConstantState()) {
-                    Toast.makeText(SelectSeatActivity.this, "Ghế đã đặt rồi", Toast.LENGTH_SHORT).show();
+                int countSeatChild = linearParent.getChildCount();
+                int countSeatTrace = seatTraces.size();
+
+                if (imageView1.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.seattrong, null).getConstantState()) {
+                    imageView1.setImageResource(R.drawable.seatchon);
+
+                    seatSelects.add((SeatV2) imageView1.getTag());
+//                    if (countSeatTrace == 0) {
+//                        seatSelects.add((SeatV2) imageView1.getTag());
+//
+//                        imageView1.setImageResource(R.drawable.seatchon);
+//
+//                        seatTraces.add(imageView1);
+//                    } else {
+//                        imageView1.setImageResource(R.drawable.seatchon);
+//
+//                        int position = getIndexOfSeat(linearParent, seatTraces.get(countSeatTrace - 1));
+//
+//                        ImageView seatPrev = null;
+//                        ImageView seatNext = null;
+//
+//                        if (position >= 0) {
+//                            View view = linearParent.getChildAt(position - 1);
+//
+//                            if (view instanceof ImageView) {
+//                                seatPrev = (ImageView) view;
+//                            }
+//                        }
+//
+//                        if (position <= countSeatChild - 1) {
+//                            View view = linearParent.getChildAt(position + 1);
+//
+//                            if (view instanceof ImageView) {
+//                                seatNext = (ImageView) view;
+//                            }
+//                        }
+//
+//                        if (seatNext.equals(imageView1)) {
+//                            seatSelects.add((SeatV2) imageView1.getTag());
+//
+//                            imageView1.setImageResource(R.drawable.seatchon);
+//
+//                            seatTraces.add(imageView1);
+//
+//                            return;
+//
+//                        }else if(seatPrev.equals(imageView1)){
+//                            seatSelects.add((SeatV2) imageView1.getTag());
+//
+//                            imageView1.setImageResource(R.drawable.seatchon);
+//
+//                            seatTraces.add(imageView1);
+//
+//                            return;
+//                        }else {
+//                            Util.ShowToastInforMessage(SelectSeatActivity.this, "Bạn phải đặt ghế liên tiếp");
+//                            imageView1.setImageResource(R.drawable.seattrong);
+//
+//                            return;
+//                        }
+//                    }
+
+
+//                    if(seatPrev != null && seatNext != null){
+//
+//                    }
+
+//                    if (imageView1.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.seatchon).getConstantState()) {
+//                        imageView1.setImageResource(R.drawable.seattrong);
+//                    } else {
+
+//                    }
+                } else if (imageView1.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.seatdadat, null).getConstantState()) {
+                    Util.ShowToastInforMessage(SelectSeatActivity.this, getResources().getString(R.string.infoSeatBooked));
+
                 } else {
                     deleteSeatBooking((SeatV2) imageView1.getTag());
+
+                    deleteSeatsTrace(imageView1);
 
                     imageView1.setImageResource(R.drawable.seattrong);
                 }
@@ -118,6 +189,23 @@ public class SelectSeatActivity extends AppCompatActivity {
         });
 
         new Boom(seat);
+    }
+
+
+    public int getIndexOfSeat(LinearLayout linearParent, ImageView seat) {
+        int count = linearParent.getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            View view = linearParent.getChildAt(i);
+
+            if (view instanceof ImageView) {
+                if (((ImageView) linearParent.getChildAt(i)).equals(seat)) {
+                    return i;
+                }
+            }
+        }
+
+        return 0;
     }
 
 
@@ -171,7 +259,7 @@ public class SelectSeatActivity extends AppCompatActivity {
             public void handleMessage(@NonNull @NotNull Message msg) {
                 if (msg.what == 1) {
                     dismissDialogProcessing();
-                    
+
                     getSeatsBooking(currentRoom.getId());
                 } else if (msg.what == 0) {
                     int idRoom = msg.arg1;
@@ -294,7 +382,7 @@ public class SelectSeatActivity extends AppCompatActivity {
 
 //                    if (tempimage.getTag() != null) {
 
-                    if (tempseat.getId() == Integer.parseInt(String.valueOf(((SeatV2)tempimage.getTag()).getId()))) {
+                    if (tempseat.getId() == Integer.parseInt(String.valueOf(((SeatV2) tempimage.getTag()).getId()))) {
 
                         if (tempseat.getTrangThai().equals("Đã đặt")) {
 
@@ -419,6 +507,13 @@ public class SelectSeatActivity extends AppCompatActivity {
 //            handler.removeCallbacks(runnable);
     }
 
+    public void deleteSeatsTrace(ImageView img) {
+        if (seatTraces != null && seatTraces.size() != 0) {
+            int indexOfIdSelectUnSelect = seatTraces.indexOf(img);
+            seatTraces.remove(indexOfIdSelectUnSelect);
+        }
+    }
+
     private void deleteSeatBooking(SeatV2 idSeatUnselect) {
         if (seatSelects != null && seatSelects.size() != 0) {
             int indexOfIdSelectUnSelect = seatSelects.indexOf(idSeatUnselect);
@@ -463,7 +558,7 @@ public class SelectSeatActivity extends AppCompatActivity {
         }
     }
 
-    public String getNameMovie(){
+    public String getNameMovie() {
         Intent intentScreenChooseSession = getIntent();
 
         if (intentScreenChooseSession.hasExtra("TEN_PHIM")) {
@@ -483,7 +578,7 @@ public class SelectSeatActivity extends AppCompatActivity {
         return "";
     }
 
-    public String getImageMovie(){
+    public String getImageMovie() {
         Intent intentScreenChooseSession = getIntent();
 
         if (intentScreenChooseSession.hasExtra("IMAGE_MOVIE")) {
@@ -493,14 +588,18 @@ public class SelectSeatActivity extends AppCompatActivity {
         return "";
     }
 
-    public int getTime(){
+    public int getTime() {
         Intent intenScreenChooseSession = getIntent();
 
-        if(intenScreenChooseSession.hasExtra("TIME_MOVIE")){
+        if (intenScreenChooseSession.hasExtra("TIME_MOVIE")) {
             return intenScreenChooseSession.getIntExtra("TIME_MOVIE", 0);
         }
 
         return 0;
+    }
+
+    public void openSeatReserve(){
+
     }
 
 }

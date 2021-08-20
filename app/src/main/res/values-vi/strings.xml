@@ -104,6 +104,14 @@
     <string name="searchMovie">Tim kiếm phim</string>
     <string name="today">Hôm nay</string>
     <string name="room">Phòng</string>
-
+    <string name="infoSeatBooked">Ghế đã đặt rồi</string>
+    <string name="commentEmpty">Bạn chưa viết bình luận</string>
+    <string name="newMovie">Phim mới</string>
+    <string name="invailBirthday">Ngày sinh không hợp lệ</string>
+    <string name="updateInfoCustomer">Cập nhật thông tin</string>
+    <string name="informationCustomer">Thông tin kháchh hàng</string>
+    <string name="bookingSuccess">Đặt vé thành công</string>
+    <string name="bookingFail">Đặt vé thành công</string>
+    <string name="inforBookingInvaild">Thông tin đặt vé không hợp lệ</string>
 
 </resources>

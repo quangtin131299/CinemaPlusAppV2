@@ -1,5 +1,6 @@
 package com.ngolamquangtin.appdatvexemphim.Activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -8,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -18,28 +21,37 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ngolamquangtin.appdatvexemphim.Adapter.MainAdapter;
+import com.ngolamquangtin.appdatvexemphim.Config.RetrofitUtil;
+import com.ngolamquangtin.appdatvexemphim.DTO.Movie;
 import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentCinema;
+import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentDialogNewMovie;
 import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentFavourite;
 import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentMovie;
 import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentProfile;
 import com.ngolamquangtin.appdatvexemphim.Fragment.FragmentTicker;
 import com.ngolamquangtin.appdatvexemphim.NetWorkChange;
 import com.ngolamquangtin.appdatvexemphim.R;
+import com.ngolamquangtin.appdatvexemphim.Service.Service;
 import com.ngolamquangtin.appdatvexemphim.Util.Util;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
     final int REQUEST_CODE_LOCALTION_PERMISSION = 1;
 
+    Handler handler;
     NetWorkChange netWorkChange;
     MainAdapter mainAdapter;
     ViewPager viewPager;
     ArrayList<String> arrayTilte = new ArrayList<>();
     BottomNavigationView bottomNavigationViewHome;
     SharedPreferences sharedPreferences;
-    String tokenMessage = "";
+    Dialog dialogNewMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +64,75 @@ public class HomeActivity extends AppCompatActivity {
 
         addControl();
 
+        registerHandler();
+
+        showDialogNewMovie();
+
         addEvent();
 
         prepearViewPager(viewPager, arrayTilte);
+    }
+
+    public void registerHandler() {
+        handler = new Handler(){
+            @Override
+            public void handleMessage(@NonNull  Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what){
+                    case 1:
+                        FragmentDialogNewMovie dialogNewMovie = new FragmentDialogNewMovie();
+
+                        dialogNewMovie.setNewMovie((Movie) msg.obj);
+
+                        dialogNewMovie.show(getSupportFragmentManager(), "DialogNewMovie");
+
+                        deleteNewMovie();
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+    }
+
+    public void deleteNewMovie(){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("isNotifyNewMovie", "");
+
+        editor.apply();
+    }
+
+    public void showDialogNewMovie() {
+        String idMovie =sharedPreferences.getString("isNotifyNewMovie", "");
+
+        if(!idMovie.isEmpty()){
+            loadNewMovie(Integer.parseInt(idMovie));
+        }
+    }
+
+    public void loadNewMovie(int idMovie){
+        Service service = RetrofitUtil.getService(HomeActivity.this);
+        Call<Movie> call = service.getNewMovie(idMovie);
+        call.enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if(response.body() != null){
+                    Message msg = new Message();
+                    msg.what = 1;
+                    msg.obj = response.body();
+
+                    handler.sendMessage(msg);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void registerBroadCast() {
@@ -97,6 +175,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void addControl() {
+
+        dialogNewMovie = new Dialog(HomeActivity.this);
         viewPager = findViewById(R.id.viewpagerhome);
         //set để lưu lại các trang
         viewPager.setOffscreenPageLimit(4);

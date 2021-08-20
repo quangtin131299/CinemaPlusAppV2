@@ -55,7 +55,8 @@ public class UpdateUserActivity extends AppCompatActivity {
             edtname.setText(i.getStringExtra("HOTEN"));
 //            edtemail.setText(i.getStringExtra("EMAIL"));
             edtphone.setText(i.getStringExtra("SDT"));
-            edtdate.setText(i.getStringExtra("NGAYSINH"));
+
+            edtdate.setText(Util.formatDateServerToClient(i.getStringExtra("NGAYSINH")));
         }
     }
 
@@ -80,7 +81,7 @@ public class UpdateUserActivity extends AppCompatActivity {
 
         edtdate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 chooseDate();
             }
         });
@@ -93,6 +94,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         final int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         int month = Calendar.getInstance().get(Calendar.MONTH);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(UpdateUserActivity.this, R.style.DatePic, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -104,11 +106,12 @@ public class UpdateUserActivity extends AppCompatActivity {
                     calendar.set(Calendar.YEAR, year);
                     edtdate.setText(simpleDateFormat.format(calendar.getTime()));
                 } else {
-                    showDialogError("Ngày sinh không hợp lệ");
+                    Util.ShowToastErrorMessage(UpdateUserActivity.this, getResources().getString(R.string.invailBirthday));
                 }
 
             }
         }, currentYear, month, day);
+
         datePickerDialog.show();
     }
 

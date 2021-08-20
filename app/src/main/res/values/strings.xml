@@ -106,5 +106,13 @@
     <string name="searchMovie">Search movie</string>
     <string name="today">Today</string>
     <string name="room">Room</string>
-
+    <string name="infoSeatBooked">Seats already booked</string>
+    <string name="commentEmpty">Comment is empty</string>
+    <string name="newMovie">New Movie</string>
+    <string name="invailBirthday">Invalid birthday</string>
+    <string name="updateInfoCustomer">Update Information</string>
+    <string name="informationCustomer">Information customer</string>
+    <string name="bookingSuccess">Booking success</string>
+    <string name="bookingFail">Booking Fail</string>
+    <string name="inforBookingInvaild">Information booking invalid</string>
 </resources>

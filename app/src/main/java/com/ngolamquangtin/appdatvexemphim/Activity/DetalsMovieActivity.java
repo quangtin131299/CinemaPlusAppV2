@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astritveliu.boom.Boom;
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.ngolamquangtin.appdatvexemphim.Adapter.CinemaOfMovieAdapter;
 import com.ngolamquangtin.appdatvexemphim.Adapter.CommentAdapter;
@@ -67,6 +69,7 @@ public class DetalsMovieActivity extends AppCompatActivity {
     ArrayList<Cinema> cinemas;
     ArrayList<Comment> comments;
     CustomerV2 customer;
+    Dialog dialogProcessComment, dialogErrorComment;
 
 
     @Override
@@ -85,14 +88,7 @@ public class DetalsMovieActivity extends AppCompatActivity {
         addEvents();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-        loadDetailMovie();
-
-        isMovieNowShowing();
-    }
 
     private void isMovieNowShowing() {
         if(movie != null){
@@ -194,6 +190,11 @@ public class DetalsMovieActivity extends AppCompatActivity {
 
                 Button btnSubmitComent = dialogComment.findViewById(R.id.btncomment);
                 EditText edtComment = dialogComment.findViewById(R.id.txtcomment);
+                ImageView imgAvatar = dialogComment.findViewById(R.id.idimgapersonal);
+
+                if(customer.getAnhDaiDien() != null && !customer.getAnhDaiDien().isEmpty()){
+                    Glide.with(DetalsMovieActivity.this).load(customer.getAnhDaiDien()).into(imgAvatar);
+                }
 
                 btnSubmitComent.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -201,11 +202,17 @@ public class DetalsMovieActivity extends AppCompatActivity {
                         if(checklogin() == 1){
                             String comment = edtComment.getText().toString().trim();
 
+                            if(comment.isEmpty()){
+                                Util.ShowToastErrorMessage(DetalsMovieActivity.this, getResources().getString(R.string.commentEmpty));
+                                return;
+                            }
+
                             Comment newComment = new Comment();
 
                             if(customer != null){
                                 newComment.setIdCustomer(customer.getId());
                                 newComment.setNameCustomer(customer.getHoTen());
+                                newComment.setAvatar(customer.getAnhDaiDien());
                             }
 
                             Calendar calendar = Calendar.getInstance();
@@ -213,13 +220,13 @@ public class DetalsMovieActivity extends AppCompatActivity {
                             int monthdefault = calendar.get(Calendar.MONTH)+1;
                             int yeardefault = calendar.get(Calendar.YEAR);
 
-                            newComment.setDatePost( Util.formatDateToServerFoCalendar(yeardefault, monthdefault, daydefault));
+                            newComment.setDatePost(Util.formatDateToServerFoCalendar(yeardefault, monthdefault, daydefault));
                             newComment.setIdMovie(movie.getId());
 
                             newComment.setContent(comment);
 
-
                             addNewComment(newComment);
+
                         }else{
                             createDialog(getResources().getString(R.string.noLogin));
                         }
@@ -227,7 +234,7 @@ public class DetalsMovieActivity extends AppCompatActivity {
                     }
                 });
 
-                commentAdapter = new CommentAdapter(dialogComment.getContext(), comments);
+                commentAdapter = new CommentAdapter(dialogComment.getContext(), comments, imgAvatar);
                 lvComments = dialogComment.findViewById(R.id.lvcomment);
 
                 lvComments.setAdapter(commentAdapter);
@@ -237,7 +244,12 @@ public class DetalsMovieActivity extends AppCompatActivity {
                 if(movie.getId() != null){
                     loadCommentOfMovieId(movie.getId());
                 }
+
+                new Boom(btnSubmitComent);
+
+                Util.dissableBottomDialogDragging(dialogComment);
             }
+
         });
 
         new Boom(btnComment);
@@ -268,6 +280,8 @@ public class DetalsMovieActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("datalogin", Context.MODE_PRIVATE);
         youTubePlayerView = findViewById(R.id.youtube_player_view);
         comments = new ArrayList<>();
+        dialogProcessComment = new Dialog(DetalsMovieActivity.this);
+        dialogErrorComment = new Dialog(DetalsMovieActivity.this);
     }
 
     public int checklogin() {
@@ -295,21 +309,28 @@ public class DetalsMovieActivity extends AppCompatActivity {
     }
 
     public void addNewComment(Comment newComment){
+        showDialogProcessComment();
+
         Service service = RetrofitUtil.getService(DetalsMovieActivity.this);
         Call<MessageResponse> call = service.addNewComment(newComment);
         call.enqueue(new Callback<MessageResponse>() {
             @Override
             public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                dismissDialogProcessComment();
+
                 MessageResponse messRes = response.body();
 
                 if(messRes != null && messRes.getStatusCode() == 1){
                     addCommentToListView(newComment);
+                }else{
+                    showDialogErrorComment();
                 }
             }
 
             @Override
             public void onFailure(Call<MessageResponse> call, Throwable t) {
 
+                dismissDialogProcessComment();
             }
         });
 
@@ -363,12 +384,12 @@ public class DetalsMovieActivity extends AppCompatActivity {
     }
 
     public void setCustomer(){
-        SharedPreferences spInfoCustomer = getSharedPreferences("datalogin", MODE_PRIVATE);
+//        SharedPreferences spInfoCustomer = getSharedPreferences("datalogin", MODE_PRIVATE);
 
         if(checklogin() == 1){
             customer = new CustomerV2();
             customer.setHoTen(sharedPreferences.getString("hoten", ""));
-            customer.setAnhDaiDien(sharedPreferences.getString("anhdaidien", ""));
+            customer.setAnhDaiDien(sharedPreferences.getString("imagProfile", ""));
             customer.setEmail(sharedPreferences.getString("email", ""));
             customer.setId(Integer.valueOf(sharedPreferences.getString("id", "")));
         }
@@ -407,6 +428,55 @@ public class DetalsMovieActivity extends AppCompatActivity {
         }
 
         return 0;
+    }
+
+    public void showDialogProcessComment(){
+        if(dialogProcessComment != null){
+            dialogProcessComment.setContentView(R.layout.dialog_processing);
+
+            dialogProcessComment.getWindow().setBackgroundDrawableResource(R.color.transparent);
+
+            dialogProcessComment.show();
+        }
+    }
+
+    public void dismissDialogProcessComment(){
+        if(dialogProcessComment != null && dialogProcessComment.isShowing()){
+            dialogProcessComment.dismiss();
+        }
+    }
+
+    public void showDialogErrorComment(){
+        if(dialogErrorComment != null){
+            dialogErrorComment.setContentView(R.layout.dialog_failed);
+
+            dialogErrorComment.getWindow().setBackgroundDrawableResource(R.color.transparent);
+
+            Button btnOk = dialogErrorComment.findViewById(R.id.btnOK);
+            TextView txtMess = dialogErrorComment.findViewById(R.id.txtmess);
+
+            txtMess.setText("Bình luận của bạn hông hợp lệ");
+
+            btnOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogErrorComment.dismiss();
+                }
+            });
+
+            new Boom(btnOk);
+
+            dialogErrorComment.show();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        loadDetailMovie();
+
+        isMovieNowShowing();
     }
 }
 
