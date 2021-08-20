@@ -42,7 +42,7 @@ public class SelectSeatActivity extends AppCompatActivity {
     ArrayList<SeatV2> seatBookings = new ArrayList<>();
     ArrayList<LinearLayout> arrlinear = new ArrayList<>();
     ArrayList<SeatV2> seatSelects = new ArrayList<>();
-    TextView txttime, txtsophong, txttenphim;
+    TextView txttime, txtsophong, txttenphim, txtTileRowBenchSeat, txtTileRowBench2;
     TickerBook tickerBook;
     Button btnthanhtoan, btnBackTo;
     ImageView imgtryvet;
@@ -93,6 +93,11 @@ public class SelectSeatActivity extends AppCompatActivity {
                 }
             }
         }
+
+        txtTileRowBench2.setVisibility(View.INVISIBLE);
+        txtTileRowBenchSeat.setVisibility(View.INVISIBLE);
+
+        arrlinear.get(8).setVisibility(View.INVISIBLE);
     }
 
     private void setEventForSeat(ImageView seat) {
@@ -258,7 +263,7 @@ public class SelectSeatActivity extends AppCompatActivity {
             @Override
             public void handleMessage(@NonNull @NotNull Message msg) {
                 if (msg.what == 1) {
-                    dismissDialogProcessing();
+
 
                     getSeatsBooking(currentRoom.getId());
                 } else if (msg.what == 0) {
@@ -361,6 +366,7 @@ public class SelectSeatActivity extends AppCompatActivity {
 
         for (int i = 0; i < countSeatBooking; i++) {
             SeatV2 seatV2 = seatBookings.get(i);
+
             updateUISeats(seatV2);
         }
 
@@ -463,10 +469,13 @@ public class SelectSeatActivity extends AppCompatActivity {
         listCall.enqueue(new Callback<List<SeatV2>>() {
             @Override
             public void onResponse(Call<List<SeatV2>> call, Response<List<SeatV2>> response) {
+                dismissDialogProcessing();
 
                 seatBookings = (ArrayList<SeatV2>) response.body();
 
                 setSeatBookings();
+
+                openSeatReserve();
             }
 
             @Override
@@ -485,6 +494,8 @@ public class SelectSeatActivity extends AppCompatActivity {
         txttenphim = findViewById(R.id.txttenphim);
         btnBackTo = findViewById(R.id.btnhuy);
         btnthanhtoan = findViewById(R.id.btnthanhtoan);
+        txtTileRowBenchSeat = findViewById(R.id.txttilerowbenchseat);
+        txtTileRowBench2 = findViewById(R.id.txttilerowbench2);
 
         Intent intent = getIntent();
 
@@ -599,6 +610,14 @@ public class SelectSeatActivity extends AppCompatActivity {
     }
 
     public void openSeatReserve(){
+        int countSeatBooking = seatBookings.size();
+
+        if(countSeatBooking >= 57 ){
+            txtTileRowBench2.setVisibility(View.VISIBLE);
+            txtTileRowBenchSeat.setVisibility(View.VISIBLE);
+
+            arrlinear.get(8).setVisibility(View.VISIBLE);
+        }
 
     }
 

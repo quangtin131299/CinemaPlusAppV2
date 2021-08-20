@@ -209,4 +209,13 @@ public class PopCornActivity extends AppCompatActivity {
 
         return 0;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(tickerBook != null && tickerBook.getPopcorns().size() != 0){
+            tickerBook.getPopcorns().clear();
+        }
+    }
 }

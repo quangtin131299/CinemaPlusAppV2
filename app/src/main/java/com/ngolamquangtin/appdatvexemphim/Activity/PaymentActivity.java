@@ -241,9 +241,9 @@ public class PaymentActivity extends AppCompatActivity {
                     if(rdoMethodPaytMoMo.isChecked()){
                         amount = String.valueOf(calulatorTotalAmount());
 
-//                        requestPayment();
+                        requestPayment();
 
-                        processTickerBooking(PAYMENT_ONLINE_MOMO);
+//                        processTickerBooking(PAYMENT_ONLINE_MOMO);
 
                     }else{
 
