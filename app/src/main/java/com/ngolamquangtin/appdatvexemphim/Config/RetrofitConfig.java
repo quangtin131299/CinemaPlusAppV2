@@ -35,9 +35,9 @@ public class RetrofitConfig {
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .connectTimeout(7, TimeUnit.SECONDS)
-                    .writeTimeout(7, TimeUnit.SECONDS)
-                    .readTimeout(7, TimeUnit.SECONDS)
+                    .connectTimeout(50, TimeUnit.SECONDS)
+                    .writeTimeout(50, TimeUnit.SECONDS)
+                    .readTimeout(50, TimeUnit.SECONDS)
                     .retryOnConnectionFailure(true)
                     .addNetworkInterceptor(networkInterceptor())
                     .addInterceptor(offlineInterceptor(context))

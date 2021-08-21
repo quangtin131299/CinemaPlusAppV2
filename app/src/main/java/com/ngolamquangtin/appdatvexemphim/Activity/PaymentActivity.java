@@ -332,7 +332,7 @@ public class PaymentActivity extends AppCompatActivity {
                         && tickerBook.getNgaydat().equals("") == false) {
                 tickerBook.setTrangthai("Đã đặt");
                 tickerBook.setMethodPay(methoddPay);
-                tickerBook.setUnitPrice(45000); //hash code
+                tickerBook.setUnitPrice(getCurrentPriceTicker()); //hash code
 
                 Service service = RetrofitUtil.getService(PaymentActivity.this);
                 Call<Integer> call = service.processTickerBooking(tickerBook);
